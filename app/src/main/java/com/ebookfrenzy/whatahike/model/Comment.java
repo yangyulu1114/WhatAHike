@@ -2,7 +2,7 @@ package com.ebookfrenzy.whatahike.model;
 
 import java.util.List;
 
-public class Comment {
+public class Comment extends FireBaseModel {
     private String trailId;
     private String userId;
     private long timeStamp;
@@ -47,5 +47,10 @@ public class Comment {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    @Override
+    public String getModelName() {
+        return "Comment";
     }
 }

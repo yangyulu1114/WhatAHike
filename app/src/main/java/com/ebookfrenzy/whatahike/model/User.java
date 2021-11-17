@@ -1,6 +1,6 @@
 package com.ebookfrenzy.whatahike.model;
 
-public class User {
+public class User extends FireBaseModel {
     private String userId;
     private String userName;
     private String preference;
@@ -34,5 +34,10 @@ public class User {
 
     public void setPreference(String preference) {
         this.preference = preference;
+    }
+
+    @Override
+    public String getModelName() {
+        return "User";
     }
 }

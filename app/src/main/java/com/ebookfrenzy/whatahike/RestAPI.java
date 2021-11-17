@@ -2,7 +2,8 @@ package com.ebookfrenzy.whatahike;
 
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
-import com.ebookfrenzy.whatahike.utils.HttpUtil;
+import com.ebookfrenzy.whatahike.model.User;
+import com.ebookfrenzy.whatahike.utils.FireBaseHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +12,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RestAPI {
+
+    private static final FireBaseHelper<User> mUserHelper = new FireBaseHelper();
+    private static final FireBaseHelper<Comment> mCommentHelper = new FireBaseHelper();
+
     public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
         List<Trail> trails = new ArrayList<>();
         for (Trail trail : readCSVTrails()) {
@@ -33,7 +38,7 @@ public class RestAPI {
     public static boolean postComment(Comment comment, List<File> images) {
         List<String> urls = new ArrayList<>();
         for(File image : images) {
-            String url = HttpUtil.uploadImage(image);
+            String url = FireBaseHelper.upload(image);
             urls.add(url);
         }
         comment.setImages(urls);
@@ -50,7 +55,7 @@ public class RestAPI {
     }
 
     public static boolean updateHeadImage(String userId, File file) {
-        String headUrl = HttpUtil.uploadImage(file);
+        String headUrl = FireBaseHelper.upload(file);
         return true;
     }
 
