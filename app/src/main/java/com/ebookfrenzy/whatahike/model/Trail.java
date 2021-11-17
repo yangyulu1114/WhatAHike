@@ -8,9 +8,14 @@ public class Trail {
     private String area;
     private String city;
     private String state;
+    private String country;
     private double[] location;
+    private double length;
+    private double elevation;
     private int difficulty;
     private String type;
+    private double rating;
+    private int numReviews;
     private List<String> features;
     private List<String> activities;
 
@@ -54,12 +59,36 @@ public class Trail {
         this.state = state;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public double[] getLocation() {
         return location;
     }
 
     public void setLocation(double[] location) {
         this.location = location;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public double getElevation() {
+        return elevation;
+    }
+
+    public void setElevation(double elevation) {
+        this.elevation = elevation;
     }
 
     public int getDifficulty() {
@@ -76,6 +105,22 @@ public class Trail {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getNumReviews() {
+        return numReviews;
+    }
+
+    public void setNumReviews(int numReviews) {
+        this.numReviews = numReviews;
     }
 
     public List<String> getFeatures() {
