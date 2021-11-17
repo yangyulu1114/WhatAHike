@@ -41,6 +41,7 @@ public class RestAPI {
     }
 
     public static boolean register(String userName, String password) {
+        // check inputs not null, format is correct
         return true;
     }
 
@@ -51,5 +52,13 @@ public class RestAPI {
     public static boolean updateHeadImage(String userId, File file) {
         String headUrl = HttpUtil.uploadImage(file);
         return true;
+    }
+
+    public static void setPref(String userName, String pref) {
+
+    }
+
+    public static String getPref(String userName) {
+        return null;
     }
 }
