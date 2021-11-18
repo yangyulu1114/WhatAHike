@@ -3,6 +3,7 @@ package com.ebookfrenzy.whatahike.model;
 import java.util.List;
 
 public class Comment extends FireBaseModel {
+    private String id;
     private String trailId;
     private String userId;
     private long timeStamp;
@@ -37,6 +38,14 @@ public class Comment extends FireBaseModel {
         return text;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setText(String text) {
         this.text = text;
     }
@@ -52,5 +61,10 @@ public class Comment extends FireBaseModel {
     @Override
     public String getModelName() {
         return "Comment";
+    }
+
+    @Override
+    public String getKey() {
+        return id;
     }
 }

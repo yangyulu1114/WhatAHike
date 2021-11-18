@@ -36,13 +36,13 @@ public class RestAPI {
     }
 
     public static boolean postComment(Comment comment, List<File> images) {
-        List<String> urls = new ArrayList<>();
-        for(File image : images) {
-            String url = FireBaseHelper.upload(image);
-            urls.add(url);
-        }
-        comment.setImages(urls);
-        return true;
+//        List<String> urls = new ArrayList<>();
+//        for(File image : images) {
+//            String url = FireBaseHelper.upload(image);
+//            urls.add(url);
+//        }
+//        comment.setImages(urls);
+     return true;
     }
 
     public static boolean register(String userName, String password) {
@@ -55,7 +55,7 @@ public class RestAPI {
     }
 
     public static boolean updateHeadImage(String userId, File file) {
-        String headUrl = FireBaseHelper.upload(file);
+       // String headUrl = FireBaseHelper.upload(file);
         return true;
     }
 
