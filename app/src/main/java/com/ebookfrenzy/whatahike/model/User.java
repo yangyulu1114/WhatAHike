@@ -1,59 +1,48 @@
 package com.ebookfrenzy.whatahike.model;
 
-public class User extends FireBaseModel {
-    private String id;
-    private String name;
-    private String password;
-    private String preference;
-    private String headUrl;
+import android.net.Uri;
 
-    public String getId() {
-        return id;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
+public class User {
+
+    private final FirebaseUser mRemoteUser;
+
+    public User(FirebaseUser remoteUser) {
+        mRemoteUser = remoteUser;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getEmail() {
+        return mRemoteUser.getEmail();
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return mRemoteUser.getDisplayName();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Uri getPhotoUrl() {
+        return mRemoteUser.getPhotoUrl();
     }
 
-    public String getPassword() {
-        return password;
+    public void updatePhotoUrl(Uri uri) {
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
+        mRemoteUser.updateProfile(request);
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void updateDisplayName(String displayName) {
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setDisplayName(displayName).build();
+        mRemoteUser.updateProfile(request);
     }
 
-    public String getPreference() {
-        return preference;
-    }
-
-    public void setPreference(String preference) {
-        this.preference = preference;
-    }
-
-    public String getHeadUrl() {
-        return headUrl;
-    }
-
-    public void setHeadUrl(String headUrl) {
-        this.headUrl = headUrl;
+    public static User getCurrentUser() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        return firebaseUser != null ? new User(firebaseUser) : null;
     }
 
     @Override
-    public String getModelName() {
-        return "User";
-    }
-
-    @Override
-    public String getKey() {
-        return id;
+    public String toString() {
+        return getEmail();
     }
 }

@@ -1,9 +1,12 @@
 package com.ebookfrenzy.whatahike;
 
+import android.net.Uri;
+
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.utils.FireBaseHelper;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +16,6 @@ import java.util.List;
 
 public class RestAPI {
 
-    private static final FireBaseHelper<User> mUserHelper = new FireBaseHelper();
     private static final FireBaseHelper<Comment> mCommentHelper = new FireBaseHelper();
 
     public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
@@ -43,27 +45,5 @@ public class RestAPI {
 //        }
 //        comment.setImages(urls);
      return true;
-    }
-
-    public static boolean register(String userName, String password) {
-        // check inputs not null, format is correct
-        return true;
-    }
-
-    public static boolean login(String userName, String password) {
-        return true;
-    }
-
-    public static boolean updateHeadImage(String userId, File file) {
-       // String headUrl = FireBaseHelper.upload(file);
-        return true;
-    }
-
-    public static void setPref(String userName, String pref) {
-
-    }
-
-    public static String getPref(String userName) {
-        return null;
     }
 }
