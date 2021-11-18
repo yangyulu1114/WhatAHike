@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.utils.FireBaseHelper;
+import com.ebookfrenzy.whatahike.utils.Listener;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
@@ -32,6 +34,20 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         signInIfNeeded();
+
+        RestAPI.getComments("1", new Listener<List<Comment>>() {
+            @Override
+            public void onSucceess(List<Comment> data) {
+                for (Comment comment : data) {
+                    Log.v("bush", String.format("comment: %s", comment.toString()));
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e("bush", "fail", e);
+            }
+        });
     }
 
     private void signInIfNeeded() {
@@ -66,7 +82,7 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
 
     @Override
     String[] getRequestedPermissions() {
-        return new String[] {
+        return new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.INTERNET,
@@ -84,11 +100,6 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
         imageUrl.add("https://firebasestorage.googleapis.com/v0/b/whatahike-d3fe2.appspot.com/o/images%2F1637199022847-20211117_150958.jpg?alt=media&token=a5f52891-2913-4e1b-8f63-23ee59fb3092");
         imageUrl.add("https://firebasestorage.googleapis.com/v0/b/whatahike-d3fe2.appspot.com/o/images%2F1637209900698-20211117_150958.jpg?alt=media&token=91997563-55e9-4d46-b135-f7a426f868ed");
         comment.setImages(imageUrl);
-        FireBaseHelper<Comment> fireBaseHelper = new FireBaseHelper<>();
-        try {
-            fireBaseHelper.insert(comment);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        comment.insert();
     }
 }

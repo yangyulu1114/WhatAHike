@@ -10,12 +10,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Comment extends FireBaseModel {
 
-    private final String id;
-    private final String userId;
+    public static Comment DUMMY = new Comment();
+
+    private String id;
+    private String userId;
     private String trailId;
     private long timeStamp;
     private String text;
     private List<String> images;
+
+    public Comment() {}
 
     public Comment(String userId) {
         this.userId = userId;
@@ -68,7 +72,19 @@ public class Comment extends FireBaseModel {
     }
 
     @Override
-    public String getKey() {
-        return id;
+    public String[] keys() {
+        return new String[] {trailId, id};
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", trailId='" + trailId + '\'' +
+                ", timeStamp=" + timeStamp +
+                ", text='" + text + '\'' +
+                ", images=" + images +
+                '}';
     }
 }
