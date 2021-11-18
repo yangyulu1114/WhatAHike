@@ -1,13 +1,10 @@
 package com.ebookfrenzy.whatahike;
 
-import android.net.Uri;
-
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
-import com.ebookfrenzy.whatahike.model.User;
-import com.ebookfrenzy.whatahike.utils.FireBaseHelper;
+import com.ebookfrenzy.whatahike.utils.FireBaseUtil;
 import com.ebookfrenzy.whatahike.utils.Listener;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.ebookfrenzy.whatahike.utils.MainThreadListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,8 +12,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RestAPI {
+
+    private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
     public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
         List<Trail> trails = new ArrayList<>();
@@ -34,10 +35,33 @@ public class RestAPI {
     }
 
     public static void getComments(String trailId, Listener<List<Comment>> listener) {
-        Comment.DUMMY.query(Arrays.asList(trailId), listener);
+        Listener<List<Comment>> mainThreadListener = new MainThreadListener(listener);
+        sExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Comment.DUMMY.query(Arrays.asList(trailId), mainThreadListener);
+            }
+        });
     }
 
-    public static void postComment(Comment comment, List<File> images, Listener<Boolean> listener) {
-
+    public static void postComment(Comment comment, List<File> images, Listener<Void> listener) {
+        Listener<Void> mainThreadListener = new MainThreadListener(listener);
+        sExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<String> imageUrls = new ArrayList<>();
+                for (File file : images) {
+                    try {
+                        String imageUrl = FireBaseUtil.uploadSync(file);
+                        imageUrls.add(imageUrl);
+                    } catch (Exception e) {
+                        mainThreadListener.onFailed(e);
+                        return;
+                    }
+                }
+                comment.setImages(imageUrls);
+                comment.insert(mainThreadListener);
+            }
+        });
     }
 }

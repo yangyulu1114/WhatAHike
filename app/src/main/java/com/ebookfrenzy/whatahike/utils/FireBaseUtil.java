@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.ebookfrenzy.whatahike.exception.UploadException;
 import com.ebookfrenzy.whatahike.model.FireBaseModel;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,10 +23,13 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class FireBaseHelper {
+public class FireBaseUtil {
 
-    public static void upload(File file, Listener<String> uploadListener) {
+    public static void uploadAsync(File file, Listener<String> uploadListener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         Uri fileUri = Uri.fromFile(file);
@@ -51,5 +55,38 @@ public class FireBaseHelper {
                 }
             }
         });
+    }
+
+    public static String uploadSync(File file) throws Exception {
+        UploadListener listener = new UploadListener();
+        uploadAsync(file, listener);
+        return listener.getResult();
+    }
+
+    private static class UploadListener implements Listener<String> {
+
+        private String mResult;
+        private Exception mException;
+        private final CountDownLatch mLatch = new CountDownLatch(1);
+
+        @Override
+        public void onSucceess(String data) {
+            mResult = data;
+            mLatch.countDown();
+        }
+
+        @Override
+        public void onFailed(Exception e) {
+            mException = new UploadException(e);
+            mLatch.countDown();
+        }
+
+        public String getResult() throws Exception {
+            mLatch.await();
+            if (mException != null) {
+                throw mException;
+            }
+            return mResult;
+        }
     }
 }

@@ -24,7 +24,7 @@ public abstract class FireBaseModel {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void insert() {
+    public void insert(Listener<Void> listener) {
         Log.v("bush", "insert");
         DatabaseReference databaseReference = mDatabase.child(getModelName());
         for (String key : keys()) {
@@ -33,11 +33,12 @@ public abstract class FireBaseModel {
         databaseReference.setValue(this).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Log.v("bush", "insert onSuccess");
+                listener.onSucceess(unused);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                listener.onFailed(e);
                 Log.v("bush", "insert onFailure", e);
             }
         });

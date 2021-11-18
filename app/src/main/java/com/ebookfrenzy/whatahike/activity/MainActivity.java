@@ -11,15 +11,15 @@ import android.view.View;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.exception.UploadException;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.User;
-import com.ebookfrenzy.whatahike.utils.FireBaseHelper;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
-import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,9 +35,11 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
         setContentView(R.layout.activity_main);
         signInIfNeeded();
 
+        //test get comments
         RestAPI.getComments("1", new Listener<List<Comment>>() {
             @Override
             public void onSucceess(List<Comment> data) {
+                Log.v("bush", "getComments onSucceess " + Thread.currentThread().getName());
                 for (Comment comment : data) {
                     Log.v("bush", String.format("comment: %s", comment.toString()));
                 }
@@ -68,6 +70,7 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
     }
 
     private void onAuthCompleted(User user) {
+        //action after sign in
         Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
     }
 
@@ -80,6 +83,7 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
         }
     }
 
+    //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
     @Override
     String[] getRequestedPermissions() {
         return new String[]{
@@ -91,15 +95,25 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
         };
     }
 
+   //test insert comment
     public void onMyClick(View view) {
         Comment comment = new Comment(User.getCurrentUser().getEmail());
         comment.setText("hello");
         comment.setTimeStamp(System.currentTimeMillis());
         comment.setTrailId("1");
-        List<String> imageUrl = new ArrayList<>();
-        imageUrl.add("https://firebasestorage.googleapis.com/v0/b/whatahike-d3fe2.appspot.com/o/images%2F1637199022847-20211117_150958.jpg?alt=media&token=a5f52891-2913-4e1b-8f63-23ee59fb3092");
-        imageUrl.add("https://firebasestorage.googleapis.com/v0/b/whatahike-d3fe2.appspot.com/o/images%2F1637209900698-20211117_150958.jpg?alt=media&token=91997563-55e9-4d46-b135-f7a426f868ed");
-        comment.setImages(imageUrl);
-        comment.insert();
+        List<File> images = new ArrayList<>();
+        images.add(new File("/sdcard/DCIM/Camera/20211117_150958.jpg"));
+        images.add(new File("/sdcard/DCIM/Camera/20211118_102725.jpg"));
+        RestAPI.postComment(comment, images, new Listener<Void>() {
+            @Override
+            public void onSucceess(Void data) {
+                Log.v("bush", "postComment onSucceess " + Thread.currentThread().getName());
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
 }
