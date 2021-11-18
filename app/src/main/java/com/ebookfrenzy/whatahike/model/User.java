@@ -10,7 +10,7 @@ public class User {
 
     private final FirebaseUser mRemoteUser;
 
-    public User(FirebaseUser remoteUser) {
+    private User(FirebaseUser remoteUser) {
         mRemoteUser = remoteUser;
     }
 

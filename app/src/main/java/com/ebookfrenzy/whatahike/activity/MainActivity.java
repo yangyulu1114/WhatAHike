@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.utils.FireBaseHelper;
 import com.firebase.ui.auth.AuthUI;
@@ -17,6 +18,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
     }
 
     private void signInIfNeeded() {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (User.getCurrentUser() == null) {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
@@ -53,13 +55,13 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
         Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
     }
 
-    public void onMyClick(View view) {
-        signInIfNeeded();
-    }
-
     @Override
     public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-        onAuthCompleted(User.getCurrentUser());
+        if (result.getResultCode() == RESULT_OK) {
+            onAuthCompleted(User.getCurrentUser());
+        } else {
+            // action if sign in failed;
+        }
     }
 
     @Override
@@ -71,5 +73,22 @@ public class MainActivity extends BaseActivity implements ActivityResultCallback
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
+    }
+
+    public void onMyClick(View view) {
+        Comment comment = new Comment(User.getCurrentUser().getEmail());
+        comment.setText("hello");
+        comment.setTimeStamp(System.currentTimeMillis());
+        comment.setTrailId("1");
+        List<String> imageUrl = new ArrayList<>();
+        imageUrl.add("https://firebasestorage.googleapis.com/v0/b/whatahike-d3fe2.appspot.com/o/images%2F1637199022847-20211117_150958.jpg?alt=media&token=a5f52891-2913-4e1b-8f63-23ee59fb3092");
+        imageUrl.add("https://firebasestorage.googleapis.com/v0/b/whatahike-d3fe2.appspot.com/o/images%2F1637209900698-20211117_150958.jpg?alt=media&token=91997563-55e9-4d46-b135-f7a426f868ed");
+        comment.setImages(imageUrl);
+        FireBaseHelper<Comment> fireBaseHelper = new FireBaseHelper<>();
+        try {
+            fireBaseHelper.insert(comment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

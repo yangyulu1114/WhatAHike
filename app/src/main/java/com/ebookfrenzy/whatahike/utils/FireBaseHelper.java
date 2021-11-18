@@ -40,8 +40,21 @@ public class FireBaseHelper<T extends FireBaseModel> {
     }
 
     public void insert(T data) throws Exception {
+        Log.v("bush", "insert");
         String name = data.getModelName();
-        mDatabase.child(name).child(data.getKey()).setValue(data);
+        mDatabase.child(name).child(data.getKey()).setValue(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.v("bush", "insert onSuccess");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Write failed
+                // ...
+                Log.v("bush", "insert onFailure", e);
+            }
+        });
     }
 
     public void update(T data) throws Exception {
