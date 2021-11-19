@@ -15,11 +15,11 @@ public class MainThreadListener<T> implements Listener<T> {
 
 
     @Override
-    public void onSucceess(T data) {
+    public void onSuccess(T data) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mListener.onSucceess(data);
+                mListener.onSuccess(data);
             }
         });
     }

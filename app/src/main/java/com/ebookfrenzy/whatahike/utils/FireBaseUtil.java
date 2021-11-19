@@ -49,7 +49,7 @@ public class FireBaseUtil {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    uploadListener.onSucceess(downloadUri.toString());
+                    uploadListener.onSuccess(downloadUri.toString());
                 } else {
                     uploadListener.onFailed(task.getException());
                 }
@@ -70,7 +70,7 @@ public class FireBaseUtil {
         private final CountDownLatch mLatch = new CountDownLatch(1);
 
         @Override
-        public void onSucceess(String data) {
+        public void onSuccess(String data) {
             mResult = data;
             mLatch.countDown();
         }

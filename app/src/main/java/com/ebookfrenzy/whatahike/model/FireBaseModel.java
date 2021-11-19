@@ -33,7 +33,7 @@ public abstract class FireBaseModel {
         databaseReference.setValue(this).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                listener.onSucceess(unused);
+                listener.onSuccess(unused);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -58,7 +58,7 @@ public abstract class FireBaseModel {
                     for (DataSnapshot snapshot : task.getResult().getChildren()) {
                         list.add(snapshot.getValue(clazz));
                     }
-                    listener.onSucceess(list);
+                    listener.onSuccess(list);
                 } else {
                     listener.onFailed(task.getException());
                 }
