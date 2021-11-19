@@ -15,7 +15,7 @@ public class RviewHolder extends RecyclerView.ViewHolder{
 
     public RviewHolder(View itemView) {
         super(itemView);
-        picture = itemView.findViewById(R.id.trailPicture);
+//        picture = itemView.findViewById(R.id.trailPicture);
         trailName = itemView.findViewById(R.id.trailName);
         description = itemView.findViewById(R.id.description);
 

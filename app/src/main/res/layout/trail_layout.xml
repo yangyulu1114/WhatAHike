@@ -12,12 +12,12 @@
         android:orientation="horizontal"
         >
 
-        <ImageView
-            android:id="@+id/trailPicture"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/rainier"
-            tools:ignore="MissingClass" />
+<!--        <ImageView-->
+<!--            android:id="@+id/trailPicture"-->
+<!--            android:layout_width="90dp"-->
+<!--            android:layout_height="90dp"-->
+<!--            android:src="@drawable/rainier"-->
+<!--            tools:ignore="MissingClass" />-->
 
 
         <LinearLayout
