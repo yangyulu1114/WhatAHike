@@ -17,19 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatAHike">
         <activity
-            android:name=".activity.TestActivity"
-            android:exported="true"
-            android:label="@string/title_activity_test"
-            android:theme="@style/Theme.WhatAHike.NoActionBar" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
+            android:name=".activity.SplashActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.TestActivity"
+            android:exported="true"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.WhatAHike.NoActionBar" />
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

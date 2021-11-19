@@ -27,47 +27,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements ActivityResultCallback<FirebaseAuthUIAuthenticationResult> {
-
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(), this);
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        signInIfNeeded();
-    }
-
-    private void signInIfNeeded() {
-        if (User.getCurrentUser() == null) {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build()
-            );
-
-            Intent signInIntent = AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .build();
-
-            signInLauncher.launch(signInIntent);
-        } else {
-            onAuthCompleted(User.getCurrentUser());
-        }
-    }
-
-    private void onAuthCompleted(User user) {
-        //action after sign in
-        Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
-    }
-
-    @Override
-    public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-        if (result.getResultCode() == RESULT_OK) {
-            onAuthCompleted(User.getCurrentUser());
-        } else {
-            // action if sign in failed;
-        }
     }
 
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
