@@ -17,6 +17,8 @@ import java.util.concurrent.Executors;
 
 public class RestAPI {
 
+    private static List<Trail> trails;
+
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
     public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
@@ -31,7 +33,9 @@ public class RestAPI {
     }
 
     private static List<Trail> readCSVTrails() {
-        return Collections.emptyList();
+        trails = new ArrayList<>();
+
+        return trails;
     }
 
     public static void getComments(String trailId, Listener<List<Comment>> listener) {
