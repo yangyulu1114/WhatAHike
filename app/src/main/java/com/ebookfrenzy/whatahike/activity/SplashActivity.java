@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.ebookfrenzy.whatahike.R;
@@ -21,12 +22,19 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(), this);
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        signInIfNeeded();
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                signInIfNeeded();
+            }
+        }, 400);
     }
 
     private void signInIfNeeded() {
@@ -41,6 +49,7 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
                     .build();
 
             signInLauncher.launch(signInIntent);
+            finish();
         } else {
             onAuthCompleted(User.getCurrentUser());
         }
@@ -55,6 +64,8 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
 
     @Override
     public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+        Log.v("bsuh", "result code " + result.getResultCode());
+
         if (result.getResultCode() == RESULT_OK) {
             onAuthCompleted(User.getCurrentUser());
         } else {
