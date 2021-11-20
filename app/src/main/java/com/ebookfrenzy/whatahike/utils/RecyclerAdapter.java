@@ -13,10 +13,10 @@ import com.ebookfrenzy.whatahike.trailRecord;
 
 import java.util.ArrayList;
 
-public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private ArrayList<trailRecord> trailList;
 
-    public recyclerAdapter(ArrayList<trailRecord> trailList){
+    public RecyclerAdapter(ArrayList<trailRecord> trailList){
         this.trailList = trailList;
     }
 
@@ -37,13 +37,13 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     }
     @NonNull
     @Override
-    public recyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.trail_layout, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String desc = trailList.get(position).getDescription();
         String name = trailList.get(position).getName();
         String trailId = trailList.get(position).getId();
@@ -54,9 +54,6 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         holder.nameTxt.setText("Trail Name: " + name);
         holder.difficultyTxt.setText("Difficulty: " + diff);
         holder.descriptionTxt.setText( desc);
-
-
-
     }
 
     @Override
