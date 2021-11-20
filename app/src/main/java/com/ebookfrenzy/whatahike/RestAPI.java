@@ -23,6 +23,9 @@ public class RestAPI {
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
     public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
+        if (trails == null) {
+            readCSVTrails();
+        }
         List<Trail> trails = new ArrayList<>();
         for (Trail trail : readCSVTrails()) {
             if (filter.pass(trail)) {
@@ -33,7 +36,7 @@ public class RestAPI {
         return trails;
     }
 
-    private static List<Trail> readCSVTrails() {
+    public static List<Trail> readCSVTrails() {
         trails = TrailsReadingUtil.readCSVTrails();
         return trails;
     }

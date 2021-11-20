@@ -1,5 +1,8 @@
 package com.ebookfrenzy.whatahike.utils;
 
+import android.util.Log;
+
+import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Trail;
 
 import java.io.File;
@@ -10,7 +13,7 @@ import java.util.Scanner;
 
 public class TrailsReadingUtil {
 
-    private static final String FILEPATH = "res/raw/trails.csv";
+    private static final String FILEPATH = R.raw.trails;
 
     private static int idIdx, nameIdx, areaIdx, cityIdx, stateIdx, countryIdx,
             locationIdx, lengthIdx, elevationIdx, difficultyIdx,
@@ -70,7 +73,7 @@ public class TrailsReadingUtil {
 
         } catch (Exception e) {
             trails = null;
-            e.printStackTrace();
+            Log.e("readcsv: ", e.toString());
         }
 
         return trails;
