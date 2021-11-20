@@ -1,5 +1,8 @@
 package com.ebookfrenzy.whatahike;
 
+import android.content.Context;
+
+import com.ebookfrenzy.whatahike.activity.MainActivity;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.FireBaseUtil;
@@ -22,21 +25,28 @@ public class RestAPI {
 
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
-    public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
+    public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator)
+        throws IllegalArgumentException {
+
+        if (filter == null || comparator == null) {
+            throw new IllegalArgumentException("Filter and Comparator can not be null.");
+        }
+
         if (trails == null) {
             readCSVTrails();
         }
-        List<Trail> trails = new ArrayList<>();
-        for (Trail trail : readCSVTrails()) {
+
+        List<Trail> filterTrails = new ArrayList<>();
+        for (Trail trail : trails) {
             if (filter.pass(trail)) {
-                trails.add(trail);
+                filterTrails.add(trail);
             }
         }
-        Collections.sort(trails, comparator);
-        return trails;
+        Collections.sort(filterTrails, comparator);
+        return filterTrails;
     }
 
-    public static List<Trail> readCSVTrails() {
+    private static List<Trail> readCSVTrails() {
         trails = TrailsReadingUtil.readCSVTrails();
         return trails;
     }

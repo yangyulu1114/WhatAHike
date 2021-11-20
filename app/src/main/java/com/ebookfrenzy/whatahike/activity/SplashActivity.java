@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Trail;
@@ -18,7 +19,9 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity implements ActivityResultCallback<FirebaseAuthUIAuthenticationResult> {
 
@@ -30,9 +33,6 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        List<Trail> trails = RestAPI.readCSVTrails();
-        Log.v("readcsv: ", trails.get(0).getId());
 
         mHandler.postDelayed(new Runnable() {
             @Override
