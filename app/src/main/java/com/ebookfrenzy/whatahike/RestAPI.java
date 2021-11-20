@@ -1,10 +1,14 @@
 package com.ebookfrenzy.whatahike;
 
+import android.content.Context;
+
+import com.ebookfrenzy.whatahike.activity.MainActivity;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.FireBaseUtil;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.ebookfrenzy.whatahike.utils.MainThreadListener;
+import com.ebookfrenzy.whatahike.utils.TrailsReadingUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,26 +16,39 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RestAPI {
+    private static List<Trail> trails;
 
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
-    public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator) {
-        List<Trail> trails = new ArrayList<>();
-        for (Trail trail : readCSVTrails()) {
+    public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator)
+        throws IllegalArgumentException {
+
+        if (filter == null || comparator == null) {
+            throw new IllegalArgumentException("Filter and Comparator can not be null.");
+        }
+
+        if (trails == null) {
+            readCSVTrails();
+        }
+
+        List<Trail> filterTrails = new ArrayList<>();
+        for (Trail trail : trails) {
             if (filter.pass(trail)) {
-                trails.add(trail);
+                filterTrails.add(trail);
             }
         }
-        Collections.sort(trails, comparator);
-        return trails;
+        Collections.sort(filterTrails, comparator);
+        return filterTrails;
     }
 
     private static List<Trail> readCSVTrails() {
-        return Collections.emptyList();
+        trails = TrailsReadingUtil.readCSVTrails();
+        return trails;
     }
 
     public static void getComments(String trailId, Listener<List<Comment>> listener) {
@@ -64,4 +81,6 @@ public class RestAPI {
             }
         });
     }
+
+
 }

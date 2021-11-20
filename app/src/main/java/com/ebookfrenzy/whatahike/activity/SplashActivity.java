@@ -9,14 +9,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity implements ActivityResultCallback<FirebaseAuthUIAuthenticationResult> {
 
