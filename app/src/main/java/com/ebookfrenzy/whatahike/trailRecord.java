@@ -1,37 +1,47 @@
 package com.ebookfrenzy.whatahike;
 
 public class trailRecord {
-    public int image;
-    public String trailName;
-    public String information;
+    private String name;
+    private String description;
+    private String id;
+    private int difficulty;
 
-    public trailRecord(int image, String trailName, String information){
-        this.image = image;
-        this.trailName = trailName;
-        this.information = information;
+    public trailRecord(String name, String description, String id, int difficulty) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.difficulty = difficulty;
     }
 
-    public int getImage(){
-        return image;
+    public String getName() {
+        return name;
     }
 
-    public void setImage(){
-        this.image = image;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getInformation(){
-        return information;
+    public String getDescription() {
+        return description;
     }
 
-    public void setInformation(){
-        this.information = information;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setTrailName(){
-        this.trailName = trailName;
+    public String getId() {
+        return id;
     }
 
-    public String getTrailName() {
-        return trailName;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 }
