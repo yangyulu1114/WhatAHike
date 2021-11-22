@@ -2,6 +2,7 @@ package com.ebookfrenzy.whatahike.activity;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        initSearchWidgets();
         recyclerView = findViewById(R.id.recyclerView);
         trailList = new ArrayList<>();
 
@@ -48,6 +49,30 @@ public class MainActivity extends BaseActivity {
         setAdapter();
     }
 
+    private void initSearchWidgets()
+    {
+        SearchView  searchView = (SearchView) findViewById(R.id.trailListSearchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<trailRecord> filteredTrails = new ArrayList<trailRecord>();
+                for(trailRecord trailrecord: trailList)  {
+                    if(trailrecord.getName().toLowerCase().contains(newText.toLowerCase())){
+                        filteredTrails.add(trailrecord);
+                    }
+                }
+                RecyclerAdapter adapter = new RecyclerAdapter(getApplicationContext(), 0,filteredTrails);
+                recyclerView.setAdapter(adapter);
+                return false;
+            }
+        });
+    }
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
     @Override
     String[] getRequestedPermissions() {
