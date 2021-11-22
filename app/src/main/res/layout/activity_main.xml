@@ -39,40 +39,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/sortButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:onClick="showSortTapped"
-            android:text="SORT"
-            android:textSize="30sp" />
-
-
-        <Button
-            android:id="@+id/filterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginRight="5dp"
-            android:background="@null"
-            android:onClick="showFilterTapped"
-            android:text="FILTER"
-            android:textSize="30sp" />
-
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.appcompat.widget.SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/trailListSearchView"
-        android:iconfiedByDefault="false"
-        android:queryHint="Let's Go!"></androidx.appcompat.widget.SearchView>
 
     <ImageButton
         android:id="@+id/imageButton2"
