@@ -1,5 +1,6 @@
 package com.ebookfrenzy.whatahike.utils;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.trailRecord;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private ArrayList<trailRecord> trailList;
@@ -25,6 +27,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         private TextView descriptionTxt;
         private TextView idTxt;
         private TextView difficultyTxt;
+
+        public RecyclerAdapter(Context context, int resource, List<trailRecord> trailList)
+        {
+            super(context,resource,trailList);
+        }
+
 
         public MyViewHolder(final View view){
             super(view);
