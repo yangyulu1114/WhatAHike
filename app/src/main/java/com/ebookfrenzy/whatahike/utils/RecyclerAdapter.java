@@ -83,18 +83,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
-        String name = trailList.get(position).getName();
         String desc = trailList.get(position).getDescription();
+        String name = trailList.get(position).getName();
         String trailId = trailList.get(position).getId();
         String diff = String.valueOf(trailList.get(position).getDifficulty());
 
 
-
-        holder.nameTxt.setText("Trail Name: " + name);
-        holder.descriptionTxt.setText( desc);
         holder.idTxt.setText("Trail Id " + trailId);
+        holder.nameTxt.setText("Trail Name: " + name);
         holder.difficultyTxt.setText("Difficulty: " + diff);
+        holder.descriptionTxt.setText( desc);
     }
 
     @Override
