@@ -1,4 +1,4 @@
-package com.ebookfrenzy.whatahike.activity;
+package com.ebookfrenzy.whatahike.ui.activity;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;

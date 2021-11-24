@@ -1,10 +1,6 @@
-package com.ebookfrenzy.whatahike.activity;
+package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,41 +8,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 
-import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
-import com.ebookfrenzy.whatahike.RestAPI;
-import com.ebookfrenzy.whatahike.exception.UploadException;
-import com.ebookfrenzy.whatahike.model.Comment;
-import com.ebookfrenzy.whatahike.model.Trail;
-import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.trailRecord;
-import com.ebookfrenzy.whatahike.utils.Listener;
-import com.ebookfrenzy.whatahike.utils.RecyclerAdapter;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.ebookfrenzy.whatahike.ui.RecyclerAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 public class MainActivity extends BaseActivity implements LocationListener {
     private ArrayList<trailRecord> trailList;
