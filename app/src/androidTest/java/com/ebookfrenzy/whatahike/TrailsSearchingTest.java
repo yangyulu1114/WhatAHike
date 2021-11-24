@@ -38,6 +38,27 @@ public class TrailsSearchingTest extends AndroidJUnitRunner {
     }
 
     @Test
+    public void urlTest() {
+        List<Trail> trails = RestAPI.getTrails(new Filter<Trail>() {
+            @Override
+            public boolean pass(Trail trail) {
+                // Get all trails in Arizona
+                return trail.getId().equals("10020048");
+            }
+        }, new Comparator<Trail>() {
+            @Override
+            public int compare(Trail t1, Trail t2) {
+                // Max to min
+                return t2.getNumReviews() - t1.getNumReviews();
+            }
+        });
+
+        assertEquals(trails.size(), 1);
+        assertEquals(trails.get(0).getIconURL(), "http://gothomas.me/images/icons/0.jpg");
+        assertEquals(trails.get(0).getBannerURL(), "http://gothomas.me/images/banners/0.jpg");
+    }
+
+    @Test
     public void readingTrailsTest() {
         List<Trail> trails = RestAPI.getTrails(new Filter<Trail>() {
             @Override

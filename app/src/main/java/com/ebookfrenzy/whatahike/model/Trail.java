@@ -18,6 +18,24 @@ public class Trail {
     private int numReviews;
     private List<String> features;
     private List<String> activities;
+    private String iconURL;
+    private String bannerURL;
+
+    public String getIconURL() {
+        return iconURL;
+    }
+
+    public void setIconURL(String iconURL) {
+        this.iconURL = iconURL;
+    }
+
+    public String getBannerURL() {
+        return bannerURL;
+    }
+
+    public void setBannerURL(String bannerURL) {
+        this.bannerURL = bannerURL;
+    }
 
     public String getId() {
         return id;
