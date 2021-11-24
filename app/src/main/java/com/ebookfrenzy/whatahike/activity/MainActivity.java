@@ -64,8 +64,6 @@ public class MainActivity extends BaseActivity {
 
         setTrailInfo();
         setAdapter();
-
-        getLocationPermission();
     }
 
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
@@ -128,31 +126,6 @@ public class MainActivity extends BaseActivity {
 
     public static Location getLocation() {
         return location;
-    }
-
-    public void getLocationPermission() {
-        ActivityResultLauncher<String[]> locationPermissionRequest =
-                registerForActivityResult(new ActivityResultContracts
-                                .RequestMultiplePermissions(), result -> {
-                             Boolean fineLocationGranted = result.getOrDefault(
-                                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-                            Boolean coarseLocationGranted = result.getOrDefault(
-                                    Manifest.permission.ACCESS_COARSE_LOCATION,false);
-                            if (fineLocationGranted != null && fineLocationGranted) {
-                                // Precise location access granted.
-                                setLocation();
-                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                                // Only approximate location access granted.
-                            } else {
-                                // No location access granted.
-                            }
-                        }
-                );
-
-        locationPermissionRequest.launch(new String[] {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        });
     }
 
     private void setLocation() {
