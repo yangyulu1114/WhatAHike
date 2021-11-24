@@ -27,6 +27,17 @@ import java.util.List;
 public class TrailsSearchingTest extends AndroidJUnitRunner {
 
     @Test
+    public void distanceTest() {
+        double lat1 = 37.4243686;
+        double lon1 = -121.9561155;
+        double lat2 = 37.4232473;
+        double lon2 = -121.9698169;
+
+        double distance = RestAPI.getDistance(lat1, lon1, lat2, lon2);
+        Log.v("distance: ", distance + "");
+    }
+
+    @Test
     public void readingTrailsTest() {
         List<Trail> trails = RestAPI.getTrails(new Filter<Trail>() {
             @Override
@@ -52,9 +63,9 @@ public class TrailsSearchingTest extends AndroidJUnitRunner {
         assertEquals("com.ebookfrenzy.whatahike", appContext.getPackageName());
     }
 
-    //    @Override
-//    public void callApplicationOnCreate(Application app) {
-//        super.callApplicationOnCreate(app);
-//    }
+    @Override
+    public void callApplicationOnCreate(Application app) {
+        super.callApplicationOnCreate(app);
+    }
 
 }
