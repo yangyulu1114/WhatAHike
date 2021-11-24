@@ -1,13 +1,9 @@
 package com.ebookfrenzy.whatahike.utils;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Trail;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +14,8 @@ public class TrailsReadingUtil {
 
     private static int idIdx, nameIdx, areaIdx, cityIdx, stateIdx, countryIdx,
             locationIdx, lengthIdx, elevationIdx, difficultyIdx,
-            typeIdx, ratingIdx, numReviewsIdx, featuresIdx, activitiesIdx;
+            typeIdx, ratingIdx, numReviewsIdx, featuresIdx, activitiesIdx,
+            iconIdx, bannerIdx;
 
 
     public static List<Trail> readCSVTrails() {
@@ -86,6 +83,9 @@ public class TrailsReadingUtil {
                 .replace("]", "")
                 .split(",")));
 
+        trail.setIconURL(record[iconIdx]);
+        trail.setBannerURL(record[bannerIdx]);
+
         return trail;
     }
 
@@ -121,6 +121,10 @@ public class TrailsReadingUtil {
                 featuresIdx = i;
             else if (fields[i].equals("activities"))
                 activitiesIdx = i;
+            else if (fields[i].equals("icon"))
+                iconIdx = i;
+            else if (fields[i].equals("banner"))
+                bannerIdx = i;
         }
     }
 }
