@@ -3,6 +3,7 @@ package com.ebookfrenzy.whatahike.activity;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,12 +48,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements LocationListener {
     private ArrayList<trailRecord> trailList;
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
 
     private static Location location;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,23 +130,25 @@ public class MainActivity extends BaseActivity {
         return location;
     }
 
+
+    @SuppressLint("MissingPermission")
     private void setLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setCostAllowed(false);
 
         String provider = locationManager.getBestProvider(criteria, false);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            // No location access granted.
-            return;
-        }
 
         location = locationManager.getLastKnownLocation(provider);
         // location could equal to null if there is no location history in user's phone.
+
+        locationManager.requestLocationUpdates(provider, 0, 0, this);
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        setLocation();
     }
 }
