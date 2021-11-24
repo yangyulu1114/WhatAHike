@@ -80,6 +80,11 @@ public class MainActivity extends BaseActivity {
         };
     }
 
+    @Override
+    void onAllPermissionsGranted() {
+        setLocation();
+    }
+
     private void setAdapter() {
         adapter = new RecyclerAdapter(trailList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

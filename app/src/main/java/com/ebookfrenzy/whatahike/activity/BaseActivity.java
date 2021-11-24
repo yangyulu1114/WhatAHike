@@ -1,6 +1,5 @@
 package com.ebookfrenzy.whatahike.activity;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -16,7 +15,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestPermission(getRequestedPermissions());
+        if (requestPermission(getRequestedPermissions())) {
+            onAllPermissionsGranted();
+        }
     }
 
     private boolean requestPermission(String[] permissions) {
@@ -47,10 +48,16 @@ public class BaseActivity extends AppCompatActivity {
                 }
                 if (!allGranted) {
                     finish();
+                } else {
+                    onAllPermissionsGranted();
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    void onAllPermissionsGranted() {
+
     }
 }
