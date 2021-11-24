@@ -1,46 +1,37 @@
-package com.ebookfrenzy.whatahike.activity;
+package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 
-import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
-import com.ebookfrenzy.whatahike.RestAPI;
-import com.ebookfrenzy.whatahike.exception.UploadException;
-import com.ebookfrenzy.whatahike.model.Comment;
-import com.ebookfrenzy.whatahike.model.Trail;
-import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.trailRecord;
-import com.ebookfrenzy.whatahike.utils.Listener;
-import com.ebookfrenzy.whatahike.utils.RecyclerAdapter;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.ebookfrenzy.whatahike.ui.RecyclerAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements LocationListener {
     private ArrayList<trailRecord> trailList;
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
+
+    private static Location location;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +45,6 @@ public class MainActivity extends BaseActivity {
         setAdapter();
     }
 
-
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
     @Override
     String[] getRequestedPermissions() {
@@ -65,6 +55,11 @@ public class MainActivity extends BaseActivity {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
+    }
+
+    @Override
+    void onAllPermissionsGranted() {
+        setLocation();
     }
 
     private void setAdapter() {
@@ -106,5 +101,31 @@ public class MainActivity extends BaseActivity {
             }
         });
         return true;
+    }
+
+    public static Location getLocation() {
+        return location;
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private void setLocation() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setCostAllowed(false);
+
+        String provider = locationManager.getBestProvider(criteria, false);
+
+        location = locationManager.getLastKnownLocation(provider);
+        // location could equal to null if there is no location history in user's phone.
+
+        locationManager.requestLocationUpdates(provider, 0, 0, this);
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        setLocation();
     }
 }

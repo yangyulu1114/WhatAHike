@@ -1,4 +1,4 @@
-package com.ebookfrenzy.whatahike.utils;
+package com.ebookfrenzy.whatahike.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
