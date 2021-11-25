@@ -9,15 +9,18 @@
         android:id="@+id/commentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="type your thought here"/>
+        android:layout_margin="@dimen/grid_margin"
+        android:background="@color/fui_transparent"
+        android:hint="type your thought here" />
 
     <GridView
         android:id="@+id/commentImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/grid_margin"
         android:gravity="center"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="@dimen/grid_space"
         android:numColumns="3"
-        android:verticalSpacing="10dp"/>
+        android:verticalSpacing="@dimen/grid_space" />
 
 </LinearLayout>
