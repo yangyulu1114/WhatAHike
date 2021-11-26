@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.User;
-import com.ebookfrenzy.whatahike.ui.view.photopicker.PhotoPickerActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;

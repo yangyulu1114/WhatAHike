@@ -11,10 +11,4 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="splash_hello">Welcome to What A Hike</string>
-
-    <string name="photos_num">%1$d images</string>
-    <string name="msg_no_camera">Camera not found</string>
-    <string name="msg_maxi_capacity">reach maximum limit</string>
-    <string name="commit">Confirm</string>
-    <string name="commit_num">Selected(%1$d/%2$d)</string>
 </resources>

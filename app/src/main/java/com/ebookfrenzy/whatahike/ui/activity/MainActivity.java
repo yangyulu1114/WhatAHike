@@ -1,6 +1,5 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import static com.ebookfrenzy.whatahike.ui.view.photopicker.PhotoPickerActivity.MODE_MULTI;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -21,7 +20,6 @@ import android.os.Handler;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.trailRecord;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
-import com.ebookfrenzy.whatahike.ui.view.photopicker.PhotoPickerActivity;
 
 import java.util.ArrayList;
 
