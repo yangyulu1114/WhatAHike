@@ -1,4 +1,4 @@
-package com.ebookfrenzy.whatahike.ui;
+package com.ebookfrenzy.whatahike.ui.adapter;
 
 import android.content.Context;
 import android.net.Uri;

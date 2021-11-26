@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.User;
+import com.ebookfrenzy.whatahike.ui.view.photopicker.PhotoPickerActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
@@ -58,8 +59,7 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
     private void onAuthCompleted(User user) {
         //action after sign in
         Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
-//        startActivity(new Intent(this, MainActivity.class));
-         startActivity(new Intent(this, AddCommentActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
 
         finish();
     }

@@ -1,5 +1,7 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
+import static com.ebookfrenzy.whatahike.ui.view.photopicker.PhotoPickerActivity.MODE_MULTI;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,20 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.widget.SearchView;
+import android.os.Handler;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.trailRecord;
-import com.ebookfrenzy.whatahike.ui.RecyclerAdapter;
+import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
+import com.ebookfrenzy.whatahike.ui.view.photopicker.PhotoPickerActivity;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
     @Override
-    String[] getRequestedPermissions() {
+    public String[] getRequestedPermissions() {
         return new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
     }
 
     @Override
-    void onAllPermissionsGranted() {
+    public void onAllPermissionsGranted() {
         setLocation();
     }
 

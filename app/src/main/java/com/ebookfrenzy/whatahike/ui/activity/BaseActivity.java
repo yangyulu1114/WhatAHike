@@ -30,12 +30,12 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    String[] getRequestedPermissions() {
+    public String[] getRequestedPermissions() {
         return new String[0];
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case CODE_REQUEST_PERMISSIONS:
@@ -57,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    void onAllPermissionsGranted() {
+    public void onAllPermissionsGranted() {
 
     }
 }

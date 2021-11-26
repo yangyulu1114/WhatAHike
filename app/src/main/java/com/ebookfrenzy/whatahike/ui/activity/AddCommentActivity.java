@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.R;
-import com.ebookfrenzy.whatahike.ui.GridViewAdapter;
+import com.ebookfrenzy.whatahike.ui.adapter.GridViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +25,6 @@ public class AddCommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_comment);
         mGridView = (GridView) findViewById(R.id.commentImage);
-        mImageList.add("add");
-        mImageList.add("add");
-        mImageList.add("add");
         mImageList.add("add");
 
         mGridViewAdapter = new GridViewAdapter(mImageList);
