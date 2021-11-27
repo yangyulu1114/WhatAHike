@@ -17,9 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatAHike">
         <activity
+            android:name=".ui.activity.DetailedTrailActivity"
+            android:exported="true"
+            android:parentActivityName=".ui.activity.MainActivity"/>
+        <activity
             android:name=".ui.activity.AddCommentActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.ImagePreviewActivity"
             android:exported="true" />
@@ -40,7 +44,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true" />
-        <activity android:name=".ui.view.photopicker.PhotoPickerActivity"/>
+        <activity android:name=".ui.view.photopicker.PhotoPickerActivity" />
     </application>
 
 </manifest>
