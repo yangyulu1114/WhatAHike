@@ -1,6 +1,7 @@
 package com.ebookfrenzy.whatahike.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.utils.ImageLoader;
+import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,14 +48,25 @@ public class ViewPagerAdapter extends PagerAdapter {
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.pager_item, null);
             map.put(position, view);
             holder = new ViewHolder();
-            holder.textView = view.findViewById(R.id.text);
+            holder.imageView= view.findViewById(R.id.image);
             view.setTag(holder);
         } else {
             view = map.get(position);
             holder = (ViewHolder) view.getTag();
         }
+        final ImageView imageView = holder.imageView;
+        ImageLoader.loadImage(mImageList.get(position), new Listener<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap data) {
+                imageView.setImageBitmap(data);
+            }
 
-        holder.textView.setText(mImageList.get(position));
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
+
         container.addView(view);
         return view;
     }
@@ -70,6 +84,6 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     private class ViewHolder {
-        TextView textView;
+        ImageView imageView;
     }
 }

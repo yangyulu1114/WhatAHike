@@ -24,6 +24,9 @@ public class ImagePreviewActivity extends BaseActivity {
         setContentView(R.layout.activity_image_preview);
         mViewPager = findViewById(R.id.viewpager);
         mViewPagerAdapter = new ViewPagerAdapter(mImagaList);
+        for (int i = 0; i < 9; i++) {
+            mImagaList.add(String.format("http://gothomas.me/images/banners/%s.jpg", i));
+        }
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setCurrentItem(1);
     }
