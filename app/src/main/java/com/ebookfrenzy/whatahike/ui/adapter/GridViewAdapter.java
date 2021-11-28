@@ -15,19 +15,25 @@ import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.utils.DisplayUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GridViewAdapter extends BaseAdapter {
-    private final List<String> mImageList;
+    private List<String> mImageList = new ArrayList<>();
     private final int mSize;
 
-    public GridViewAdapter(List<String> imageList) {
-        mImageList = imageList;
+    public GridViewAdapter() {
         int width = DisplayUtil.getScreenSize()[0];
         Context context = MyApplication.getAppContext();
         int grid_margin = context.getResources().getDimensionPixelOffset(R.dimen.grid_margin);
         int grid_space = context.getResources().getDimensionPixelOffset(R.dimen.grid_space);
         mSize = (width - grid_margin * 2 - grid_space * 2) / 3;
+    }
+
+    public void setImageList(List<String> imageList) {
+        mImageList.clear();
+        mImageList.addAll(imageList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,19 +72,27 @@ public class GridViewAdapter extends BaseAdapter {
         convertView.setLayoutParams(params);
         if (mImageList.get(position) == "add") {
             holder.imageView.setImageResource(R.drawable.add_image);
+            RelativeLayout.LayoutParams imageParams = (RelativeLayout.LayoutParams) holder.imageView.getLayoutParams();
+            int size = (int) (mSize * 0.3);
+            if (imageParams == null) {
+                imageParams = new RelativeLayout.LayoutParams(size, size);
+            }
+            imageParams.width = size;
+            imageParams.height = size;
+            holder.imageView.setLayoutParams(imageParams);
         } else {
             holder.imageView.setImageURI(Uri.parse(mImageList.get(position)));
+            RelativeLayout.LayoutParams imageParams = (RelativeLayout.LayoutParams) holder.imageView.getLayoutParams();
+            int size = mSize;
+            if (imageParams == null) {
+                imageParams = new RelativeLayout.LayoutParams(size, size);
+            }
+            imageParams.width = size;
+            imageParams.height = size;
+            holder.imageView.setLayoutParams(imageParams);
         }
 
-        RelativeLayout.LayoutParams imageParams = (RelativeLayout.LayoutParams) holder.imageView.getLayoutParams();
-        int size = (int) (mSize * 0.3);
-        if (imageParams == null) {
-            imageParams = new RelativeLayout.LayoutParams(size, size);
-        }
-        imageParams.width = size;
-        imageParams.height = size;
-        holder.imageView.setLayoutParams(imageParams);
-
+        holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return convertView;
     }
 

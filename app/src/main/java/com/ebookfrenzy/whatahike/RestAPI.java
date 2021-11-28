@@ -1,5 +1,7 @@
 package com.ebookfrenzy.whatahike;
 
+import android.net.Uri;
+
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.FireBaseUtil;
@@ -78,15 +80,15 @@ public class RestAPI {
         });
     }
 
-    public static void postComment(Comment comment, List<File> images, Listener<Void> listener) {
+    public static void postComment(Comment comment, List<Uri> imageUris, Listener<Void> listener) {
         Listener<Void> mainThreadListener = new MainThreadListener(listener);
         sExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 List<String> imageUrls = new ArrayList<>();
-                for (File file : images) {
+                for (Uri uri : imageUris) {
                     try {
-                        String imageUrl = FireBaseUtil.uploadSync(file);
+                        String imageUrl = FireBaseUtil.uploadSync(uri);
                         imageUrls.add(imageUrl);
                     } catch (Exception e) {
                         mainThreadListener.onFailed(e);
