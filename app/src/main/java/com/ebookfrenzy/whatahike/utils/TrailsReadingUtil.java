@@ -7,7 +7,9 @@ import com.ebookfrenzy.whatahike.model.Trail;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TrailsReadingUtil {
@@ -18,11 +20,11 @@ public class TrailsReadingUtil {
             iconIdx, bannerIdx;
 
 
-    public static List<Trail> readCSVTrails() {
+    public static Map<String, Trail> readCSVTrails() {
         InputStream file = MyApplication.getAppContext()
                 .getResources().openRawResource(R.raw.trails);
 
-        List<Trail> trails = new ArrayList<>();
+        Map<String, Trail> trails = new HashMap<>();
         try {
             Scanner scan = new Scanner(file);
 
@@ -33,7 +35,8 @@ public class TrailsReadingUtil {
             // reading each row
             while (scan.hasNextLine()) {
                 String[] record = scan.nextLine().split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-                trails.add(generateTrail(record));
+                Trail trail = generateTrail(record);
+                trails.put(trail.getId(), trail);
             }
             scan.close();
 
