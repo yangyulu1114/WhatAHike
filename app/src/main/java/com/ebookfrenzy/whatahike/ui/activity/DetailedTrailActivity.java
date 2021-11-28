@@ -100,7 +100,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new UserCommentAdapter(commentList);
+        adapter = new UserCommentAdapter(commentList, trailId);
         recyclerView.setAdapter(adapter);
     }
 
