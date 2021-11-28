@@ -28,7 +28,7 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed" >
 
                 <ImageView
                     android:id="@+id/trail_image"
@@ -40,23 +40,22 @@
 <!--                    android:src="@drawable/trailImage"-->
 
                 <Button
-                    android:id="@+id/post_review_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="5dp"
-                    android:fitsSystemWindows="true"
-                    app:layout_collapseMode="pin"
-                    android:text="REVIEW"
-                    android:textSize="20sp"/>
+                android:id="@+id/post_review_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="80dp"
+                android:layout_marginRight="5dp"
+                android:fitsSystemWindows="true"
+                android:onClick="addComment"
+                android:text="ADD COMMENT" />
 
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:orientation="vertical"
                         android:layout_marginTop="120dp"
-                        android:layout_marginBottom="10dp"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom">
 
                         <ScrollView
                             android:layout_width="fill_parent"
@@ -65,32 +64,31 @@
                             android:fillViewport="true">
 
                             <TextView
-                                android:id="@+id/trail_name"
+                                android:id="@+id/trail_detail"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
                                 android:gravity="center_horizontal"
                                 android:layout_gravity="center_horizontal"
                                 android:textSize="20sp"
-                                android:text="Trail Name\nTrail Length\ninfo1\ninfo2\ninfo3\ninfo4\aaaaaa aaaaaaa aaaa aaaaaaaaaaaaaaaaaaaaaa\nmore info\nllllllllllllllllll\nmoremoremoremore\nlllllllll"
-                                android:layout_marginBottom="5dp"
-                                android:background="#99000000"/>
+                                android:hint="trail information"
+                                android:background="#99000000" />
 
                         </ScrollView>
                     </LinearLayout>
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:fitsSystemWindows="true"
-                        app:layout_collapseMode="pin" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/comment_recycler_viewview"
+            android:id="@+id/comment_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"

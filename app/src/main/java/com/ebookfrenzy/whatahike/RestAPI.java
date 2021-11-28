@@ -44,6 +44,9 @@ public class RestAPI {
     }
 
     public static Trail getTrailById(String trailId) {
+        if (trails == null) {
+            readCSVTrails();
+        }
         return trails.get(trailId);
     }
 

@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Comment;
-import com.ebookfrenzy.whatahike.ui.activity.DetailedTrailActivity;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,11 +75,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
                 holder.time.setText(new Date(comment.getTimeStamp()).toString());
 
                 List<String> images = comment.getImages();
-                for (int i = 0; i < images.size() && i < 6; i++) {
-                    Drawable image = task.doInBackground(images.get(i));
-                    holder.images[i].setBackground(image);
-                    holder.images[i].setVisibility(View.VISIBLE);
-                }
+                WebServiceTaskParams params = new WebServiceTaskParams(holder, images);
+                task.execute(params);
             }
         } catch (Exception e) {
             Log.e("comment adapter: ", e.getMessage());
@@ -92,20 +89,59 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     }
 
 
-    private class PingWebServiceTask extends AsyncTask<String, Integer, Drawable> {
+    private class PingWebServiceTask extends AsyncTask<WebServiceTaskParams, Void, WebServiceTaskReturn> {
 
         @Override
-        protected Drawable doInBackground(String... strings) {
+        protected WebServiceTaskReturn doInBackground(WebServiceTaskParams... params) {
+            ViewHolder holder = params[0].holder;
+            List<String> images = params[0].images;
 
-            Drawable drawable = null;
+            List<Drawable> drawables = new ArrayList<>();
             try {
-                InputStream iStream = (InputStream) new URL(strings[0]).getContent();
-                drawable = Drawable.createFromStream(iStream, "image");
+                for (int i = 0; i < images.size() && i < 6; i++) {
+                    InputStream iStream = (InputStream) new URL(images.get(i)).getContent();
+                    Drawable drawable = Drawable.createFromStream(iStream, "image");
+                    drawables.add(drawable);
+                }
+
             } catch (Exception e) {
-                Log.e("comment adapter: ", e.toString());
+                Log.e("comment adapter task: ", e.toString());
             }
 
-            return drawable;
+            WebServiceTaskReturn res = new WebServiceTaskReturn(holder, drawables);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(WebServiceTaskReturn param) {
+            super.onPostExecute(param);
+
+            ViewHolder holder = param.holder;
+            List<Drawable> images = param.images;
+
+            for (int i = 0; i < images.size(); i++) {
+                holder.images[i].setBackground(images.get(i));
+                holder.images[i].setVisibility(View.VISIBLE);
+            }
         }
     }
+
+    private static class WebServiceTaskParams {
+        ViewHolder holder;
+        List<String> images;
+        WebServiceTaskParams(ViewHolder holder, List<String> images) {
+            this.holder = holder;
+            this.images = images;
+        }
+    }
+
+    private static class WebServiceTaskReturn {
+        ViewHolder holder;
+        List<Drawable> images;
+        WebServiceTaskReturn(ViewHolder holder, List<Drawable> images) {
+            this.holder = holder;
+            this.images = images;
+        }
+    }
+
 }
