@@ -1,6 +1,7 @@
 package com.ebookfrenzy.whatahike.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Comment;
+import com.ebookfrenzy.whatahike.ui.activity.AddCommentActivity;
+import com.ebookfrenzy.whatahike.ui.activity.ImagePreviewActivity;
+import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -25,6 +29,7 @@ import java.util.List;
 public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.ViewHolder> {
     private Context mContext;
     private List<Comment> mCommentList;
+    private String mTrailId;
 
     private PingWebServiceTask task;
 
@@ -50,11 +55,13 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             images[3] = (ImageView) view.findViewById(R.id.image4);
             images[4] = (ImageView) view.findViewById(R.id.image5);
             images[5] = (ImageView) view.findViewById(R.id.image6);
+
         }
     }
-    public UserCommentAdapter(List<Comment> commentList) {
+    public UserCommentAdapter(List<Comment> commentList, String trailId) {
         task = new PingWebServiceTask();
         mCommentList = commentList;
+        mTrailId = trailId;
     }
 
     @Override
@@ -119,7 +126,17 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             ViewHolder holder = param.holder;
             List<Drawable> images = param.images;
 
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ImagePreviewActivity.class);
+                    intent.putExtra(String.valueOf(R.string.trailId), mTrailId);
+                    mContext.startActivity(intent);
+                }
+            };
+
             for (int i = 0; i < images.size(); i++) {
+                holder.images[i].setOnClickListener(listener);
                 holder.images[i].setBackground(images.get(i));
                 holder.images[i].setVisibility(View.VISIBLE);
             }
