@@ -2,9 +2,9 @@ package com.ebookfrenzy.whatahike.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Comment;
-import com.ebookfrenzy.whatahike.ui.activity.AddCommentActivity;
 import com.ebookfrenzy.whatahike.ui.activity.ImagePreviewActivity;
+import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.io.InputStream;
@@ -31,6 +31,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     private Context mContext;
     private List<Comment> mCommentList;
     private String mTrailId;
+
+    Intent previewIntent;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -76,6 +78,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder,int position) {
+        previewIntent = new Intent(mContext, ImagePreviewActivity.class);
         try {
             for (Comment comment : mCommentList) {
                 holder.user.setText(comment.getUserId());
@@ -83,10 +86,31 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
                 holder.time.setText(new Date(comment.getTimeStamp()).toString());
 
                 List<String> images = comment.getImages();
-                WebServiceTaskParams params = new WebServiceTaskParams(holder, images);
+                previewIntent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
 
-                PingWebServiceTask task = new PingWebServiceTask();
-                task.execute(params);
+                for (int i = 0; i < images.size() && i < 9; i++) {
+                    int index = i;
+                    ImageLoader.loadImage(images.get(i), new Listener<Bitmap>() {
+                        @Override
+                        public void onSuccess(Bitmap data) {
+                            // set image click listener
+                            holder.images[index].setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    previewIntent.putExtra("position", index);
+                                    mContext.startActivity(previewIntent);
+                                }
+                            });
+                            // set up the view
+                            holder.images[index].setImageBitmap(data);
+                            holder.images[index].setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFailed(Exception e) {
+                        }
+                    });
+                }
             }
         } catch (Exception e) {
             Log.e("comment adapter: ", e.getMessage());
@@ -98,73 +122,5 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         return mCommentList.size();
     }
 
-
-    private class PingWebServiceTask extends AsyncTask<WebServiceTaskParams, Void, WebServiceTaskReturn> {
-
-        @Override
-        protected WebServiceTaskReturn doInBackground(WebServiceTaskParams... params) {
-            ViewHolder holder = params[0].holder;
-            List<String> images = params[0].images;
-
-            List<Drawable> drawables = new ArrayList<>();
-            try {
-                for (int i = 0; i < images.size() && i < 9; i++) {
-                    InputStream iStream = (InputStream) new URL(images.get(i)).getContent();
-                    Drawable drawable = Drawable.createFromStream(iStream, "image");
-                    drawables.add(drawable);
-
-                    // set up listener
-                    int index = i;
-                    holder.images[i].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(mContext, ImagePreviewActivity.class);
-                            intent.putExtra("position", index);
-                            intent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
-                            mContext.startActivity(intent);
-                        }
-                    });
-                }
-
-            } catch (Exception e) {
-                Log.e("comment adapter task: ", e.toString());
-            }
-
-            WebServiceTaskReturn res = new WebServiceTaskReturn(holder, drawables);
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(WebServiceTaskReturn param) {
-            super.onPostExecute(param);
-
-            ViewHolder holder = param.holder;
-            List<Drawable> images = param.images;
-
-            for (int i = 0; i < images.size(); i++) {
-                // set up the view
-                holder.images[i].setBackground(images.get(i));
-                holder.images[i].setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private static class WebServiceTaskParams {
-        ViewHolder holder;
-        List<String> images;
-        WebServiceTaskParams(ViewHolder holder, List<String> images) {
-            this.holder = holder;
-            this.images = images;
-        }
-    }
-
-    private static class WebServiceTaskReturn {
-        ViewHolder holder;
-        List<Drawable> images;
-        WebServiceTaskReturn(ViewHolder holder, List<Drawable> images) {
-            this.holder = holder;
-            this.images = images;
-        }
-    }
 
 }
