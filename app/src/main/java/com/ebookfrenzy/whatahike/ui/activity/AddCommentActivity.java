@@ -6,17 +6,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
@@ -28,7 +23,6 @@ import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.ui.adapter.GridViewAdapter;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +43,7 @@ public class AddCommentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_comment);
         mGridView = (GridView) findViewById(R.id.commentImage);
         mActionBar = getSupportActionBar();
-        mActionBar.setCustomView(R.layout.actionbar);
+        mActionBar.setCustomView(R.layout.addcomment_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         mGridViewAdapter = new GridViewAdapter();
