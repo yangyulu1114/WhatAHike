@@ -96,6 +96,33 @@
                     android:visibility="gone" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <ImageView
+                    android:id="@+id/image7"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/image8"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/image9"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView

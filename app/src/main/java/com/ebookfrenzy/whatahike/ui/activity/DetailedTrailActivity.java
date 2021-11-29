@@ -74,34 +74,45 @@ public class DetailedTrailActivity extends AppCompatActivity {
     }
 
     private void initComments() {
-        commentList = new ArrayList<>();
+        // for test
+//        trailId = "1";
+
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
             public void onSuccess(List<Comment> data) {
-                if (data != null)
-                    commentList = data;
+                commentList = data;
             }
-
             @Override
             public void onFailed(Exception e) {
                 Log.e("comment activity: ", e.getMessage());
             }
         });
 
+
         // testing comment
+//        commentList = new ArrayList<>();
 //        Comment comment = new Comment("u1");
 //        comment.setText("review of u1");
 //        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
 //                "http://gothomas.me/images/banners/1.jpg",
 //                "http://gothomas.me/images/banners/3.jpg",
-//                "http://gothomas.me/images/banners/4.jpg"));
+//                "http://gothomas.me/images/banners/4.jpg",
+//                "http://gothomas.me/images/banners/5.jpg",
+//                "http://gothomas.me/images/banners/6.jpg",
+//                "http://gothomas.me/images/banners/7.jpg",
+//                "http://gothomas.me/images/banners/8.jpg",
+//                "http://gothomas.me/images/banners/9.jpg"));
 //        commentList.add(comment);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new UserCommentAdapter(commentList, trailId);
-        recyclerView.setAdapter(adapter);
+        if (commentList != null) {
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new UserCommentAdapter(commentList, trailId);
+            recyclerView.setAdapter(adapter);
+        } else {
+            Log.e("comment activity: ", "no comment list returned");
+        }
     }
 
     @SuppressLint("SetTextI18n")
