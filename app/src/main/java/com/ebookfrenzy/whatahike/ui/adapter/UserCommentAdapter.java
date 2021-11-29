@@ -32,8 +32,6 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     private List<Comment> mCommentList;
     private String mTrailId;
 
-    private PingWebServiceTask task;
-
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView user;
@@ -63,7 +61,6 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         }
     }
     public UserCommentAdapter(List<Comment> commentList, String trailId) {
-        task = new PingWebServiceTask();
         mCommentList = commentList;
         mTrailId = trailId;
     }
@@ -87,6 +84,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
                 List<String> images = comment.getImages();
                 WebServiceTaskParams params = new WebServiceTaskParams(holder, images);
+
+                PingWebServiceTask task = new PingWebServiceTask();
                 task.execute(params);
             }
         } catch (Exception e) {
