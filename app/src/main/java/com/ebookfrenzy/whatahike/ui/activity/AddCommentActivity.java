@@ -23,12 +23,14 @@ import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.ui.adapter.GridViewAdapter;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddCommentActivity extends AppCompatActivity {
     private final int PICK_FROM_GALLERY = 1;
     private final int PHOTO_LIMIT = 9;
+    private final int IMAGE_PREVIEW = 2;
 
     private GridView mGridView;
     private GridViewAdapter mGridViewAdapter;
@@ -50,8 +52,8 @@ public class AddCommentActivity extends AppCompatActivity {
         mGridView.setAdapter(mGridViewAdapter);
         refreshGridView();
 
-        trailId = getIntent().getStringExtra("trailId");
-
+//        trailId = getIntent().getStringExtra("trailId");
+        trailId = "1";
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -61,6 +63,8 @@ public class AddCommentActivity extends AppCompatActivity {
                     galleryIntent.setType("image/*");
                     galleryIntent.setAction(Intent.ACTION_PICK);
                     startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_FROM_GALLERY);
+                } else {
+                    openImagePreview(position);
                 }
             }
         });
@@ -99,7 +103,6 @@ public class AddCommentActivity extends AppCompatActivity {
                 break;
             case R.id.send:
                 postComment();
-                finish();
                 break;
             default:
                 break;
@@ -117,6 +120,7 @@ public class AddCommentActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void data) {
                 // comment succeed
+                finish();
                 Log.v("bush", "postComment onSucceess " + Thread.currentThread().getName());
             }
 
@@ -129,6 +133,18 @@ public class AddCommentActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void openImagePreview(int position) {
+        List<String> list = new ArrayList<>();
+        for (Uri uri : mImageList) {
+            list.add(uri.toString());
+        }
+        Intent intent = new Intent(this, ImagePreviewActivity.class);
+        intent.putExtra("activityName", "addComment");
+        intent.putExtra("position", position);
+        intent.putExtra("imageList", (Serializable) list);
+        startActivityForResult(intent, IMAGE_PREVIEW);
     }
 }
 

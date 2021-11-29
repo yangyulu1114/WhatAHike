@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.util.Log;
+import android.util.LruCache;
 
 import com.ebookfrenzy.whatahike.MyApplication;
 
@@ -58,9 +59,7 @@ public class ImageLoader {
     private static int getBitmapDegree(String url) throws Exception {
         InputStream inputStream = createInputStream(url);
         int degree = 0;
-        // 从指定路径下读取图片，并获取其EXIF信息
         ExifInterface exifInterface = new ExifInterface(inputStream);
-        // 获取图片的旋转信息
         int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL);
         switch (orientation) {

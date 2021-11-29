@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-    private List<String> mImageList = new ArrayList<>();
-    private ViewPagerAdapter mViewPagerAdapter;
+    private List<String> mImageList;
+    private int mCurrentPosition;
+    private boolean mNeedEdit = false;
 
+    private ViewPagerAdapter mViewPagerAdapter;
     private ViewPager mViewPager;
     ActionBar mActionBar;
 
@@ -27,11 +30,20 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
+        Intent intent = getIntent();
+        mImageList = (List<String>) intent.getSerializableExtra("imageList");
+        mCurrentPosition = intent.getIntExtra("position", 0);
+        mNeedEdit = intent.getStringExtra("activityName") != null ? true : false;
+
+
         mViewPager = findViewById(R.id.viewpager);
         mViewPagerAdapter = new ViewPagerAdapter();
         mActionBar = getSupportActionBar();
         mActionBar.setCustomView(R.layout.imagepreview_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+
+
 //        for(int i = 0; i < 9; i++) {
 //            mImageList.add(String.format("http://gothomas.me/images/banners/%s.jpg", i));
 //            Log.v("bush", mImageList.get(i));
