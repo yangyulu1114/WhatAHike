@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.UserCommentAdapter;
+import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -107,33 +109,17 @@ public class DetailedTrailActivity extends AppCompatActivity {
                 + trail.getFeatures().toString() + "\n"
                 + trail.getActivities().toString());
 
-        PingWebServiceTask task = new PingWebServiceTask();
-        task.execute(trail.getBannerURL());
-    }
-
-    private class PingWebServiceTask extends AsyncTask<String, Integer, Drawable> {
-
-        @Override
-        protected Drawable doInBackground(String... strings) {
-
-            Drawable drawable = null;
-            try {
-                InputStream iStream = (InputStream) new URL(strings[0]).getContent();
-                drawable = Drawable.createFromStream(iStream, "image");
-            } catch (Exception e) {
-                Log.e("comment: ", e.toString());
+        ImageView image = findViewById(R.id.trail_image);
+        ImageLoader.loadImage(trail.getBannerURL(), new Listener<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap data) {
+                image.setImageBitmap(data);
             }
 
-            return drawable;
-        }
-
-        @Override
-        protected void onPostExecute(Drawable drawable) {
-            super.onPostExecute(drawable);
-
-            ImageView image = findViewById(R.id.trail_image);
-            image.setBackground(drawable);
-        }
+            @Override
+            public void onFailed(Exception e) {
+            }
+        });
     }
 
 
