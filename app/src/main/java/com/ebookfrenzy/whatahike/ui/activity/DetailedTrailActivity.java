@@ -88,6 +88,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
             }
         });
 
+
         // testing comment
 //        commentList = new ArrayList<>();
 //        Comment comment = new Comment("u1");
@@ -95,7 +96,12 @@ public class DetailedTrailActivity extends AppCompatActivity {
 //        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
 //                "http://gothomas.me/images/banners/1.jpg",
 //                "http://gothomas.me/images/banners/3.jpg",
-//                "http://gothomas.me/images/banners/4.jpg"));
+//                "http://gothomas.me/images/banners/4.jpg",
+//                "http://gothomas.me/images/banners/5.jpg",
+//                "http://gothomas.me/images/banners/6.jpg",
+//                "http://gothomas.me/images/banners/7.jpg",
+//                "http://gothomas.me/images/banners/8.jpg",
+//                "http://gothomas.me/images/banners/9.jpg"));
 //        commentList.add(comment);
 
         if (commentList != null) {
