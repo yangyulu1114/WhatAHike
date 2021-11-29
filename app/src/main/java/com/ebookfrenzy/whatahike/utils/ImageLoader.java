@@ -23,11 +23,12 @@ public class ImageLoader {
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
     static {
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
+        final int cacheSize = 1024 * 256;
+        Log.v("bush", "cacheSize " + cacheSize);
         sMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
+                Log.v("bush", "bitmap size " + bitmap.getByteCount() / 1024);
                 return bitmap.getByteCount() / 1024;
             }
         };
@@ -107,6 +108,8 @@ public class ImageLoader {
 
     private static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
+            Log.v("bush", "put cache key " + key);
+
             sMemoryCache.put(key, bitmap);
         }
     }
