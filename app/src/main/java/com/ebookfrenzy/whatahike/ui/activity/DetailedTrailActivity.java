@@ -46,6 +46,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_trail);
 
         trailId = getIntent().getStringExtra(String.valueOf(R.string.trailId));
+        if (trailId == null)
+            trailId = getIntent().getStringExtra("trailId");
 
         AppBarLayout appBarLayout = findViewById(R.id.appBar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -63,46 +65,37 @@ public class DetailedTrailActivity extends AppCompatActivity {
         });
 
         initTrailDetail();
-        initComments();
-
-    }
-
-    public void addComment(View view) {
-        Intent intent = new Intent(this, AddCommentActivity.class);
-        intent.putExtra(String.valueOf(R.string.trailId), trailId);
-        startActivity(intent);
-    }
-
-    private void initComments() {
-        commentList = new ArrayList<>();
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
             public void onSuccess(List<Comment> data) {
-                if (data != null)
-                    commentList = data;
+                commentList = data;
+                initComments();
             }
-
             @Override
             public void onFailed(Exception e) {
                 Log.e("comment activity: ", e.getMessage());
             }
         });
-
-        // testing comment
-//        Comment comment = new Comment("u1");
-//        comment.setText("review of u1");
-//        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
-//                "http://gothomas.me/images/banners/1.jpg",
-//                "http://gothomas.me/images/banners/3.jpg",
-//                "http://gothomas.me/images/banners/4.jpg"));
-//        commentList.add(comment);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new UserCommentAdapter(commentList, trailId);
-        recyclerView.setAdapter(adapter);
     }
+
+    public void addComment(View view) {
+        Intent intent = new Intent(this, AddCommentActivity.class);
+        intent.putExtra("trailId", trailId);
+        startActivity(intent);
+    }
+
+    private void initComments() {
+        if (commentList != null) {
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new UserCommentAdapter(commentList, trailId);
+            recyclerView.setAdapter(adapter);
+        } else {
+            Log.e("comment activity: ", "no comment list returned");
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void initTrailDetail() {
