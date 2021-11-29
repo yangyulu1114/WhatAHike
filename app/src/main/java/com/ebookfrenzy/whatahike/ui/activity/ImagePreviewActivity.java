@@ -48,10 +48,10 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
 //            mImageList.add(String.format("http://gothomas.me/images/banners/%s.jpg", i));
 //            Log.v("bush", mImageList.get(i));
 //        }
-        File file1 = new File("/sdcard/DCIM/Camera/20211117_150958.jpg");
-        File file2 = new File("/sdcard/DCIM/Camera/20211128_232428.jpg");
-        mImageList.add(Uri.fromFile(file1).toString());
-        mImageList.add(Uri.fromFile(file2).toString());
+//        File file1 = new File("/sdcard/DCIM/Camera/20211117_150958.jpg");
+//        File file2 = new File("/sdcard/DCIM/Camera/20211128_232428.jpg");
+//        mImageList.add(Uri.fromFile(file1).toString());
+//        mImageList.add(Uri.fromFile(file2).toString());
         mViewPager.setOnPageChangeListener(this);
         mViewPager.setAdapter(mViewPagerAdapter);
         refreshViewPager();

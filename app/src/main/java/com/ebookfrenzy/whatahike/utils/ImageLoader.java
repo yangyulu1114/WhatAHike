@@ -19,9 +19,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ImageLoader {
+    private static final LruCache<String, Bitmap> sMemoryCache;
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
+    static {
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        sMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
+
     public static void loadImage(String url, Listener<Bitmap> listener) {
+        if (getBitmapFromMemCache(url) != null) {
+            Log.v("bush", "cache load");
+            listener.onSuccess(getBitmapFromMemCache(url));
+            return;
+        }
         Listener<Bitmap> mainThreadListener = new MainThreadListener(listener);
         sExecutor.execute(new Runnable() {
             @Override
@@ -34,7 +51,8 @@ public class ImageLoader {
                     matrix.postRotate(degree);
                     Bitmap bitmap = BitmapFactory.decodeStream(in);
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
+                    addBitmapToMemoryCache(url, bitmap);
+                    Log.v("bush", "add new cache");
                     mainThreadListener.onSuccess(bitmap);
                 } catch (Exception e) {
                     mainThreadListener.onFailed(e);
@@ -85,5 +103,15 @@ public class ImageLoader {
         } else {
             throw new IllegalArgumentException(url);
         }
+    }
+
+    private static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            sMemoryCache.put(key, bitmap);
+        }
+    }
+
+    private static Bitmap getBitmapFromMemCache(String key) {
+        return sMemoryCache.get(key);
     }
 }
