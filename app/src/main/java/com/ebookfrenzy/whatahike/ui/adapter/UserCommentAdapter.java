@@ -120,8 +120,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(mContext, ImagePreviewActivity.class);
-                            intent.putStringArrayListExtra("image list", (ArrayList<String>) images);
-                            intent.putExtra("index", index);
+                            intent.putExtra("position", index);
+                            intent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
                             mContext.startActivity(intent);
                         }
                     });
