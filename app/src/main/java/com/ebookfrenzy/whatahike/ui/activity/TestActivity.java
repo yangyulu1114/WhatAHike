@@ -1,5 +1,6 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.ebookfrenzy.whatahike.Filter;
@@ -71,9 +72,12 @@ public class TestActivity extends BaseActivity {
         comment.setText("hello");
         comment.setTimeStamp(System.currentTimeMillis());
         comment.setTrailId("1");
-        List<File> images = new ArrayList<>();
-        images.add(new File("/sdcard/DCIM/Camera/20211117_150958.jpg"));
-        images.add(new File("/sdcard/DCIM/Camera/20211118_102725.jpg"));
+        List<Uri> images = new ArrayList<>();
+        File file1 = new File("/sdcard/DCIM/Camera/20211117_150958.jpg");
+        File file2 = new File("/sdcard/DCIM/Camera/20211118_102725.jpg");
+        images.add(Uri.fromFile(file1));
+        images.add(Uri.fromFile(file2));
+
         RestAPI.postComment(comment, images, new Listener<Void>() {
             @Override
             public void onSuccess(Void data) {

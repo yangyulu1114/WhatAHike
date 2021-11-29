@@ -59,6 +59,7 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
         //action after sign in
         Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
         startActivity(new Intent(this, MainActivity.class));
+
         finish();
     }
 

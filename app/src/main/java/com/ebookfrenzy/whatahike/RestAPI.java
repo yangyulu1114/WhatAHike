@@ -1,5 +1,7 @@
 package com.ebookfrenzy.whatahike;
 
+import android.net.Uri;
+
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.FireBaseUtil;
@@ -13,11 +15,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RestAPI {
-    private static List<Trail> trails;
+    private static Map<String, Trail> trails;
 
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
@@ -42,6 +45,13 @@ public class RestAPI {
         return (rad * 180.0 / Math.PI);
     }
 
+    public static Trail getTrailById(String trailId) {
+        if (trails == null) {
+            readCSVTrails();
+        }
+        return trails.get(trailId);
+    }
+
     public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator)
         throws IllegalArgumentException {
 
@@ -54,7 +64,7 @@ public class RestAPI {
         }
 
         List<Trail> filterTrails = new ArrayList<>();
-        for (Trail trail : trails) {
+        for (Trail trail : trails.values()) {
             if (filter.pass(trail)) {
                 filterTrails.add(trail);
             }
@@ -63,9 +73,8 @@ public class RestAPI {
         return filterTrails;
     }
 
-    private static List<Trail> readCSVTrails() {
+    private static void readCSVTrails() {
         trails = TrailsReadingUtil.readCSVTrails();
-        return trails;
     }
 
     public static void getComments(String trailId, Listener<List<Comment>> listener) {
@@ -78,15 +87,15 @@ public class RestAPI {
         });
     }
 
-    public static void postComment(Comment comment, List<File> images, Listener<Void> listener) {
+    public static void postComment(Comment comment, List<Uri> imageUris, Listener<Void> listener) {
         Listener<Void> mainThreadListener = new MainThreadListener(listener);
         sExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 List<String> imageUrls = new ArrayList<>();
-                for (File file : images) {
+                for (Uri uri : imageUris) {
                     try {
-                        String imageUrl = FireBaseUtil.uploadSync(file);
+                        String imageUrl = FireBaseUtil.uploadSync(uri);
                         imageUrls.add(imageUrl);
                     } catch (Exception e) {
                         mainThreadListener.onFailed(e);

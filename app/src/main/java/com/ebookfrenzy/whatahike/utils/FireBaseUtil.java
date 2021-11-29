@@ -29,12 +29,11 @@ import java.util.concurrent.Executors;
 
 public class FireBaseUtil {
 
-    public static void uploadAsync(File file, Listener<String> uploadListener) {
+    public static void uploadAsync(Uri uri, Listener<String> uploadListener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        Uri fileUri = Uri.fromFile(file);
-        StorageReference fileRef = storageRef.child("images/" + System.currentTimeMillis() + "-" + fileUri.getLastPathSegment());
-        UploadTask uploadTask = fileRef.putFile(fileUri);
+        StorageReference fileRef = storageRef.child("images/" + System.currentTimeMillis() + "-" + uri.getLastPathSegment());
+        UploadTask uploadTask = fileRef.putFile(uri);
 
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -57,9 +56,9 @@ public class FireBaseUtil {
         });
     }
 
-    public static String uploadSync(File file) throws Exception {
+    public static String uploadSync(Uri uri) throws Exception {
         UploadListener listener = new UploadListener();
-        uploadAsync(file, listener);
+        uploadAsync(uri, listener);
         return listener.getResult();
     }
 
