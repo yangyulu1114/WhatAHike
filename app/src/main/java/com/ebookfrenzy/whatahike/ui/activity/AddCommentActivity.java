@@ -93,6 +93,17 @@ public class AddCommentActivity extends AppCompatActivity {
                     Log.v("bush", "uri" + uri);
                 }
                 break;
+            case IMAGE_PREVIEW:
+                List<Integer> deletedList = data.getIntegerArrayListExtra("deletedImages");
+                if (deletedList == null) {
+                    Log.v("bush", "deletedList is null");
+                }
+                if (deletedList != null && deletedList.size() > 0) {
+                    for (int i : deletedList) {
+                        mImageList.remove(i);
+                    }
+                    refreshGridView();
+                }
         }
     }
 
@@ -143,7 +154,7 @@ public class AddCommentActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ImagePreviewActivity.class);
         intent.putExtra("activityName", "addComment");
         intent.putExtra("position", position);
-        intent.putExtra("imageList", (Serializable) list);
+        intent.putStringArrayListExtra("imageList", (ArrayList<String>) list);
         startActivityForResult(intent, IMAGE_PREVIEW);
     }
 }

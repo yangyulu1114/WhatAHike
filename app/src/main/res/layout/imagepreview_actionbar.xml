@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:text="Back"
         android:layout_alignParentLeft="true"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:onClick="onClick"/>
 
     <TextView
         android:id="@+id/text"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Delete"
         android:layout_alignParentRight="true"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:onClick="onClick"/>
 
 </RelativeLayout>

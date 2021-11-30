@@ -1,5 +1,6 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -18,7 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+    private final int RESULT_OK = 1;
+
     private List<String> mImageList;
+    private List<Integer> mDeletedImageList = new ArrayList<>();
     private int mCurrentPosition;
     private boolean mNeedEdit = false;
 
@@ -31,7 +35,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
         Intent intent = getIntent();
-        mImageList = (List<String>) intent.getSerializableExtra("imageList");
+        mImageList = (List<String>) intent.getStringArrayListExtra("imageList");
         mCurrentPosition = intent.getIntExtra("position", 0);
         mNeedEdit = intent.getStringExtra("activityName") != null ? true : false;
 
@@ -42,6 +46,9 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         mActionBar.setCustomView(R.layout.imagepreview_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
+        if (mNeedEdit == false) {
+            mActionBar.hide();
+        }
 
 
 //        for(int i = 0; i < 9; i++) {
@@ -58,17 +65,36 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
     }
 
     public void refreshViewPager() {
+        Log.v("bush", "refreshViewPager mCurrentPosition " + mCurrentPosition);
         mViewPagerAdapter.setImageList(mImageList);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(mCurrentPosition);
     }
 
-    public void onClick(View view) {
+    public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.back:
-                finish();
+                back();
                 break;
             case R.id.delete:
+                mImageList.remove(mCurrentPosition);
+                mDeletedImageList.add(mCurrentPosition);
+                if (mImageList.size() == 0) {
+                    back();
+                    return;
+                }
+                mCurrentPosition += mCurrentPosition == 0 ? 1 : -1;
+                refreshViewPager();
+                break;
+            default:
+                break;
         }
+    }
+
+    private void back() {
+        Intent intent = new Intent();
+        intent.putIntegerArrayListExtra("deletedImages", (ArrayList<Integer>) mDeletedImageList);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -77,6 +103,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
 
     @Override
     public void onPageSelected(int position) {
+        mCurrentPosition = position;
         Log.v("bush", "onPageSelected : position " + position);
     }
 
