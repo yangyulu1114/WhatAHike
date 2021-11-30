@@ -1,12 +1,19 @@
 package com.ebookfrenzy.whatahike.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.Display;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.ebookfrenzy.whatahike.MyApplication;
 
@@ -22,6 +29,7 @@ public class ImageLoader {
     private static final LruCache<String, Bitmap> sMemoryCache;
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
+
     static {
         final int cacheSize = 1024 * 256;
         Log.v("bush", "cacheSize " + cacheSize);
@@ -32,6 +40,7 @@ public class ImageLoader {
                 return bitmap.getByteCount() / 1024;
             }
         };
+
     }
 
     public static void loadImage(String url, Listener<Bitmap> listener) {
@@ -46,12 +55,15 @@ public class ImageLoader {
             public void run() {
                 InputStream in = null;
                 try {
-                    in = createInputStream(url);
                     int degree = getBitmapDegree(url);
                     Matrix matrix = new Matrix();
                     matrix.postRotate(degree);
-                    Bitmap bitmap = BitmapFactory.decodeStream(in);
+                    int[] screenSize = getScreenSize();
+                    Log.v("bush", "screen width " + screenSize[0] + "screen height " + screenSize[1]);
+                    Bitmap bitmap = decodeBitmap(url, screenSize[0], screenSize[1]);
+                    Log.v("bush", "bitmap size before rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    Log.v("bush", "bitmap size after rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
                     addBitmapToMemoryCache(url, bitmap);
                     Log.v("bush", "add new cache");
                     mainThreadListener.onSuccess(bitmap);
@@ -106,10 +118,48 @@ public class ImageLoader {
         }
     }
 
+    public static Bitmap decodeBitmap(String url, int reqWidth, int reqHeight) throws Exception {
+        InputStream inputStream = createInputStream(url);
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(inputStream, null, options);
+
+        options.inSampleSize = calculateInSampleSize(url, options, reqWidth, reqHeight);
+
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeStream(createInputStream(url), null, options);
+    }
+
+    public static int calculateInSampleSize(String url, BitmapFactory.Options options, int reqWidth, int reqHeight) throws Exception {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        int degree = getBitmapDegree(url) % 180;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int needHeight = degree != 90 ? height : width;
+            final int needWeight = degree != 90 ? width : height;
+
+            while ((needHeight / inSampleSize) > reqHeight
+                    || (needWeight / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+
+    private static int[] getScreenSize() {
+        WindowManager windowManager = (WindowManager) MyApplication.getAppContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return new int[] {size.x, size.y};
+    }
+
     private static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
             Log.v("bush", "put cache key " + key);
-
             sMemoryCache.put(key, bitmap);
         }
     }
