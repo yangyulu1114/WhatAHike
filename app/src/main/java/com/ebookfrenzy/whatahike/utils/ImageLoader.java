@@ -63,7 +63,7 @@ public class ImageLoader {
                     int degree = getBitmapDegree(url);
                     Matrix matrix = new Matrix();
                     matrix.postRotate(degree);
-                    int[] screenSize = getScreenSize();
+                    int[] screenSize = DisplayUtil.getScreenSize();
                     Log.v("bush", "screen width " + screenSize[0] + "screen height " + screenSize[1]);
                     Bitmap bitmap = decodeBitmap(url, screenSize[0], screenSize[1]);
                     Log.v("bush", "bitmap size before rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
@@ -152,14 +152,6 @@ public class ImageLoader {
             }
         }
         return inSampleSize;
-    }
-
-    private static int[] getScreenSize() {
-        WindowManager windowManager = (WindowManager) MyApplication.getAppContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return new int[] {size.x, size.y};
     }
 
     private static void addBitmapToMemoryCache(String key, Bitmap bitmap) {

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.ui.adapter.ViewPagerAdapter;
@@ -30,7 +31,9 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
 
     private ViewPagerAdapter mViewPagerAdapter;
     private ViewPager mViewPager;
-    ActionBar mActionBar;
+    private ActionBar mActionBar;
+    private TextView mTitleTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         mActionBar = getSupportActionBar();
         mActionBar.setCustomView(R.layout.imagepreview_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        mTitleTextView = findViewById(R.id.text);
 
         if (mNeedEdit == false) {
             mActionBar.hide();
@@ -68,6 +72,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
 
     public void refreshViewPager() {
         Log.v("bush", "refreshViewPager mCurrentPosition " + mCurrentPosition);
+        mTitleTextView.setText(String.format("%s/%s", mCurrentPosition + 1, mImageList.size()));
         mViewPagerAdapter.setImageList(mImageList);
         mViewPager.setCurrentItem(mCurrentPosition);
     }
@@ -119,6 +124,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
     @Override
     public void onPageSelected(int position) {
         mCurrentPosition = position;
+        mTitleTextView.setText(String.format("%s/%s", mCurrentPosition + 1, mImageList.size()));
         Log.v("bush", "onPageSelected : position " + position);
     }
 
