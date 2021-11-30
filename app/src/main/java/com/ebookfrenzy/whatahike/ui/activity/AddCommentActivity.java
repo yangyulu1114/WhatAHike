@@ -52,8 +52,8 @@ public class AddCommentActivity extends AppCompatActivity {
         mGridView.setAdapter(mGridViewAdapter);
         refreshGridView();
 
-//        trailId = getIntent().getStringExtra("trailId");
-        trailId = "1";
+        trailId = getIntent().getStringExtra("trailId");
+//        trailId = "1";
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -83,6 +83,7 @@ public class AddCommentActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.v("bush","onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PICK_FROM_GALLERY:
@@ -93,6 +94,17 @@ public class AddCommentActivity extends AppCompatActivity {
                     Log.v("bush", "uri" + uri);
                 }
                 break;
+            case IMAGE_PREVIEW:
+                List<Integer> deletedList = (List<Integer>) data.getSerializableExtra("deletedImages");
+                if (deletedList == null) {
+                    Log.v("bush", "deletedList is null");
+                }
+                if (deletedList != null && deletedList.size() > 0) {
+                    for (int i : deletedList) {
+                        mImageList.remove(i);
+                    }
+                    refreshGridView();
+                }
         }
     }
 
@@ -143,7 +155,7 @@ public class AddCommentActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ImagePreviewActivity.class);
         intent.putExtra("activityName", "addComment");
         intent.putExtra("position", position);
-        intent.putExtra("imageList", (Serializable) list);
+        intent.putStringArrayListExtra("imageList", (ArrayList<String>) list);
         startActivityForResult(intent, IMAGE_PREVIEW);
     }
 }

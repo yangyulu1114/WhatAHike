@@ -39,6 +39,11 @@ public class ImageLoader {
                 Log.v("bush", "bitmap size " + bitmap.getByteCount() / 1024);
                 return bitmap.getByteCount() / 1024;
             }
+
+            @Override
+            protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
+                Log.v("bush", "entryRemoved " + key);
+            }
         };
 
     }
