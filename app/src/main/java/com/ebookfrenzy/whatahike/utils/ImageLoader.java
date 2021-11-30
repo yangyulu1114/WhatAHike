@@ -65,7 +65,7 @@ public class ImageLoader {
                     matrix.postRotate(degree);
                     int[] screenSize = DisplayUtil.getScreenSize();
                     Log.v("bush", "screen width " + screenSize[0] + "screen height " + screenSize[1]);
-                    Bitmap bitmap = decodeBitmap(url, screenSize[0], screenSize[1]);
+                    Bitmap bitmap = decodeBitmap(url, screenSize[0]/2, screenSize[1]/2);
                     Log.v("bush", "bitmap size before rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                     Log.v("bush", "bitmap size after rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
