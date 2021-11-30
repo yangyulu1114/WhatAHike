@@ -3,19 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-    <Button
+    <TextView
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:textSize="16sp"
         android:text="Cancel"
-        android:onClick="onMyClick"/>
+        android:onClick="onMyClick"
+        android:textColor="@color/white"/>
 
-    <Button
+    <TextView
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:text="Send"
-        android:onClick="onMyClick"/>
+        android:layout_marginRight="16dp"
+        android:textSize="16sp"
+        android:onClick="onMyClick"
+        android:textColor="@color/white"/>
 </RelativeLayout>

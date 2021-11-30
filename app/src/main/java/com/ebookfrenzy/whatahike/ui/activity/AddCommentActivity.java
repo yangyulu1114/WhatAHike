@@ -5,6 +5,7 @@ import static android.app.PendingIntent.getActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -47,6 +48,9 @@ public class AddCommentActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setCustomView(R.layout.addcomment_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Toolbar parent =(Toolbar)mActionBar.getCustomView().getParent();
+        parent.setPadding(0,0,0,0);
+        parent.setContentInsetsAbsolute(0,0);
 
         mGridViewAdapter = new GridViewAdapter();
         mGridView.setAdapter(mGridViewAdapter);

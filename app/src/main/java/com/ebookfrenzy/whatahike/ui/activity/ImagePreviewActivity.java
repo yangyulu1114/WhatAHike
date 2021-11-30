@@ -3,6 +3,7 @@ package com.ebookfrenzy.whatahike.ui.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -48,9 +49,13 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         mViewPager = findViewById(R.id.viewpager);
         mViewPagerAdapter = new ViewPagerAdapter();
         mActionBar = getSupportActionBar();
+//        View customView = getLayoutInflater().inflate(R.layout.imagepreview_actionbar, null);
         mActionBar.setCustomView(R.layout.imagepreview_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         mTitleTextView = findViewById(R.id.text);
+        Toolbar parent =(Toolbar)mActionBar.getCustomView().getParent();
+        parent.setPadding(0,0,0,0);
+        parent.setContentInsetsAbsolute(0,0);
 
         if (mNeedEdit == false) {
             mActionBar.hide();
