@@ -8,16 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.R;
@@ -26,6 +30,7 @@ import com.ebookfrenzy.whatahike.exception.UploadException;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.ui.adapter.GridViewAdapter;
+import com.ebookfrenzy.whatahike.utils.DisplayUtil;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.io.Serializable;
@@ -43,6 +48,7 @@ public class AddCommentActivity extends AppCompatActivity {
     private View mMaskLayer;
     private ProgressBar mProgressBar;
     private Handler mHandler = new Handler();
+    private EditText mEditText;
 
     private List<Uri> mImageList = new ArrayList<>();
     private String trailId;
@@ -55,6 +61,9 @@ public class AddCommentActivity extends AppCompatActivity {
         mGridView = (GridView) findViewById(R.id.commentImage);
         mMaskLayer = findViewById(R.id.maskLayer);
         mProgressBar = findViewById(R.id.progressBar);
+        mEditText = findViewById(R.id.commentText);
+        mEditText.setMaxHeight(DisplayUtil.getScreenSize()[1] / 5);
+
         mActionBar = getSupportActionBar();
         mActionBar.setCustomView(R.layout.addcomment_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -187,6 +196,15 @@ public class AddCommentActivity extends AppCompatActivity {
                 mProgressBar.setVisibility(View.INVISIBLE);
             }
         }, 500);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
 

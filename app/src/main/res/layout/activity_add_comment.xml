@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/grid_margin"
         android:background="@color/fui_transparent"
-        android:hint="type your thought here" />
+        android:hint="type your thought here"
+        android:scrollbars = "vertical" />
 
     <GridView
         android:id="@+id/commentImage"
