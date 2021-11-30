@@ -7,14 +7,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
@@ -35,8 +39,12 @@ public class AddCommentActivity extends AppCompatActivity {
 
     private GridView mGridView;
     private GridViewAdapter mGridViewAdapter;
-    private List<Uri> mImageList = new ArrayList<>();
     private ActionBar mActionBar;
+    private View mMaskLayer;
+    private ProgressBar mProgressBar;
+    private Handler mHandler = new Handler();
+
+    private List<Uri> mImageList = new ArrayList<>();
     private String trailId;
 
 
@@ -45,6 +53,8 @@ public class AddCommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_comment);
         mGridView = (GridView) findViewById(R.id.commentImage);
+        mMaskLayer = findViewById(R.id.maskLayer);
+        mProgressBar = findViewById(R.id.progressBar);
         mActionBar = getSupportActionBar();
         mActionBar.setCustomView(R.layout.addcomment_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -116,7 +126,7 @@ public class AddCommentActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.cancel:
                 finish();
-                break;
+                return;
             case R.id.send:
                 postComment();
                 break;
@@ -126,6 +136,8 @@ public class AddCommentActivity extends AppCompatActivity {
     }
 
     private void postComment() {
+        mMaskLayer.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         EditText editText = findViewById(R.id.commentText);
         Comment comment = new Comment(User.getCurrentUser().getEmail());
         comment.setText(editText.getText().toString());
@@ -136,16 +148,20 @@ public class AddCommentActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void data) {
                 // comment succeed
+                setMaskInvisible();
                 finish();
-                Log.v("bush", "postComment onSucceess " + Thread.currentThread().getName());
+                Log.v("bush", "postComment onSuccess " + Thread.currentThread().getName());
             }
 
             @Override
             public void onFailed(Exception e) {
+                setMaskInvisible();
                 if (e instanceof UploadException) {
                     // image upload failed
+                    Toast.makeText(AddCommentActivity.this, "Upload Failed, please retry", Toast.LENGTH_LONG).show();
                 } else {
                     // comment failed
+                    Toast.makeText(AddCommentActivity.this, "Comment Failed, please retry", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -161,6 +177,16 @@ public class AddCommentActivity extends AppCompatActivity {
         intent.putExtra("position", position);
         intent.putStringArrayListExtra("imageList", (ArrayList<String>) list);
         startActivityForResult(intent, IMAGE_PREVIEW);
+    }
+
+    private void setMaskInvisible() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMaskLayer.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
+            }
+        }, 500);
     }
 }
 
