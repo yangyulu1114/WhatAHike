@@ -52,8 +52,8 @@ public class AddCommentActivity extends AppCompatActivity {
         mGridView.setAdapter(mGridViewAdapter);
         refreshGridView();
 
-//        trailId = getIntent().getStringExtra("trailId");
-        trailId = "1";
+        trailId = getIntent().getStringExtra("trailId");
+//        trailId = "1";
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
