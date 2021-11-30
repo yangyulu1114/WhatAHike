@@ -95,7 +95,7 @@ public class AddCommentActivity extends AppCompatActivity {
                 }
                 break;
             case IMAGE_PREVIEW:
-                List<Integer> deletedList = data.getIntegerArrayListExtra("deletedImages");
+                List<Integer> deletedList = (List<Integer>) data.getSerializableExtra("deletedImages");
                 if (deletedList == null) {
                     Log.v("bush", "deletedList is null");
                 }

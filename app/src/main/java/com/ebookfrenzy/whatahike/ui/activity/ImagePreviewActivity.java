@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +16,7 @@ import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.ui.adapter.ViewPagerAdapter;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +84,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
                     back();
                     return;
                 }
-                mCurrentPosition += mCurrentPosition == 0 ? 1 : -1;
+             //   mCurrentPosition += mCurrentPosition == 0 ? 1 : -1;
                 refreshViewPager();
                 break;
             default:
@@ -92,7 +94,8 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
 
     private void back() {
         Intent intent = new Intent();
-        intent.putIntegerArrayListExtra("deletedImages", (ArrayList<Integer>) mDeletedImageList);
+        intent.putExtra("deletedImages", (Serializable) mDeletedImageList);
+   //     intent.putIntegerArrayListExtra("deletedImages", (ArrayList<Integer>) mDeletedImageList);
         setResult(RESULT_OK, intent);
         finish();
     }
