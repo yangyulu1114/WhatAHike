@@ -34,6 +34,7 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
     private ViewPager mViewPager;
     private ActionBar mActionBar;
     private TextView mTitleTextView;
+    private TextView mDeleteTextView;
 
 
     @Override
@@ -53,12 +54,13 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         mActionBar.setCustomView(R.layout.imagepreview_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         mTitleTextView = findViewById(R.id.text);
+        mDeleteTextView = findViewById(R.id.delete);
         Toolbar parent =(Toolbar)mActionBar.getCustomView().getParent();
         parent.setPadding(0,0,0,0);
         parent.setContentInsetsAbsolute(0,0);
 
         if (mNeedEdit == false) {
-            mActionBar.hide();
+            mDeleteTextView.setVisibility(View.INVISIBLE);
         }
 
 

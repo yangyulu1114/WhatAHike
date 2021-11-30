@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.125" />
         <entry key="app/src/main/res/layout/actionbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_comment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_detailed_trail.xml" value="0.15885416666666666" />
         <entry key="app/src/main/res/layout/activity_image_preview.xml" value="0.2028985507246377" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_photo_picker.xml" value="0.13728470111448834" />
