@@ -83,6 +83,7 @@ public class AddCommentActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.v("bush","onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PICK_FROM_GALLERY:

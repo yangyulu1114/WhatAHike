@@ -96,6 +96,18 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         setResult(RESULT_OK, intent);
         finish();
     }
+    @Override
+    public void onBackPressed() {
+        back();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.v("bush", "onDestroy");
+        mViewPager.removeOnPageChangeListener(this);
+        super.onDestroy();
+    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
