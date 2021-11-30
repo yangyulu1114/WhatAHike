@@ -3,12 +3,11 @@ package com.ebookfrenzy.whatahike.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,8 +20,6 @@ import com.ebookfrenzy.whatahike.ui.activity.ImagePreviewActivity;
 import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,13 +29,17 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     private List<Comment> mCommentList;
     private String mTrailId;
 
-    Intent previewIntent;
-
     static class ViewHolder extends RecyclerView.ViewHolder {
+        int MAXLINES = 3;
+
         CardView cardView;
         TextView user;
         TextView text;
         TextView time;
+        TextView expansionButton;
+
+        boolean isExpansion;
+
         ImageView[] images;
 
         public ViewHolder(View view) {
@@ -47,6 +48,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
             user = view.findViewById(R.id.comment_user_name);
             text = view.findViewById(R.id.comment_text);
+            expansionButton = view.findViewById(R.id.expansion_button);
             time = view.findViewById(R.id.post_time);
 
             images = new ImageView[9];
@@ -61,7 +63,61 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             images[8] = (ImageView) view.findViewById(R.id.image9);
 
         }
+
+        public void initTextView(String content) {
+            text.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            if (text.getWidth() == 0) {
+                                return;
+                            }
+                            text.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            setText(content);
+                        }
+                    }
+            );
+            expansionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggleExpansionStatus();
+                }
+            });
+            expansionButton.setVisibility(View.GONE);
+        }
+
+        private void setText(String content) {
+            if (text.getWidth() == 0) {
+                return;
+            }
+
+            text.setText(content);
+            int lineCount = content.split("\n").length;
+
+            if (lineCount > MAXLINES) {
+                expansionButton.setVisibility(View.VISIBLE);
+                expansionButton.setText("Read More");
+
+                text.setMaxLines(MAXLINES);
+                isExpansion = false;
+            } else {
+                expansionButton.setVisibility(View.GONE);
+            }
+        }
+
+        private void toggleExpansionStatus() {
+            isExpansion = !isExpansion;
+            if (isExpansion) {
+                expansionButton.setText("Fold");
+                text.setMaxLines(Integer.MAX_VALUE);
+            } else {
+                expansionButton.setText("Read More");
+                text.setMaxLines(MAXLINES);
+            }
+        }
     }
+
+
     public UserCommentAdapter(List<Comment> commentList, String trailId) {
         mCommentList = commentList;
         mTrailId = trailId;
@@ -77,41 +133,42 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder,int position) {
-        previewIntent = new Intent(mContext, ImagePreviewActivity.class);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+            Comment comment = mCommentList.get(position);
+
+            holder.user.setText(comment.getUserId());
+            holder.time.setText(new Date(comment.getTimeStamp()).toString());
+            // set up folded text
+            holder.initTextView(comment.getText());
+
+            List<String> images = comment.getImages();
         try {
-            for (Comment comment : mCommentList) {
-                holder.user.setText(comment.getUserId());
-                holder.text.setText(comment.getText());
-                holder.time.setText(new Date(comment.getTimeStamp()).toString());
+            for (int i = 0; i < images.size() && i < 9; i++) {
+                int index = i;
+                ImageLoader.loadImage(images.get(i), new Listener<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap data) {
+                        // set image click listener
+                        holder.images[index].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent previewIntent = new Intent(mContext, ImagePreviewActivity.class);
+                                previewIntent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
+                                previewIntent.putExtra("position", index);
+                                mContext.startActivity(previewIntent);
+                            }
+                        });
+                        // set up the view
+                        holder.images[index].setImageBitmap(data);
+                        holder.images[index].setVisibility(View.VISIBLE);
+                    }
 
-                List<String> images = comment.getImages();
-                previewIntent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
-
-                for (int i = 0; i < images.size() && i < 9; i++) {
-                    int index = i;
-                    ImageLoader.loadImage(images.get(i), new Listener<Bitmap>() {
-                        @Override
-                        public void onSuccess(Bitmap data) {
-                            // set image click listener
-                            holder.images[index].setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    previewIntent.putExtra("position", index);
-                                    mContext.startActivity(previewIntent);
-                                }
-                            });
-                            // set up the view
-                            holder.images[index].setImageBitmap(data);
-                            holder.images[index].setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onFailed(Exception e) {
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailed(Exception e) {
+                    }
+                });
             }
+
         } catch (Exception e) {
             Log.e("comment adapter: ", e.getMessage());
         }

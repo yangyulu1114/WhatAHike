@@ -87,6 +87,22 @@ public class DetailedTrailActivity extends AppCompatActivity {
     }
 
     private void initComments() {
+
+        // for text
+        commentList = new ArrayList<>();
+
+        Comment comment = new Comment("user1");
+        comment.setText("short text");
+        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
+                "http://gothomas.me/images/banners/1.jpg"));
+        commentList.add(comment);
+        comment = new Comment("user2");
+        comment.setText("long text\nl2\nl3\nl4\ndsfdasfdasfdasfdsa");
+        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/2.jpg",
+                "http://gothomas.me/images/banners/3.jpg"));
+        commentList.add(comment);
+        // end of hard code testing
+
         if (commentList != null) {
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
