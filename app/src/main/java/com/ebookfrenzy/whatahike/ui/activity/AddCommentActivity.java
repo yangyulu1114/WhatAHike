@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
 import com.ebookfrenzy.whatahike.exception.UploadException;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.User;
@@ -145,8 +146,6 @@ public class AddCommentActivity extends AppCompatActivity {
     }
 
     private void postComment() {
-        mMaskLayer.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
         EditText editText = findViewById(R.id.commentText);
         Comment comment = new Comment(User.getCurrentUser().getEmail());
         comment.setText(editText.getText().toString());
@@ -158,6 +157,9 @@ public class AddCommentActivity extends AppCompatActivity {
             return;
         }
 
+        mMaskLayer.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
         RestAPI.postComment(comment, mImageList, new Listener<Void>() {
             @Override
             public void onSuccess(Void data) {
@@ -168,10 +170,12 @@ public class AddCommentActivity extends AppCompatActivity {
 
             @Override
             public void onFailed(Exception e) {
-                onPostComplete(600, false);
+                onPostComplete(0, false);
                 if (e instanceof UploadException) {
                     // image upload failed
                     Toast.makeText(AddCommentActivity.this, "Upload Failed, please retry", Toast.LENGTH_LONG).show();
+                } else if (e instanceof FirebaseTimeoutException) {
+                    Toast.makeText(AddCommentActivity.this, "Request timeout, please check your network", Toast.LENGTH_LONG).show();
                 } else {
                     // comment failed
                     Toast.makeText(AddCommentActivity.this, "Comment Failed, please retry", Toast.LENGTH_LONG).show();
