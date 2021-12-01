@@ -1,0 +1,126 @@
+[
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_trail_layout.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/trail_layout.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/raw_trails_old.csv.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/raw/trails_old.csv"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/raw_trails.csv.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/raw/trails.csv"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_activity_test.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_test.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/drawable-v24/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_pager_item.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/pager_item.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_activity_detailed_trail.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_detailed_trail.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_activity_splash.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_splash.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/navigation_nav_graph.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/navigation/nav_graph.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_activity_add_comment.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_add_comment.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_addcomment_actionbar.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/addcomment_actionbar.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_comment_card.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/comment_card.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/drawable_add_image.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/drawable/add_image.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_image_item.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/image_item.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/drawable_ic_baseline_search_24.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/drawable/ic_baseline_search_24.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/drawable_ic_launcher_background.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_activity_main.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_imagepreview_actionbar.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/imagepreview_actionbar.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/merged_res/debug/layout_activity_image_preview.xml.flat",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_image_preview.xml"
+    }
+]

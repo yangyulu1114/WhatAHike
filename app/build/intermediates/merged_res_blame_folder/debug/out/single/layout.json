@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_add_comment.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_add_comment.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/pager_item.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/pager_item.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_test.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_test.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_main.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/imagepreview_actionbar.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/imagepreview_actionbar.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_splash.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_splash.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/addcomment_actionbar.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/addcomment_actionbar.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/trail_layout.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/trail_layout.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_image_preview.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_image_preview.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/comment_card.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/comment_card.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_detailed_trail.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/activity_detailed_trail.xml"
+    },
+    {
+        "merged": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/image_item.xml",
+        "source": "/Users/chenchendeng/AndroidStudioProjects/WhatAHike/app/src/main/res/layout/image_item.xml"
+    }
+]

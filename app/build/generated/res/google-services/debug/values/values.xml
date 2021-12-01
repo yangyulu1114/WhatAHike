@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">1017172540550-mbafcm9eb6v2aanam1qmko5f2om6kvnb.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">1017172540550</string>
+    <string name="google_api_key" translatable="false">AIzaSyBjBX25FQabfaCoFfNCYvADZBVTQVmb2kY</string>
+    <string name="google_app_id" translatable="false">1:1017172540550:android:c94d4ce80bfd666de42507</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBjBX25FQabfaCoFfNCYvADZBVTQVmb2kY</string>
+    <string name="google_storage_bucket" translatable="false">whatahike-d3fe2.appspot.com</string>
+    <string name="project_id" translatable="false">whatahike-d3fe2</string>
+</resources>
