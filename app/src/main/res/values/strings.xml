@@ -13,4 +13,21 @@
     <string name="splash_hello">Welcome to What A Hike</string>
 
     <string name="trailId">trailId</string>
+    <string-array name="names">
+        <item>50 miles</item>
+        <item>100 miles</item>
+        <item>200 miles</item>
+        <item>500 miles</item>
+        <item>Difficulty - Easy</item>
+        <item>Difficulty - Medium</item>
+        <item>Difficulty - Hard</item>
+        <item>Difficulty - Extreme</item>
+    </string-array>
+
+    <string-array name="sort">
+        <item>Sort by Distance Asc</item>
+        <item>Sort by Distance Desc</item>
+        <item>Sort by Popularity Asc</item>
+        <item>Sort by Popularity Desc</item>
+    </string-array>
 </resources>
