@@ -91,7 +91,7 @@ public class GridViewAdapter extends BaseAdapter {
                 }
                 @Override
                 public void onFailed(Exception e) {
-
+                    Log.e("bush", e.getMessage(), e);
                 }
             });
             holder.imageView.setPadding(0,0,0,0);

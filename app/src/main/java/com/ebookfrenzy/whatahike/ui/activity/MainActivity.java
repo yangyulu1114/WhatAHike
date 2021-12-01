@@ -36,12 +36,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         recyclerView = findViewById(R.id.recyclerView);
         trailList = new ArrayList<>();
-
-        Intent intent = new Intent(this, DetailedTrailActivity.class);
-        intent.putExtra("trailId", "10020048");
-        startActivity(intent);
 
         setTrailInfo();
         setAdapter();
