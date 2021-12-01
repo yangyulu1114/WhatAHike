@@ -48,13 +48,13 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.activity_list_item, getResources().getStringArray(R.array.names));
+                R.layout.activity_list_item, getResources().getStringArray(R.array.names));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
 
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
+                R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter2);
 
