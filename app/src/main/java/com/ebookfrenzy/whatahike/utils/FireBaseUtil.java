@@ -1,13 +1,17 @@
 package com.ebookfrenzy.whatahike.utils;
 
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
 import com.ebookfrenzy.whatahike.exception.UploadException;
 import com.ebookfrenzy.whatahike.model.FireBaseModel;
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +32,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FireBaseUtil {
+    private static final long TIMEOUT_MS = 2000;
+
+    private static Handler mHandler = new Handler(Looper.getMainLooper());
 
     public static void uploadAsync(Uri uri, Listener<String> uploadListener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -64,6 +71,18 @@ public class FireBaseUtil {
                 }
             }
         });
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.v("bush", "delay cancel");
+                if (!uploadTask.isComplete()) {
+                    Log.v("bush", "cancel");
+                    uploadTask.cancel();
+                    uploadListener.onFailed(new FirebaseTimeoutException(null));
+                }
+            }
+        }, TIMEOUT_MS);
     }
 
     public static String uploadSync(Uri uri) throws Exception {
@@ -86,7 +105,7 @@ public class FireBaseUtil {
 
         @Override
         public void onFailed(Exception e) {
-            mException = new UploadException(e);
+            mException = e instanceof FirebaseTimeoutException ? e : new UploadException(e);
             mLatch.countDown();
         }
 
