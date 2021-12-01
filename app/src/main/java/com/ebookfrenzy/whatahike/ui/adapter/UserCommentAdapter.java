@@ -92,17 +92,23 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             }
 
             text.setText(content);
-            int lineCount = content.split("\n").length;
 
-            if (lineCount > MAXLINES) {
-                expansionButton.setVisibility(View.VISIBLE);
-                expansionButton.setText("Read More");
+            text.post(new Runnable() {
+                @Override
+                public void run() {
+                    int lineCount = text.getLineCount();
+                    if (lineCount > MAXLINES) {
+                        expansionButton.setVisibility(View.VISIBLE);
+                        expansionButton.setText("Read More");
 
-                text.setMaxLines(MAXLINES);
-                isExpansion = false;
-            } else {
-                expansionButton.setVisibility(View.GONE);
-            }
+                        text.setMaxLines(MAXLINES);
+                        isExpansion = false;
+                    } else {
+                        expansionButton.setVisibility(View.GONE);
+                    }
+                }
+            });
+
         }
 
         private void toggleExpansionStatus() {
