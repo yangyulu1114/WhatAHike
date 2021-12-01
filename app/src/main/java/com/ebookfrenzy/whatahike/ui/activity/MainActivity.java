@@ -190,5 +190,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
                 return t2.getNumReviews() - t1.getNumReviews();
             }
         }));
+        trailList = trailList.subList(0, 10);
     }
+
+
 }
