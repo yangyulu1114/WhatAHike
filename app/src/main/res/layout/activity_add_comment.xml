@@ -33,7 +33,7 @@
         android:id="@+id/maskLayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#3f000000"
+        android:background="#9f000000"
         android:visibility="invisible" />
 
     <ProgressBar
