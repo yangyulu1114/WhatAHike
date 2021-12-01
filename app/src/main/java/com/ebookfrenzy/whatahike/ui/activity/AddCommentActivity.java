@@ -135,7 +135,7 @@ public class AddCommentActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.cancel:
                 finish();
-                return;
+                break;
             case R.id.send:
                 postComment();
                 break;
@@ -152,19 +152,23 @@ public class AddCommentActivity extends AppCompatActivity {
         comment.setText(editText.getText().toString());
         comment.setTimeStamp(System.currentTimeMillis());
         comment.setTrailId(trailId);
+        if (editText.getText().length() == 0 && mImageList.size() == 0) {
+            Toast.makeText(this, "Comment can't be empty!", Toast.LENGTH_SHORT).show();
+            onPostComplete(0, false);
+            return;
+        }
 
         RestAPI.postComment(comment, mImageList, new Listener<Void>() {
             @Override
             public void onSuccess(Void data) {
                 // comment succeed
-                setMaskInvisible();
-                finish();
+                onPostComplete(600, true);
                 Log.v("bush", "postComment onSuccess " + Thread.currentThread().getName());
             }
 
             @Override
             public void onFailed(Exception e) {
-                setMaskInvisible();
+                onPostComplete(600, false);
                 if (e instanceof UploadException) {
                     // image upload failed
                     Toast.makeText(AddCommentActivity.this, "Upload Failed, please retry", Toast.LENGTH_LONG).show();
@@ -188,14 +192,17 @@ public class AddCommentActivity extends AppCompatActivity {
         startActivityForResult(intent, IMAGE_PREVIEW);
     }
 
-    private void setMaskInvisible() {
+    private void onPostComplete(long delay, boolean finish) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mMaskLayer.setVisibility(View.INVISIBLE);
                 mProgressBar.setVisibility(View.INVISIBLE);
+                if (finish) {
+                    finish();
+                }
             }
-        }, 500);
+        }, delay);
     }
 
     @Override
