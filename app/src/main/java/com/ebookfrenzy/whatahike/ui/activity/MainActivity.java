@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -39,6 +40,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
     private List<Trail> trailList;
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
+    private RecyclerAdapter.RecyclerViewClickListener listener;
 
     private static Location location;
     private LocationManager locationManager;
@@ -115,11 +117,23 @@ public class MainActivity extends BaseActivity implements LocationListener {
     }
 
     private void setAdapter() {
-        adapter = new RecyclerAdapter(trailList);
+        setOnClickListener();
+        adapter = new RecyclerAdapter(trailList, listener);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setOnClickListener() {
+        listener = new RecyclerAdapter.RecyclerViewClickListener(){
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), DetailedTrailActivity.class);
+                intent.putExtra("trailId",  trailList.get(position).getId());
+                startActivity(intent);
+            }
+        };
     }
 
 //    private void setTrailInfo() {

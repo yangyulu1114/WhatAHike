@@ -21,10 +21,12 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
     private List<Trail> trailList;
+    private RecyclerViewClickListener listener;
     //private List<Trail> trailListFull;
 
-    public RecyclerAdapter(List<Trail> trailList){
+    public RecyclerAdapter(List<Trail> trailList, RecyclerViewClickListener listener){
         this.trailList = trailList;
+        this.listener = listener;
         // trailListFull = new ArrayList<>(trailList); //create the copy oif trail list
     }
 
@@ -61,7 +63,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 //        }
 //    };
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nameTxt;
         private TextView areaTxt;
         private TextView difficultyTxt;
@@ -73,8 +75,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             areaTxt = view.findViewById(R.id.Area);
             difficultyTxt = view.findViewById(R.id.Difficulty);
             distanceTxt = view.findViewById(R.id.Distance);
+            view.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View view) {
+            listener.onClick(view, getAdapterPosition());
+        }
     }
     @NonNull
     @Override
@@ -105,5 +112,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             return 0;
         }
         return trailList.size();
+    }
+
+    public interface RecyclerViewClickListener{
+        void onClick(View v, int position);
     }
 }
