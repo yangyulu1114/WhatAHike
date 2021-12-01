@@ -80,6 +80,22 @@ public class DetailedTrailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        RestAPI.getComments(trailId, new Listener<List<Comment>>() {
+            @Override
+            public void onSuccess(List<Comment> data) {
+                commentList = data;
+                initComments();
+            }
+            @Override
+            public void onFailed(Exception e) {
+                Log.e("comment activity: ", e.getMessage());
+            }
+        });
+    }
+
     public void addComment(View view) {
         Intent intent = new Intent(this, AddCommentActivity.class);
         intent.putExtra("trailId", trailId);

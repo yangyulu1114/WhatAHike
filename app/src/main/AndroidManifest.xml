@@ -20,7 +20,7 @@
         <activity
             android:name=".ui.activity.AddCommentActivity"
             android:exported="true"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.DetailedTrailActivity" />
 
         <activity
             android:name=".ui.activity.DetailedTrailActivity"
