@@ -95,6 +95,21 @@ public class MainActivity extends BaseActivity implements LocationListener {
     }
 
     @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
     public void onAllPermissionsGranted() {
         setLocation();
     }
@@ -184,7 +199,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
                 double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o2.getLocation()[0], o2.getLocation()[1]);
 
-                return (int) (o1dis - o2dis);
+                if (o1dis <  o2dis) {return -1;}
+                else if (o1dis >  o2dis) {return 1;}
+                else {return 0;}
             }
         }.thenComparing(new Comparator<Trail>() {
             @Override
