@@ -1,6 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="grid_margin">20dp</dimen>
+    <dimen name="grid_margin">30dp</dimen>
     <dimen name="grid_space">5dp</dimen>
     <dimen name="add_size">2dp</dimen>
+    <dimen name="add_padding">30dp</dimen>
 </resources>

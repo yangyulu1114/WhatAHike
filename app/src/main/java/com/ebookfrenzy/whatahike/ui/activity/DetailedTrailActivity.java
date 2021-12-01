@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.UserCommentAdapter;
+import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -46,6 +48,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_trail);
 
         trailId = getIntent().getStringExtra(String.valueOf(R.string.trailId));
+        if (trailId == null)
+            trailId = getIntent().getStringExtra("trailId");
 
         AppBarLayout appBarLayout = findViewById(R.id.appBar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -63,46 +67,52 @@ public class DetailedTrailActivity extends AppCompatActivity {
         });
 
         initTrailDetail();
-        initComments();
-
-    }
-
-    public void addComment(View view) {
-        Intent intent = new Intent(this, AddCommentActivity.class);
-        intent.putExtra(String.valueOf(R.string.trailId), trailId);
-        startActivity(intent);
-    }
-
-    private void initComments() {
-        commentList = new ArrayList<>();
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
             public void onSuccess(List<Comment> data) {
-                if (data != null)
-                    commentList = data;
+                commentList = data;
+                initComments();
             }
-
             @Override
             public void onFailed(Exception e) {
                 Log.e("comment activity: ", e.getMessage());
             }
         });
-
-        // testing comment
-//        Comment comment = new Comment("u1");
-//        comment.setText("review of u1");
-//        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
-//                "http://gothomas.me/images/banners/1.jpg",
-//                "http://gothomas.me/images/banners/3.jpg",
-//                "http://gothomas.me/images/banners/4.jpg"));
-//        commentList.add(comment);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new UserCommentAdapter(commentList, trailId);
-        recyclerView.setAdapter(adapter);
     }
+
+    public void addComment(View view) {
+        Intent intent = new Intent(this, AddCommentActivity.class);
+        intent.putExtra("trailId", trailId);
+        startActivity(intent);
+    }
+
+    private void initComments() {
+        // for text
+//        commentList = new ArrayList<>();
+//
+//        Comment comment = new Comment("user1");
+//        comment.setText("short text");
+//        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
+//                "http://gothomas.me/images/banners/1.jpg"));
+//        commentList.add(comment);
+//        comment = new Comment("user2");
+//        comment.setText("long text\nl2\nl3\nl4\ndsfdasfdasfdasfdsa");
+//        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/2.jpg",
+//                "http://gothomas.me/images/banners/3.jpg"));
+//        commentList.add(comment);
+        // end of hard code testing
+
+        if (commentList != null) {
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new UserCommentAdapter(commentList, trailId);
+            recyclerView.setAdapter(adapter);
+        } else {
+            Log.e("comment activity: ", "no comment list returned");
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void initTrailDetail() {
@@ -114,33 +124,17 @@ public class DetailedTrailActivity extends AppCompatActivity {
                 + trail.getFeatures().toString() + "\n"
                 + trail.getActivities().toString());
 
-        PingWebServiceTask task = new PingWebServiceTask();
-        task.execute(trail.getBannerURL());
-    }
-
-    private class PingWebServiceTask extends AsyncTask<String, Integer, Drawable> {
-
-        @Override
-        protected Drawable doInBackground(String... strings) {
-
-            Drawable drawable = null;
-            try {
-                InputStream iStream = (InputStream) new URL(strings[0]).getContent();
-                drawable = Drawable.createFromStream(iStream, "image");
-            } catch (Exception e) {
-                Log.e("comment: ", e.toString());
+        ImageView image = findViewById(R.id.trail_image);
+        ImageLoader.loadImage(trail.getBannerURL(), new Listener<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap data) {
+                image.setImageBitmap(data);
             }
 
-            return drawable;
-        }
-
-        @Override
-        protected void onPostExecute(Drawable drawable) {
-            super.onPostExecute(drawable);
-
-            ImageView image = findViewById(R.id.trail_image);
-            image.setBackground(drawable);
-        }
+            @Override
+            public void onFailed(Exception e) {
+            }
+        });
     }
 
 

@@ -3,6 +3,7 @@ package com.ebookfrenzy.whatahike.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewPagerAdapter extends PagerAdapter {
-    private final List<String> mImageList;
+    private List<String> mImageList = new ArrayList<>();
     Map<Integer, View> map = new HashMap<>();
 
-    public ViewPagerAdapter(List<String> imageList) {
-        mImageList = imageList;
+    public void setImageList(List<String> imageList) {
+        mImageList.clear();
+        mImageList.addAll(imageList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -63,7 +66,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             @Override
             public void onFailed(Exception e) {
-
+                Log.e("bush", e.toString(), e);
             }
         });
 

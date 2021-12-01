@@ -1,7 +1,11 @@
 package com.ebookfrenzy.whatahike.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +17,22 @@ import android.widget.RelativeLayout;
 
 import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.ui.view.SquareImageView;
 import com.ebookfrenzy.whatahike.utils.DisplayUtil;
+import com.ebookfrenzy.whatahike.utils.ImageLoader;
+import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GridViewAdapter extends BaseAdapter {
     private List<String> mImageList = new ArrayList<>();
-    private final int mSize;
+    private final int mPadding;
 
     public GridViewAdapter() {
         int width = DisplayUtil.getScreenSize()[0];
-        Context context = MyApplication.getAppContext();
-        int grid_margin = context.getResources().getDimensionPixelOffset(R.dimen.grid_margin);
-        int grid_space = context.getResources().getDimensionPixelOffset(R.dimen.grid_space);
-        mSize = (width - grid_margin * 2 - grid_space * 2) / 3;
+        mPadding = width / 10;
+        Log.v("bush","mPadding " + mPadding );
     }
 
     public void setImageList(List<String> imageList) {
@@ -38,6 +43,7 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        Log.v("bush", "count " + mImageList.size());
         return mImageList.size();
     }
 
@@ -55,41 +61,40 @@ public class GridViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
+            Log.v("bush", "createView");
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_item, null);
             holder = new ViewHolder();
-            holder.imageView = (ImageView) convertView
-                    .findViewById(R.id.grid_image);
+            holder.imageView = (SquareImageView) convertView;
             convertView.setTag(holder);
         } else {
+            Log.v("bush", "reuseView");
             holder = (ViewHolder) convertView.getTag();
         }
-        GridView.LayoutParams params = (GridView.LayoutParams) convertView.getLayoutParams();
-        if (params == null) {
-            params = new GridView.LayoutParams(mSize, mSize);
-        }
-        params.width = mSize;
-        params.height = mSize;
-        convertView.setLayoutParams(params);
+
+        final ImageView imageView = holder.imageView;
+        final String url = mImageList.get(position);
+        holder.url=url;
+
+        Log.v("bush", "position " + position + " url " + mImageList.get(position));
         if (mImageList.get(position) == "add") {
-            holder.imageView.setImageResource(R.drawable.add_image);
-            RelativeLayout.LayoutParams imageParams = (RelativeLayout.LayoutParams) holder.imageView.getLayoutParams();
-            int size = (int) (mSize * 0.3);
-            if (imageParams == null) {
-                imageParams = new RelativeLayout.LayoutParams(size, size);
-            }
-            imageParams.width = size;
-            imageParams.height = size;
-            holder.imageView.setLayoutParams(imageParams);
+            imageView.setImageResource(R.drawable.add_image);
+            imageView.setPadding(mPadding, mPadding, mPadding, mPadding);
         } else {
-            holder.imageView.setImageURI(Uri.parse(mImageList.get(position)));
-            RelativeLayout.LayoutParams imageParams = (RelativeLayout.LayoutParams) holder.imageView.getLayoutParams();
-            int size = mSize;
-            if (imageParams == null) {
-                imageParams = new RelativeLayout.LayoutParams(size, size);
-            }
-            imageParams.width = size;
-            imageParams.height = size;
-            holder.imageView.setLayoutParams(imageParams);
+            ImageLoader.loadImage(url, new Listener<Bitmap>() {
+                @Override
+                public void onSuccess(Bitmap data) {
+                    Log.v("bush", "loadImage onSuccess");
+                    ViewHolder holder = (ViewHolder) imageView.getTag();
+                    if (holder.url == url) {
+                        imageView.setImageBitmap(data);
+                    }
+                }
+                @Override
+                public void onFailed(Exception e) {
+                    Log.e("bush", e.getMessage(), e);
+                }
+            });
+            holder.imageView.setPadding(0,0,0,0);
         }
 
         holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -97,6 +102,7 @@ public class GridViewAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        ImageView imageView;
+        SquareImageView imageView;
+        String url;
     }
 }

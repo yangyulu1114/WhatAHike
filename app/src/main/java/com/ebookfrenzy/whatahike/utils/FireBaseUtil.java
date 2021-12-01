@@ -33,7 +33,17 @@ public class FireBaseUtil {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         StorageReference fileRef = storageRef.child("images/" + System.currentTimeMillis() + "-" + uri.getLastPathSegment());
-        UploadTask uploadTask = fileRef.putFile(uri);
+        File file = null;
+        try {
+            file = BitmapUtil.saveBitmapToFile(uri.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.v("bush", "upload file uri " + Uri.fromFile(file));
+        Log.v("bush", "file size " + file.length());
+
+        UploadTask uploadTask = fileRef.putFile(Uri.fromFile(file));
+       // UploadTask uploadTask = fileRef.putFile(uri);
 
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override

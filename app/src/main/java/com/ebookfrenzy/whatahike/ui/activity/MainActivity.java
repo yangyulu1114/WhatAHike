@@ -48,6 +48,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
                 R.layout.activity_list_item, getResources().getStringArray(R.array.names));
@@ -61,6 +62,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         mySpinner.setAdapter(myAdapter2);
 
         info = findViewById(R.id.Search);
+
 
         recyclerView = findViewById(R.id.recyclerView);
         ImageButton btn = findViewById(R.id.searchButton);

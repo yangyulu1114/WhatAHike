@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatAHike"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.activity.AddCommentActivity"
+            android:exported="true"
+            android:parentActivityName=".ui.activity.MainActivity" />
 
         <activity
             android:name=".ui.activity.DetailedTrailActivity"
@@ -24,8 +28,7 @@
             android:parentActivityName=".ui.activity.MainActivity"/>
         <activity
             android:name=".ui.activity.ImagePreviewActivity"
-            android:exported="true"
-            android:theme="@style/Theme.WhatAHike.NoActionBar" />
+            android:exported="true"/>
         <activity
             android:name=".ui.activity.SplashActivity"
             android:exported="true">
