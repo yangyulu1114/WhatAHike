@@ -1,5 +1,6 @@
 package com.ebookfrenzy.whatahike.ui.adapter;
 
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Trail;
+import com.ebookfrenzy.whatahike.ui.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +85,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String name = trailList.get(position).getName();
-        String area = trailList.get(position).getArea();
-        String difficulty = String.valueOf(trailList.get(position).getDifficulty());
-        String distance = String.valueOf(trailList.get(position).getLength());
+        Trail trail = trailList.get(position);
+        String name = trail.getName();
+        String area = trail.getArea();
+        String difficulty = String.valueOf(trail.getDifficulty());
+        Location location = MainActivity.getLocation();
+        double distance = RestAPI.getDistance(location.getLatitude(), location.getLongitude(), trail.getLocation()[0], trail.getLocation()[1]);
 
 
         holder.nameTxt.setText("Trail Name: " + name);

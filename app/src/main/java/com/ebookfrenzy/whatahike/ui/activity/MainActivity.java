@@ -2,6 +2,7 @@ package com.ebookfrenzy.whatahike.ui.activity;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -63,11 +65,13 @@ public class MainActivity extends BaseActivity implements LocationListener {
         recyclerView = findViewById(R.id.recyclerView);
         ImageButton btn = findViewById(R.id.searchButton);
         btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                trailList = new ArrayList<>();
-                trailList = getTrail(info.getText());
+                getTrail(info.getText());
+                setAdapter();
             }
+
         });
 
 
@@ -160,21 +164,31 @@ public class MainActivity extends BaseActivity implements LocationListener {
         setLocation();
     }
 
-    private List<Trail> getTrail(Editable text){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void getTrail(Editable text){
         trailList = RestAPI.getTrails(new Filter<Trail>() {
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
-                return trail.getState().toLowerCase().equals(text.toString().toLowerCase()) || trail.getName().toLowerCase().contains(text.toString().toLowerCase());
+                String keyword = text.toString().trim().toLowerCase();
+                return trail.getState().toLowerCase().equals(keyword) || trail.getName().toLowerCase().contains(keyword);
             }
         }, new Comparator<Trail>() {
             @Override
             public int compare(Trail o1, Trail o2) {
                 //implement comparator
-                return o1.getState().compareTo(o2.getState());
+                double o1dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
+                        o1.getLocation()[0], o1.getLocation()[1]);
+                double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
+                        o2.getLocation()[0], o2.getLocation()[1]);
+
+                return (int) (o1dis - o2dis);
             }
-        });
-       //return trailList;
-        return null;
+        }.thenComparing(new Comparator<Trail>() {
+            @Override
+            public int compare(Trail t1, Trail t2) {
+                return t2.getNumReviews() - t1.getNumReviews();
+            }
+        }));
     }
 }
