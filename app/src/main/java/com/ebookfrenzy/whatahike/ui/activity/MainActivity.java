@@ -9,22 +9,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.os.Handler;
+import android.text.Editable;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 
+import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
-import com.ebookfrenzy.whatahike.trailRecord;
+import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements LocationListener {
-    private ArrayList<trailRecord> trailList;
+    EditText info;
+    private List<Trail> trailList;
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
 
@@ -36,10 +46,33 @@ public class MainActivity extends BaseActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        trailList = new ArrayList<>();
+        Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.activity_list_item, getResources().getStringArray(R.array.names));
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner.setAdapter(myAdapter);
 
-        setTrailInfo();
+        Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
+        ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner.setAdapter(myAdapter2);
+
+        info = findViewById(R.id.Search);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        ImageButton btn = findViewById(R.id.searchButton);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                trailList = new ArrayList<>();
+                trailList = getTrail(info.getText());
+            }
+        });
+
+
+
+                //setTrailInfo();
         setAdapter();
     }
 
@@ -68,16 +101,16 @@ public class MainActivity extends BaseActivity implements LocationListener {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setTrailInfo() {
-        trailList.add(new trailRecord("1","Poo Poo Point", "It is the best place to hike", 10));
-        trailList.add(new trailRecord("2","Rattlesnake Ridge", "It is the good place to hike", 9));
-        trailList.add(new trailRecord("3","Snoqualmie falls", "It is the wonderful place to hike", 8));
-        trailList.add(new trailRecord("4","Rainier", "It is the best place to hike", 9));
-        trailList.add(new trailRecord("5","Olympic", "It is the good place to hike", 5));
-        trailList.add(new trailRecord("6","North Cascade", "It is the wonderful place to hike", 2));
-    }
+//    private void setTrailInfo() {
+//        trailList.add(new trailRecord("1","Poo Poo Point", "It is the best place to hike", 10));
+//        trailList.add(new trailRecord("2","Rattlesnake Ridge", "It is the good place to hike", 9));
+//        trailList.add(new trailRecord("3","Snoqualmie falls", "It is the wonderful place to hike", 8));
+//        trailList.add(new trailRecord("4","Rainier", "It is the best place to hike", 9));
+//        trailList.add(new trailRecord("5","Olympic", "It is the good place to hike", 5));
+//        trailList.add(new trailRecord("6","North Cascade", "It is the wonderful place to hike", 2));
+//    }
 
-//    @Override
+    //@Override
 //    public boolean onCreateOptionsMenu(Menu menu){
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.example_menu,menu);
@@ -125,5 +158,23 @@ public class MainActivity extends BaseActivity implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         setLocation();
+    }
+
+    private List<Trail> getTrail(Editable text){
+        trailList = RestAPI.getTrails(new Filter<Trail>() {
+            @Override
+            public boolean pass(Trail trail) {
+                //implement pass function
+                return trail.getState().toLowerCase().equals(text.toString().toLowerCase()) || trail.getName().toLowerCase().contains(text.toString().toLowerCase());
+            }
+        }, new Comparator<Trail>() {
+            @Override
+            public int compare(Trail o1, Trail o2) {
+                //implement comparator
+                return o1.getState().compareTo(o2.getState());
+            }
+        });
+       //return trailList;
+        return null;
     }
 }
