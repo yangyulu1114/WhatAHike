@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getApplicationContext(), DetailedTrailActivity.class);
-                intent.putExtra("trailId",  trailList.get(position).getId());
+                intent.putExtra("trailId",  "10020048");
                 startActivity(intent);
             }
         };
