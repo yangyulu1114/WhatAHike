@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.UserCommentAdapter;
@@ -75,7 +76,10 @@ public class DetailedTrailActivity extends AppCompatActivity {
             }
             @Override
             public void onFailed(Exception e) {
-                Log.e("comment activity: ", e.getMessage());
+                if (e instanceof FirebaseTimeoutException) {
+                    Log.v("bush", "timeout");
+                    //Toast no network
+                }
             }
         });
     }
