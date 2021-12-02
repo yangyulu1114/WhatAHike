@@ -1,7 +1,9 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,22 +54,13 @@ public class DetailedTrailActivity extends AppCompatActivity {
         if (trailId == null)
             trailId = getIntent().getStringExtra("trailId");
 
-        AppBarLayout appBarLayout = findViewById(R.id.appBar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-                int color = Color.argb(200,0,0,0);
-                collapsingToolbar.setCollapsedTitleTextColor(color);
-                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) { // fold
-                    collapsingToolbar.setTitle("User Comments");
-                } else { // not fold
-                    collapsingToolbar.setTitle("");
-                }
-            }
-        });
+        // set view
+        setupView();
 
+        // set trail info
         initTrailDetail();
+
+        // set comments
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
             public void onSuccess(List<Comment> data) {
@@ -84,6 +77,34 @@ public class DetailedTrailActivity extends AppCompatActivity {
         });
     }
 
+    private void setupView() {
+        AppBarLayout appBarLayout = findViewById(R.id.appBar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+                int color = Color.argb(200,0,0,0);
+                collapsingToolbar.setCollapsedTitleTextColor(color);
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) { // fold
+                    collapsingToolbar.setTitle("User Comments");
+                } else { // not fold
+                    collapsingToolbar.setTitle("");
+                }
+            }
+        });
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setCustomView(R.layout.detailedtrail_actionbar);
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Toolbar parent =(Toolbar)mActionBar.getCustomView().getParent();
+        parent.setPadding(0,0,0,0);
+        parent.setContentInsetsAbsolute(0,0);
+    }
+
+    public void backToMain(View view) {
+
+    }
+
     @Override
     public void onRestart() {
         super.onRestart();
@@ -98,6 +119,12 @@ public class DetailedTrailActivity extends AppCompatActivity {
                 Log.e("comment activity: ", e.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.v("comment activity: ", "onStop");
     }
 
     public void addComment(View view) {
