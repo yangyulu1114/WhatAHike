@@ -1,10 +1,8 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,12 +10,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,11 +27,8 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DetailedTrailActivity extends AppCompatActivity {
@@ -54,30 +46,58 @@ public class DetailedTrailActivity extends AppCompatActivity {
         if (trailId == null)
             trailId = getIntent().getStringExtra("trailId");
 
-        // set view
-        setupView();
+        // set up tool bar
+        setupToolBar();
 
         // set trail info
         initTrailDetail();
 
-        // set comments
+        // set comments view
+        setupCommentView();
+    }
+
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        setupCommentView();
+        Log.v("comment activity: ", "onRestart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.v("comment activity: ", "onStop");
+    }
+
+    private void setupCommentView() {
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
             public void onSuccess(List<Comment> data) {
                 commentList = data;
+                Collections.sort(commentList, new Comparator<Comment>() {
+                    @Override
+                    public int compare(Comment c1, Comment c2) {
+                        if (c1.getTimeStamp() < c2.getTimeStamp())
+                            return 1;
+                        else if (c1.getTimeStamp() > c2.getTimeStamp())
+                            return -1;
+                        return 0;
+                    }
+                });
                 initComments();
             }
             @Override
             public void onFailed(Exception e) {
                 if (e instanceof FirebaseTimeoutException) {
-                    Log.v("bush", "timeout");
+                    Log.v("comment activity: ", "timeout");
                     //Toast no network
                 }
             }
         });
     }
 
-    private void setupView() {
+    private void setupToolBar() {
         AppBarLayout appBarLayout = findViewById(R.id.appBar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -102,29 +122,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
     }
 
     public void backToMain(View view) {
-
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        RestAPI.getComments(trailId, new Listener<List<Comment>>() {
-            @Override
-            public void onSuccess(List<Comment> data) {
-                commentList = data;
-                initComments();
-            }
-            @Override
-            public void onFailed(Exception e) {
-                Log.e("comment activity: ", e.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.v("comment activity: ", "onStop");
+        finish();
     }
 
     public void addComment(View view) {
@@ -133,31 +131,18 @@ public class DetailedTrailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    
     private void initComments() {
-        // for text
-//        commentList = new ArrayList<>();
-//
-//        Comment comment = new Comment("user1");
-//        comment.setText("short text");
-//        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/0.jpg",
-//                "http://gothomas.me/images/banners/1.jpg"));
-//        commentList.add(comment);
-//        comment = new Comment("user2");
-//        comment.setText("long text\nl2\nl3\nl4\ndsfdasfdasfdasfdsa");
-//        comment.setImages(Arrays.asList("http://gothomas.me/images/banners/2.jpg",
-//                "http://gothomas.me/images/banners/3.jpg"));
-//        commentList.add(comment);
-        // end of hard code testing
 
-        if (commentList != null) {
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutManager);
-            adapter = new UserCommentAdapter(commentList, trailId);
-            recyclerView.setAdapter(adapter);
-        } else {
-            Log.e("comment activity: ", "no comment list returned");
-        }
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setHasFixedSize(true);
+
+        adapter = new UserCommentAdapter(commentList, trailId);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+
+        Log.v("comment activity: ", "init comment");
     }
 
 
