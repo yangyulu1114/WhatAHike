@@ -65,18 +65,13 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         }
 
         public void initTextView(String content) {
-            text.getViewTreeObserver().addOnGlobalLayoutListener(
-                    new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            if (text.getWidth() == 0) {
-                                return;
-                            }
-                            text.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            setText(content);
-                        }
-                    }
-            );
+            if (content == null || content.length() == 0) {
+                text.setVisibility(View.GONE);
+                expansionButton.setVisibility(View.GONE);
+                return;
+            }
+
+            setText(content);
             expansionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -87,10 +82,6 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         }
 
         private void setText(String content) {
-            if (text.getWidth() == 0) {
-                return;
-            }
-
             text.setText(content);
 
             text.post(new Runnable() {
@@ -140,44 +131,47 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-            Comment comment = mCommentList.get(position);
+        final Comment comment = mCommentList.get(position);
 
-            holder.user.setText(comment.getUserId());
-            holder.time.setText(new Date(comment.getTimeStamp()).toString());
-            // set up folded text
-            holder.initTextView(comment.getText());
+        holder.setIsRecyclable(false);
 
-            List<String> images = comment.getImages();
-        try {
-            for (int i = 0; i < images.size() && i < 9; i++) {
-                int index = i;
-                ImageLoader.loadImage(images.get(i), new Listener<Bitmap>() {
-                    @Override
-                    public void onSuccess(Bitmap data) {
-                        // set image click listener
-                        holder.images[index].setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent previewIntent = new Intent(mContext, ImagePreviewActivity.class);
-                                previewIntent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
-                                previewIntent.putExtra("position", index);
-                                mContext.startActivity(previewIntent);
-                            }
-                        });
-                        // set up the view
-                        holder.images[index].setImageBitmap(data);
-                        holder.images[index].setVisibility(View.VISIBLE);
-                    }
+        holder.user.setText(comment.getUserId());
+        holder.time.setText(new Date(comment.getTimeStamp()).toString());
+        // set up folded text
+        holder.initTextView(comment.getText());
 
-                    @Override
-                    public void onFailed(Exception e) {
-                    }
-                });
-            }
+        // set up images
+        List<String> images = comment.getImages();
 
-        } catch (Exception e) {
-            Log.e("comment adapter: ", e.getMessage());
+        if (images == null)
+            return;
+
+        for (int i = 0; i < images.size() && i < 9; i++) {
+            int index = i;
+            ImageLoader.loadImage(images.get(i), new Listener<Bitmap>() {
+                @Override
+                public void onSuccess(Bitmap data) {
+                    // set image click listener
+                    holder.images[index].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent previewIntent = new Intent(mContext, ImagePreviewActivity.class);
+                            previewIntent.putStringArrayListExtra("imageList", (ArrayList<String>) images);
+                            previewIntent.putExtra("position", index);
+                            mContext.startActivity(previewIntent);
+                        }
+                    });
+                    // set up the view
+                    holder.images[index].setImageBitmap(data);
+                    holder.images[index].setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onFailed(Exception e) {
+                }
+            });
         }
+
     }
 
     @Override
