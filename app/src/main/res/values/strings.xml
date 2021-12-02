@@ -25,9 +25,7 @@
     </string-array>
 
     <string-array name="sort">
-        <item>Sort by Distance Asc</item>
-        <item>Sort by Distance Desc</item>
-        <item>Sort by Popularity Asc</item>
-        <item>Sort by Popularity Desc</item>
+        <item>Closest Trails</item>
+        <item>Most popular Trails</item>
     </string-array>
 </resources>

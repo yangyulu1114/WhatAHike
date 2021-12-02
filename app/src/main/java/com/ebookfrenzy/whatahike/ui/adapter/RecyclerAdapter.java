@@ -118,10 +118,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         });
 
 
-        holder.nameTxt.setText("Trail Name: " + name);
-        holder.areaTxt.setText("Trail Area: " + area);
-        holder.difficultyTxt.setText("Trail Difficulty: " + difficulty);
-        holder.distanceTxt.setText("Trail Distance: " + distance);
+        holder.nameTxt.setText(name);
+        holder.areaTxt.setText("Area: " + area);
+        holder.difficultyTxt.setText("Difficulty: " + difficulty);
+        holder.distanceTxt.setText("Distance: " + distance);
     }
 
     @Override
