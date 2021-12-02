@@ -86,6 +86,13 @@ public abstract class FireBaseModel {
                 }
             }
         });
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listener.onFailed(new FirebaseTimeoutException(null));
+            }
+        }, TIMEOUT_MS);
     }
 
     public abstract String getModelName();
