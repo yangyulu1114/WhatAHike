@@ -45,6 +45,7 @@
             android:theme="@style/Theme.WhatAHike.NoActionBar" />
         <activity
             android:name=".ui.activity.MainActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:exported="true" />
     </application>
 

@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="408dp"
         android:layout_height="145dp"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:background="@color/teal_200">
 
         <ImageView
             android:id="@+id/TrailImage"
@@ -32,6 +33,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="153dp"
             android:layout_marginTop="8dp"
+            android:textStyle="bold"
             android:text="Name" />
 
         <TextView
