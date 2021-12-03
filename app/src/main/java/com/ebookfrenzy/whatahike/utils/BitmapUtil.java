@@ -82,21 +82,30 @@ public class BitmapUtil {
         return MyApplication.getAppContext().getContentResolver().openInputStream(Uri.parse(uri));
     }
 
-    public static Bitmap decodeBitmap(String url, int reqWidth, int reqHeight) throws Exception {
+    private static int[] getSrcSize(String url) throws Exception {
         InputStream inputStream = createInputStream(url);
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(inputStream, null, options);
-
-        options.inSampleSize = calculateInSampleSize(url, options, reqWidth, reqHeight);
-
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeStream(createInputStream(url), null, options);
+        inputStream.close();
+        return new int[]{options.outHeight, options.outWidth};
     }
 
-    public static int calculateInSampleSize(String url, BitmapFactory.Options options, int reqWidth, int reqHeight) throws Exception {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
+    public static Bitmap decodeBitmap(String url, int reqWidth, int reqHeight) throws Exception {
+        InputStream inputStream = createInputStream(url);
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        int[] srcSize = getSrcSize(url);
+
+        options.inSampleSize = calculateInSampleSize(url, srcSize[0], srcSize[1], reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap =  BitmapFactory.decodeStream(inputStream, null, options);
+        inputStream.close();
+        return bitmap;
+    }
+
+    public static int calculateInSampleSize(String url, int srcHeight, int srcWidth, int reqWidth, int reqHeight) throws Exception {
+        final int height = srcHeight;
+        final int width = srcWidth;
         int inSampleSize = 1;
         int degree = getBitmapDegree(url) % 180;
 
