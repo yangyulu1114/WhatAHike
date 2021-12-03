@@ -40,6 +40,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
         boolean isExpansion;
 
+        ImageView userIcon;
         ImageView[] images;
 
         public ViewHolder(View view) {
@@ -50,6 +51,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             text = view.findViewById(R.id.comment_text);
             expansionButton = view.findViewById(R.id.expansion_button);
             time = view.findViewById(R.id.post_time);
+
+            userIcon = view.findViewById(R.id.userIcon);
 
             images = new ImageView[9];
             images[0] = (ImageView) view.findViewById(R.id.image1);
@@ -135,10 +138,14 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
         holder.setIsRecyclable(false);
 
+
         holder.user.setText(comment.getUserId());
         holder.time.setText(new Date(comment.getTimeStamp()).toString());
+
         // set up folded text
         holder.initTextView(comment.getText());
+
+        // set up user icon
 
         // set up images
         List<String> images = comment.getImages();
@@ -162,6 +169,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
                         }
                     });
                     // set up the view
+                    data = Bitmap.createScaledBitmap(data, 80, 80,true);
                     holder.images[index].setImageBitmap(data);
                     holder.images[index].setVisibility(View.VISIBLE);
                 }
