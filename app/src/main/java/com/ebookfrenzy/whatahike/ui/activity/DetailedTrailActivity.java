@@ -205,7 +205,6 @@ public class DetailedTrailActivity extends AppCompatActivity {
             }
         });
 
-        ScrollView scrollView = findViewById(R.id.trailScrollView);
     }
 
 }
