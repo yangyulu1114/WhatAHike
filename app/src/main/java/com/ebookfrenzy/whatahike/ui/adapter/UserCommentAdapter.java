@@ -139,7 +139,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         holder.setIsRecyclable(false);
 
 
-        holder.user.setText(comment.getUserId());
+        holder.user.setText(comment.getUserId().split("@")[0]);
         holder.time.setText(new Date(comment.getTimeStamp()).toString());
 
         // set up folded text
