@@ -12,8 +12,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ebookfrenzy.whatahike.R;
@@ -150,11 +153,45 @@ public class DetailedTrailActivity extends AppCompatActivity {
     private void initTrailDetail() {
         Trail trail = RestAPI.getTrailById(trailId);
 
+        StringBuilder sb = new StringBuilder();
+
         TextView trailInfo = findViewById(R.id.trail_detail);
-        trailInfo.setText(trail.getName() + "\n"
-                + trail.getArea() + ", " + trail.getCity() + ", " + trail.getCountry() + "\n"
-                + trail.getFeatures().toString() + "\n"
-                + trail.getActivities().toString());
+        sb.append(trail.getName());
+        trailInfo.setText(sb.toString());
+        sb.setLength(0);
+
+        TextView trailLoca = findViewById(R.id.trail_location);
+        sb.append(trail.getArea() + "\n");
+        if (trail.getCity() != null)
+            sb.append(trail.getCity() + " ");
+        if (trail.getState() != null)
+            sb.append(trail.getState() + " ");
+        if (trail.getCountry() != null)
+            sb.append(trail.getCountry());
+        trailLoca.setText(sb.toString());
+        sb.setLength(0);
+
+        TextView ratingDifficulty = findViewById(R.id.rating_difficulty);
+        sb.append("Rating: " + trail.getRating() + "   ");
+        sb.append("Difficulty: " + trail.getDifficulty());
+        ratingDifficulty.setText(sb.toString());
+        sb.setLength(0);
+
+        TextView features = findViewById(R.id.features);
+        sb.append("Features: ");
+        for (String feature: trail.getFeatures()) {
+            sb.append(feature + ", ");
+        }
+        features.setText(sb.toString());
+        sb.setLength(0);
+
+        TextView activities = findViewById(R.id.activities);
+        sb.append("Activities: ");
+        for (String activity: trail.getActivities()) {
+            sb.append(activity + ", ");
+        }
+        activities.setText(sb.toString());
+        sb.setLength(0);
 
         ImageView image = findViewById(R.id.trail_image);
         ImageLoader.loadImage(trail.getBannerURL(), new Listener<Bitmap>() {
@@ -167,7 +204,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
             public void onFailed(Exception e) {
             }
         });
-    }
 
+        ScrollView scrollView = findViewById(R.id.trailScrollView);
+    }
 
 }
