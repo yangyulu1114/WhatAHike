@@ -23,4 +23,9 @@
     <style name="Theme.WhatAHike.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.WhatAHike.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="RatingBar">
+        <item name="colorControlActivated">@color/colorRatingActive</item>
+        <item name="colorControlNormal">@color/colorRatingInactive</item>
+    </style>
 </resources>

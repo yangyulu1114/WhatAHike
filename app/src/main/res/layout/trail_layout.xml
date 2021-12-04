@@ -2,14 +2,16 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     app:cardCornerRadius="5dp">
 
-    <RelativeLayout
-        android:layout_width="408dp"
-        android:layout_height="145dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="395dp"
+        android:layout_height="142dp"
         android:layout_margin="5dp"
         android:background="@color/teal_200">
 
@@ -23,50 +25,71 @@
             android:layout_marginBottom="5dp"
             android:adjustViewBounds="false"
             android:contentDescription="This image acts as an icon."
-            android:padding="3dp" />
+            android:padding="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/Name"
-            android:layout_width="240dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="153dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="4dp"
+            android:text="Name"
             android:textStyle="bold"
-            android:text="Name" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/Distance"
             android:layout_width="238dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="153dp"
-            android:layout_marginBottom="21dp"
-            android:text="Distance" />
+            android:layout_marginStart="136dp"
+            android:layout_marginBottom="16dp"
+            android:text="Distance"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/Area"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="153dp"
-            android:layout_marginTop="40dp"
-            android:text="Area" />
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="52dp"
+            android:text="Area"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="84dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:theme="@style/RatingBar"
+            app:layout_constraintBottom_toTopOf="@+id/Distance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.219"
+            app:layout_constraintStart_toEndOf="@+id/Difficulty"
+            app:layout_constraintTop_toBottomOf="@+id/Area"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/Difficulty"
-            android:layout_width="238dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="153dp"
-            android:layout_marginBottom="56dp"
-            android:text="Difficulty" />
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="76dp"
+            android:text="Difficulty"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--            tools:layout_editor_absoluteX="152dp"-->
+<!--            tools:layout_editor_absoluteY="75dp" />-->
 
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="add_image_color">#888888</color>
     <color name="bg_floder_press">#bdbdbd</color>
+    <color name="colorRatingActive">#FDA14F</color>"
+    <color name="colorRatingInactive">#C9C9D1</color>
 </resources>
