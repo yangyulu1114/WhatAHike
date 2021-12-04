@@ -11,50 +11,18 @@
         android:id="@+id/recyclerView"
         android:layout_width="403dp"
         android:layout_height="572dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="96dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/Search"
-        android:layout_width="273dp"
-        android:layout_height="41dp"
-        android:ems="10"
-        android:hint="Let's Go!"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toStartOf="@+id/spinner"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.325" />
-
-    <ImageButton
-        android:id="@+id/searchButton"
-        android:layout_width="34dp"
-        android:layout_height="33dp"
-        android:onClick="searchTrail"
-        android:src="@drawable/ic_baseline_search_24"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305" />
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="101dp"
         android:layout_height="47dp"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/spinner2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toEndOf="@+id/searchButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="31dp" />
 
     <Spinner
         android:id="@+id/spinner2"
@@ -62,8 +30,8 @@
         android:layout_height="47dp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintHorizontal_bias="0.425"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.632" />
 </androidx.constraintlayout.widget.ConstraintLayout>

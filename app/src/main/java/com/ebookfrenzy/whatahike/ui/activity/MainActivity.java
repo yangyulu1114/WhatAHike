@@ -3,6 +3,8 @@ package com.ebookfrenzy.whatahike.ui.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,11 +53,19 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
     private static Location location;
     private LocationManager locationManager;
+    private ActionBar mainActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainActionBar = getSupportActionBar();
+        mainActionBar.setCustomView(R.layout.mainactivity_actionbar);
+        mainActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Toolbar parent =(Toolbar)mainActionBar.getCustomView().getParent();
+        parent.setPadding(0,0,0,0);
+        parent.setContentInsetsAbsolute(0,0);
 
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
@@ -78,6 +88,14 @@ public class MainActivity extends BaseActivity implements LocationListener{
         //System.out.println(startTrailList);
         setAdapter2();
         ImageButton btn = findViewById(R.id.searchButton);
+        ImageButton userProfile = findViewById(R.id.userButton);
+        userProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserSetting.class);
+                startActivity(intent);
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
