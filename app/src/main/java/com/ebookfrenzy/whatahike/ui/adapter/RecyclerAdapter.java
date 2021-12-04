@@ -23,6 +23,7 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
     private List<Trail> trailList;
@@ -75,6 +76,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         private RatingBar difficultyRating;
         private TextView difficultyTxt;
         private TextView distanceTxt;
+        private  ImageView trailImg;
 
 
         public MyViewHolder(final View view){
@@ -107,7 +109,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         ImageLoader.loadImage(trail.getIconURL(), new Listener<Bitmap>() {
             @Override
             public void onSuccess(Bitmap data) {
-                trailImg.setImageBitmap(data);
+                holder.trailImg.setImageBitmap(data);
             }
 
             @Override
