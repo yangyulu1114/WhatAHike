@@ -11,7 +11,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
@@ -21,6 +23,7 @@ import android.text.Editable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,14 +35,16 @@ import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements LocationListener {
+public class MainActivity extends BaseActivity implements LocationListener{
     EditText info;
     private List<Trail> trailList;
+    private List<Trail> startTrailList;
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
     private RecyclerAdapter.RecyclerViewClickListener listener;
@@ -63,13 +68,17 @@ public class MainActivity extends BaseActivity implements LocationListener {
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
                 R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner.setAdapter(myAdapter2);
+        //mySpinner.setAdapter(myAdapter2);
 
         info = findViewById(R.id.Search);
 
 
         recyclerView = findViewById(R.id.recyclerView);
+        startTrailList = getStartTrail();
+        //System.out.println(startTrailList);
+        setAdapter2();
         ImageButton btn = findViewById(R.id.searchButton);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -79,11 +88,10 @@ public class MainActivity extends BaseActivity implements LocationListener {
             }
 
         });
+        //setAdapter();
+        // get the arrayList data back, and then setAdapter();
 
 
-
-                //setTrailInfo();
-        setAdapter();
     }
 
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
@@ -124,6 +132,17 @@ public class MainActivity extends BaseActivity implements LocationListener {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setAdapter2() {
+        setOnClickListener();
+        adapter = new RecyclerAdapter(startTrailList, listener);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
     }
 
@@ -225,7 +244,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
                 return t2.getNumReviews() - t1.getNumReviews();
             }
         }));
-        trailList = trailList.subList(0, 10);
+        //trailList = trailList.subList(0, 10);
+
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -236,14 +256,75 @@ public class MainActivity extends BaseActivity implements LocationListener {
         return super.dispatchTouchEvent(ev);
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (getCurrentFocus() != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-        return super.dispatchTouchEvent(ev);
+    private List<Trail> getStartTrail(){
+        startTrailList = RestAPI.getTrails(new Filter<Trail>() {
+            String state;
+            @Override
+            public boolean pass(Trail trail) {
+                //implement pass function
+
+                try {
+                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    state = addresses.get(0).getAdminArea().toLowerCase();
+                    //System.out.println(state);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return trail.getState().toLowerCase().equals(state) || trail.getName().toLowerCase().contains(state);
+            }
+        }, new Comparator<Trail>() {
+            @Override
+            public int compare(Trail o1, Trail o2) {
+                //implement comparator
+                double o1dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
+                        o1.getLocation()[0], o1.getLocation()[1]);
+                double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
+                        o2.getLocation()[0], o2.getLocation()[1]);
+
+                if (o1dis <  o2dis) {return -1;}
+                else if (o1dis >  o2dis) {return 1;}
+                else {return 0;}
+            }
+        });
+        return startTrailList;
     }
 
+   // @Override
+//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//        String selection = adapterView.getItemAtPosition(i).toString();
+//        startTrailList = getStartTrail2(selection);
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//    }
 
+//    private List<Trail> getStartTrail2(String selection){
+//        startTrailList = RestAPI.getTrails(new Filter<Trail>() {
+//            String state;
+//            @Override
+//            public boolean pass(Trail trail) {
+//                //implement pass function
+//
+//                try {
+//                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+//                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                    state = addresses.get(0).getAdminArea().toLowerCase();
+//                    System.out.println(state);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return trail.getState().toLowerCase().equals(state) || trail.getName().toLowerCase().contains(state);
+//            }
+//        }, new Comparator<Trail>() {
+//            @Override
+//            public int compare(Trail o1, Trail o2) {
+//                //implement comparator
+//                return o1.getNumReviews() - o2.getNumReviews();
+//            }
+//        });
+//        return startTrailList;
+//    }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -71,6 +72,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nameTxt;
         private TextView areaTxt;
+        private RatingBar difficultyRating;
         private TextView difficultyTxt;
         private TextView distanceTxt;
 
@@ -79,6 +81,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(view);
             nameTxt = view.findViewById(R.id.Name);
             areaTxt = view.findViewById(R.id.Area);
+            difficultyRating = view.findViewById(R.id.ratingBar);
             difficultyTxt = view.findViewById(R.id.Difficulty);
             distanceTxt = view.findViewById(R.id.Distance);
             trailImg = view.findViewById(R.id.TrailImage);
@@ -99,13 +102,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         Trail trail = trailList.get(position);
-        String name = trail.getName();
-        String area = trail.getArea();
-        String difficulty = String.valueOf(trail.getDifficulty());
-        Location location = MainActivity.getLocation();
-        double distance = Math.round(RestAPI.getDistance(location.getLatitude(), location.getLongitude(), trail.getLocation()[0], trail.getLocation()[1]));
-        ImageLoader.loadImage(trail.getBannerURL(), new Listener<Bitmap>() {
+        ImageLoader.loadImage(trail.getIconURL(), new Listener<Bitmap>() {
             @Override
             public void onSuccess(Bitmap data) {
                 trailImg.setImageBitmap(data);
@@ -116,12 +115,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             }
         });
+        String name = trail.getName();
+        String area = trail.getArea();
+        float difficulty =  trail.getDifficulty();
+        difficulty = (float) Math.ceil(difficulty/2);
+        //System.out.println(difficulty);
+        Location location = MainActivity.getLocation();
+        double distance = Math.round(RestAPI.getDistance(location.getLatitude(), location.getLongitude(), trail.getLocation()[0], trail.getLocation()[1]));
+
 
 
         holder.nameTxt.setText(name);
         holder.areaTxt.setText("Area: " + area);
-        holder.difficultyTxt.setText("Difficulty: " + difficulty);
-        holder.distanceTxt.setText("Distance: " + distance);
+        holder.difficultyTxt.setText("Difficulty: ");
+        holder.difficultyRating.setRating(difficulty);
+        holder.distanceTxt.setText("Distance: " + distance + " miles");
     }
 
     @Override
