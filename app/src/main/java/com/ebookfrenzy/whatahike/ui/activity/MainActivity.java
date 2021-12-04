@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
@@ -43,7 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements LocationListener{
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemSelectedListener{
     EditText info;
     private List<Trail> trailList;
     private List<Trail> startTrailList;
@@ -54,6 +55,9 @@ public class MainActivity extends BaseActivity implements LocationListener{
     private static Location location;
     private LocationManager locationManager;
     private ActionBar mainActionBar;
+    private String keywords;
+    private boolean keyword;
+    private List<String> preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +73,14 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
-                R.layout.activity_list_item, getResources().getStringArray(R.array.names));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> myAdapter = ArrayAdapter.createFromResource(this, R.array.names, R.layout.activity_list_item);
         mySpinner.setAdapter(myAdapter);
+        mySpinner.setOnItemSelectedListener(this);
 
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
-        ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
-                R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //mySpinner.setAdapter(myAdapter2);
+        ArrayAdapter<CharSequence> myAdapter2 = ArrayAdapter.createFromResource(this, R.array.sort, R.layout.activity_list_item);
+        mySpinner2.setAdapter(myAdapter2);
+        mySpinner2.setOnItemSelectedListener(this);
 
         info = findViewById(R.id.Search);
 
@@ -308,7 +310,18 @@ public class MainActivity extends BaseActivity implements LocationListener{
         return startTrailList;
     }
 
-   // @Override
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selection = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), selection, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    // @Override
 //    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //        String selection = adapterView.getItemAtPosition(i).toString();
 //        startTrailList = getStartTrail2(selection);
