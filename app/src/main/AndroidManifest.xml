@@ -18,17 +18,19 @@
         android:theme="@style/Theme.WhatAHike"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activity.UserSetting"
+            android:exported="true" />
+        <activity
             android:name=".ui.activity.AddCommentActivity"
             android:exported="true"
             android:parentActivityName=".ui.activity.DetailedTrailActivity" />
-
         <activity
             android:name=".ui.activity.DetailedTrailActivity"
             android:exported="true"
-            android:parentActivityName=".ui.activity.MainActivity"/>
+            android:parentActivityName=".ui.activity.MainActivity" />
         <activity
             android:name=".ui.activity.ImagePreviewActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ui.activity.SplashActivity"
             android:exported="true">
@@ -45,8 +47,8 @@
             android:theme="@style/Theme.WhatAHike.NoActionBar" />
         <activity
             android:name=".ui.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
     </application>
 
 </manifest>
