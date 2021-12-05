@@ -14,10 +14,6 @@
 
     <string name="trailId">trailId</string>
     <string-array name="names">
-        <item>50 miles</item>
-        <item>100 miles</item>
-        <item>200 miles</item>
-        <item>500 miles</item>
         <item>Difficulty - Easy</item>
         <item>Difficulty - Medium</item>
         <item>Difficulty - Hard</item>
