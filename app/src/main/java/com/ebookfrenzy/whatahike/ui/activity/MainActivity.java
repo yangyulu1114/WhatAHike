@@ -79,10 +79,11 @@ public class MainActivity extends BaseActivity implements LocationListener{
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
                 R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //mySpinner.setAdapter(myAdapter2);
+        myAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner2.setAdapter(myAdapter2);
 
-
+        //currentFilter = stateFilter;
+        //setAdapter();
         initFiltersAndComparators();
         initView();
 
@@ -132,7 +133,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 }
                 return checkConditions(trail)
                         && (trail.getState().toLowerCase().equals(state)
-                            || trail.getName().toLowerCase().contains(state));
+                        || trail.getName().toLowerCase().contains(state));
             }
         };
 
@@ -143,7 +144,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 String keyword = info.getText().toString().trim().toLowerCase();
                 return checkConditions(trail)
                         && (trail.getState().toLowerCase().equals(keyword)
-                            || trail.getName().toLowerCase().contains(keyword));
+                        || trail.getName().toLowerCase().contains(keyword));
             }
         };
 
@@ -290,7 +291,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
     }
 
 
-   // @Override
+    // @Override
 //    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //        String selection = adapterView.getItemAtPosition(i).toString();
 //        startTrailList = getStartTrail2(selection);
