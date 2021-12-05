@@ -18,6 +18,10 @@ public class User {
         return mRemoteUser.getEmail();
     }
 
+    public String getUid() {
+        return mRemoteUser.getUid();
+    }
+
     public String getDisplayName() {
         return mRemoteUser.getDisplayName();
     }

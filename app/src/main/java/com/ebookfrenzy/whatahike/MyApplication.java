@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ebookfrenzy.whatahike.model.Preference;
+import com.ebookfrenzy.whatahike.utils.Listener;
 import com.ebookfrenzy.whatahike.utils.SharedPrefUtil;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 import java.io.FileInputStream;
+import java.util.Arrays;
 
 public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
@@ -26,7 +30,6 @@ public class MyApplication extends Application implements Application.ActivityLi
 
         MyApplication.context = getApplicationContext();
         registerActivityLifecycleCallbacks(this);
-
     }
 
     public static Context getAppContext() {
