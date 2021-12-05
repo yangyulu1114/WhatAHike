@@ -22,10 +22,12 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
@@ -40,7 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class MainActivity extends BaseActivity implements LocationListener{
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemSelectedListener{
     private EditText info;
     private List<Trail> trailList;
     private RecyclerAdapter adapter;
@@ -75,12 +77,14 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 R.layout.activity_list_item, getResources().getStringArray(R.array.names));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
+        mySpinner.setOnItemSelectedListener(this);
 
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
                 R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
         myAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter2);
+        mySpinner2.setOnItemSelectedListener(this);
 
         //currentFilter = stateFilter;
         //setAdapter();
@@ -288,6 +292,38 @@ public class MainActivity extends BaseActivity implements LocationListener{
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String selection = adapterView.getItemAtPosition(i).toString();
+        if(selection.equals("Difficulty-Easy")){
+            difficulty = 1;
+        }
+        if(selection.equals("Difficulty-Medium")){
+            difficulty = 3;
+        }
+        if(selection.equals("Difficulty-Hard")){
+            difficulty = 5;
+        }
+        if(selection.equals("Difficulty-Extreme")){
+            difficulty = 7;
+        }
+        if(selection.equals("Closest Trails")){
+            defaultComparator = distanceComparator;
+            setAdapter();
+        }
+        if(selection.equals("Most popular Trails")){
+            defaultComparator = popularityComparator;
+            setAdapter();
+        }
+
+        Toast.makeText(adapterView.getContext(), selection, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
 
