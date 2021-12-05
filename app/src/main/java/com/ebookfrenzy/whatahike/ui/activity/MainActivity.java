@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
@@ -43,7 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements LocationListener{
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemSelectedListener {
     EditText info;
     private List<Trail> trailList;
     private List<Trail> startTrailList;
@@ -63,22 +64,20 @@ public class MainActivity extends BaseActivity implements LocationListener{
         mainActionBar = getSupportActionBar();
         mainActionBar.setCustomView(R.layout.mainactivity_actionbar);
         mainActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        Toolbar parent =(Toolbar)mainActionBar.getCustomView().getParent();
-        parent.setPadding(0,0,0,0);
-        parent.setContentInsetsAbsolute(0,0);
+        Toolbar parent = (Toolbar) mainActionBar.getCustomView().getParent();
+        parent.setPadding(0, 0, 0, 0);
+        parent.setContentInsetsAbsolute(0, 0);
 
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
-                R.layout.activity_list_item, getResources().getStringArray(R.array.names));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> myAdapter = ArrayAdapter.createFromResource(this, R.array.names, R.layout.activity_list_item);
         mySpinner.setAdapter(myAdapter);
+        mySpinner.setOnItemSelectedListener(this);
 
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
-        ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(MainActivity.this,
-                R.layout.activity_list_item, getResources().getStringArray(R.array.sort));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //mySpinner.setAdapter(myAdapter2);
+        ArrayAdapter<CharSequence> myAdapter2 = ArrayAdapter.createFromResource(this, R.array.sort, R.layout.activity_list_item);
+        mySpinner2.setAdapter(myAdapter2);
+        mySpinner2.setOnItemSelectedListener(this);
 
         info = findViewById(R.id.Search);
 
@@ -165,7 +164,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
     }
 
     private void setOnClickListener() {
-        listener = new RecyclerAdapter.RecyclerViewClickListener(){
+        listener = new RecyclerAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getApplicationContext(), DetailedTrailActivity.class);
@@ -235,7 +234,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void getTrail(Editable text){
+    private void getTrail(Editable text) {
         trailList = RestAPI.getTrails(new Filter<Trail>() {
             @Override
             public boolean pass(Trail trail) {
@@ -252,9 +251,13 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o2.getLocation()[0], o2.getLocation()[1]);
 
-                if (o1dis <  o2dis) {return -1;}
-                else if (o1dis >  o2dis) {return 1;}
-                else {return 0;}
+                if (o1dis < o2dis) {
+                    return -1;
+                } else if (o1dis > o2dis) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
         }.thenComparing(new Comparator<Trail>() {
             @Override
@@ -265,6 +268,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
         //trailList = trailList.subList(0, 10);
 
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (getCurrentFocus() != null) {
@@ -274,9 +278,10 @@ public class MainActivity extends BaseActivity implements LocationListener{
         return super.dispatchTouchEvent(ev);
     }
 
-    private List<Trail> getStartTrail(){
+    private List<Trail> getStartTrail() {
         startTrailList = RestAPI.getTrails(new Filter<Trail>() {
             String state;
+
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
@@ -300,15 +305,30 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o2.getLocation()[0], o2.getLocation()[1]);
 
-                if (o1dis <  o2dis) {return -1;}
-                else if (o1dis >  o2dis) {return 1;}
-                else {return 0;}
+                if (o1dis < o2dis) {
+                    return -1;
+                } else if (o1dis > o2dis) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
         });
         return startTrailList;
     }
 
-   // @Override
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String selection = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(adapterView.getContext(), selection, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+
+    // @Override
 //    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //        String selection = adapterView.getItemAtPosition(i).toString();
 //        startTrailList = getStartTrail2(selection);
