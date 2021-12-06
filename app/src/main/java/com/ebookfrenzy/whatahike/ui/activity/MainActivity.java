@@ -90,6 +90,13 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         //setAdapter();
         initFiltersAndComparators();
         initView();
+        ImageButton imageButton = findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSettingPage();
+            }
+        });
 
     }
 
@@ -123,7 +130,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         defaultComparator = distanceComparator.thenComparing(popularityComparator);
 
         difficulty = -1;
-        features = new HashSet<String>();
+        features = SettingActivity.getSelected();
 
         stateFilter = new Filter<Trail>() {
             String state;
@@ -339,6 +346,11 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void openSettingPage(){
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
     }
 
 
