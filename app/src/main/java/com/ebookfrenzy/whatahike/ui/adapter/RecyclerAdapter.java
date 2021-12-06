@@ -27,7 +27,7 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
     private List<Trail> trailList;
     private RecyclerViewClickListener listener;
-    private ImageView trailImg;
+
     //private List<Trail> trailListFull;
 
     public RecyclerAdapter(List<Trail> trailList, RecyclerViewClickListener listener){
@@ -75,6 +75,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         private RatingBar difficultyRating;
         private TextView difficultyTxt;
         private TextView distanceTxt;
+        private ImageView trailImg;
 
 
         public MyViewHolder(final View view){
@@ -107,7 +108,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         ImageLoader.loadImage(trail.getIconURL(), new Listener<Bitmap>() {
             @Override
             public void onSuccess(Bitmap data) {
-                trailImg.setImageBitmap(data);
+                holder.trailImg.setImageBitmap(data);
             }
 
             @Override

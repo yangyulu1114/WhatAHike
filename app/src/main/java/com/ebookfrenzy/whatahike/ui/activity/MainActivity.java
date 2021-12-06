@@ -147,8 +147,11 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 //implement pass function
                 String keyword = info.getText().toString().trim().toLowerCase();
                 return checkConditions(trail)
-                        && (trail.getState().toLowerCase().equals(keyword)
-                        || trail.getName().toLowerCase().contains(keyword));
+                        && (trail.getState().toLowerCase().contains(keyword)
+                        || trail.getCity().toLowerCase().contains(keyword)
+                        || trail.getCountry().toLowerCase().contains(keyword)
+                        || trail.getName().toLowerCase().contains(keyword)
+                        || trail.getArea().toLowerCase().contains(keyword));
             }
         };
 
@@ -171,7 +174,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             if (curDiff != 7)
                 return false;
         }
-
+        if(features.size() == 0){
+            return true;
+        }
         List<String> curFeatures = trail.getFeatures();
 
         for (String feature: curFeatures) {
@@ -249,7 +254,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getApplicationContext(), DetailedTrailActivity.class);
-                intent.putExtra("trailId", "10020048");
+                intent.putExtra("trailId", trailList.get(position).getId());
                 startActivity(intent);
             }
         };
@@ -297,24 +302,28 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String selection = adapterView.getItemAtPosition(i).toString();
-        if(selection.equals("Difficulty-Easy")){
+        if(selection.equals("Difficulty - Easy")){
             difficulty = 1;
+            setAdapter();
         }
-        if(selection.equals("Difficulty-Medium")){
+        if(selection.equals("Difficulty - Medium")){
             difficulty = 3;
+            setAdapter();
         }
-        if(selection.equals("Difficulty-Hard")){
+        if(selection.equals("Difficulty - Hard")){
             difficulty = 5;
+            setAdapter();
         }
-        if(selection.equals("Difficulty-Extreme")){
+        if(selection.equals("Difficulty - Extreme")){
             difficulty = 7;
+            setAdapter();
         }
         if(selection.equals("Closest Trails")){
-            defaultComparator = distanceComparator;
+            currentComparator = distanceComparator;
             setAdapter();
         }
         if(selection.equals("Most popular Trails")){
-            defaultComparator = popularityComparator;
+            currentComparator = popularityComparator;
             setAdapter();
         }
 
