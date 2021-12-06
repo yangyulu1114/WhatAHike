@@ -123,7 +123,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         difficulty = (float) Math.ceil(difficulty/2);
         //System.out.println(difficulty);
         Location location = MainActivity.getLocation();
-        double distance = Math.round(RestAPI.getDistance(location.getLatitude(), location.getLongitude(), trail.getLocation()[0], trail.getLocation()[1]));
+        if (location == null) {
+            holder.distanceTxt.setText("Can't fetch your location");
+        }
+        else {
+            double distance = Math.round(RestAPI.getDistance(location.getLatitude(), location.getLongitude(), trail.getLocation()[0], trail.getLocation()[1]));
+            holder.distanceTxt.setText("Distance: " + distance + " miles");
+        }
 
 
 
@@ -131,7 +137,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         holder.areaTxt.setText("Area: " + area);
         holder.difficultyTxt.setText("Difficulty: ");
         holder.difficultyRating.setRating(difficulty);
-        holder.distanceTxt.setText("Distance: " + distance + " miles");
     }
 
     @Override
