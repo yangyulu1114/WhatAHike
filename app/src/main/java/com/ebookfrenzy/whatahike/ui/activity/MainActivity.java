@@ -98,6 +98,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         distanceComparator = new Comparator<Trail>() {
             @Override
             public int compare(Trail o1, Trail o2) {
+                if (location == null) {
+                    return 0;
+                }
                 //implement comparator
                 double o1dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o1.getLocation()[0], o1.getLocation()[1]);
@@ -127,7 +130,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
-
+                if (location == null) {
+                    return true;
+                }
                 try {
                     Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -136,7 +141,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                     e.printStackTrace();
                 }
                 return checkConditions(trail)
-                        && (trail.getState().toLowerCase().equals(state)
+                        && (trail.getState().toLowerCase().contains(state)
                         || trail.getName().toLowerCase().contains(state));
             }
         };
@@ -146,9 +151,10 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             public boolean pass(Trail trail) {
                 //implement pass function
                 String keyword = info.getText().toString().trim().toLowerCase();
+
                 return checkConditions(trail)
                         && (trail.getState().toLowerCase().contains(keyword)
-                        || trail.getCity().toLowerCase().contains(keyword)
+                        || (trail.getCity() != null && trail.getCity().toLowerCase().contains(keyword))
                         || trail.getCountry().toLowerCase().contains(keyword)
                         || trail.getName().toLowerCase().contains(keyword)
                         || trail.getArea().toLowerCase().contains(keyword));
