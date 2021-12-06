@@ -1,13 +1,20 @@
 package com.ebookfrenzy.whatahike;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.ebookfrenzy.whatahike.model.Comment;
+import com.ebookfrenzy.whatahike.model.Preference;
 import com.ebookfrenzy.whatahike.model.Trail;
+import com.ebookfrenzy.whatahike.model.User;
 import com.ebookfrenzy.whatahike.utils.FireBaseUtil;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.ebookfrenzy.whatahike.utils.MainThreadListener;
+import com.ebookfrenzy.whatahike.utils.SharedPrefUtil;
 import com.ebookfrenzy.whatahike.utils.TrailsReadingUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RestAPI {
+    private static final String KEY_USER_PREFERENCE = "key_user_preference";
     private static Map<String, Trail> trails;
 
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
@@ -108,5 +116,38 @@ public class RestAPI {
         });
     }
 
+    public static void getUserPreference(Listener<Preference> listener) {
+        Listener<Preference> mainThreadListener = new MainThreadListener(listener);
+        sExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                User user = User.getCurrentUser();
+                if (user == null) {
+                    mainThreadListener.onFailed(new IllegalStateException("user not login?"));
+                } else {
+                    String key = String.format("%s-%s", KEY_USER_PREFERENCE, user.getUid());
+                    String s = SharedPrefUtil.getValue(key);
+                    Preference preference = new Preference(Collections.EMPTY_LIST);
+                    try {
+                        preference = Preference.fromJson(new JSONObject(s));
+                    } catch (Exception e) {
+                    }
+                    mainThreadListener.onSuccess(preference);
+                }
+            }
+        });
+    }
 
+    public static void setUserPreference(Preference preference) {
+        sExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                User user = User.getCurrentUser();
+                if (user != null) {
+                    String key = String.format("%s-%s", KEY_USER_PREFERENCE, user.getUid());
+                    SharedPrefUtil.setValue(key, preference.toJson().toString());
+                }
+            }
+        });
+    }
 }

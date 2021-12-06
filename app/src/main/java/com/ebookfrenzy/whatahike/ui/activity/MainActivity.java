@@ -44,7 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemSelectedListener{
     EditText info;
     private List<Trail> trailList;
     private List<Trail> startTrailList;
@@ -55,6 +55,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private static Location location;
     private LocationManager locationManager;
     private ActionBar mainActionBar;
+    private String keywords;
+    private boolean keyword;
+    private List<String> preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +67,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         mainActionBar = getSupportActionBar();
         mainActionBar.setCustomView(R.layout.mainactivity_actionbar);
         mainActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        Toolbar parent = (Toolbar) mainActionBar.getCustomView().getParent();
-        parent.setPadding(0, 0, 0, 0);
-        parent.setContentInsetsAbsolute(0, 0);
+        Toolbar parent =(Toolbar)mainActionBar.getCustomView().getParent();
+        parent.setPadding(0,0,0,0);
+        parent.setContentInsetsAbsolute(0,0);
 
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
@@ -164,7 +167,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     }
 
     private void setOnClickListener() {
-        listener = new RecyclerAdapter.RecyclerViewClickListener() {
+        listener = new RecyclerAdapter.RecyclerViewClickListener(){
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getApplicationContext(), DetailedTrailActivity.class);
@@ -234,7 +237,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void getTrail(Editable text) {
+    private void getTrail(Editable text){
         trailList = RestAPI.getTrails(new Filter<Trail>() {
             @Override
             public boolean pass(Trail trail) {
@@ -251,13 +254,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o2.getLocation()[0], o2.getLocation()[1]);
 
-                if (o1dis < o2dis) {
-                    return -1;
-                } else if (o1dis > o2dis) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+                if (o1dis <  o2dis) {return -1;}
+                else if (o1dis >  o2dis) {return 1;}
+                else {return 0;}
             }
         }.thenComparing(new Comparator<Trail>() {
             @Override
@@ -268,7 +267,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         //trailList = trailList.subList(0, 10);
 
     }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (getCurrentFocus() != null) {
@@ -278,10 +276,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         return super.dispatchTouchEvent(ev);
     }
 
-    private List<Trail> getStartTrail() {
+    private List<Trail> getStartTrail(){
         startTrailList = RestAPI.getTrails(new Filter<Trail>() {
             String state;
-
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
@@ -305,28 +302,24 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o2.getLocation()[0], o2.getLocation()[1]);
 
-                if (o1dis < o2dis) {
-                    return -1;
-                } else if (o1dis > o2dis) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+                if (o1dis <  o2dis) {return -1;}
+                else if (o1dis >  o2dis) {return 1;}
+                else {return 0;}
             }
         });
         return startTrailList;
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selection = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), selection, Toast.LENGTH_SHORT).show();
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selection = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), selection, Toast.LENGTH_SHORT).show();
     }
 
-    public void onNothingSelected(AdapterView<?> adapterView) {
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
 
     // @Override
 //    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

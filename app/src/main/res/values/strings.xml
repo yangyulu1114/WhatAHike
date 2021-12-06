@@ -13,11 +13,8 @@
     <string name="splash_hello">Welcome to What A Hike</string>
 
     <string name="trailId">trailId</string>
+
     <string-array name="names">
-        <item>50 miles</item>
-        <item>100 miles</item>
-        <item>200 miles</item>
-        <item>500 miles</item>
         <item>Difficulty - Easy</item>
         <item>Difficulty - Medium</item>
         <item>Difficulty - Hard</item>
@@ -28,4 +25,8 @@
         <item>Closest Trails</item>
         <item>Most popular Trails</item>
     </string-array>
+
+    <string name="comment_nearby_trail">please add comment for %1$s</string>
+    <string name="recommend_nearby_trail">please hike %1$s</string>
+    <string name="suggest_hiking_trail">please go out for a hike</string>
 </resources>

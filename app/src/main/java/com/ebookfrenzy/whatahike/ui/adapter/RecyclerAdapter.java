@@ -2,7 +2,6 @@ package com.ebookfrenzy.whatahike.ui.adapter;
 
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,12 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
     private List<Trail> trailList;
     private RecyclerViewClickListener listener;
-
+    private ImageView trailImg;
     //private List<Trail> trailListFull;
 
     public RecyclerAdapter(List<Trail> trailList, RecyclerViewClickListener listener){
@@ -76,7 +76,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         private RatingBar difficultyRating;
         private TextView difficultyTxt;
         private TextView distanceTxt;
-        private ImageView trailImg;
+        private  ImageView trailImg;
+
 
         public MyViewHolder(final View view){
             super(view);
@@ -86,7 +87,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             difficultyTxt = view.findViewById(R.id.Difficulty);
             distanceTxt = view.findViewById(R.id.Distance);
             trailImg = view.findViewById(R.id.TrailImage);
-
             view.setOnClickListener(this);
         }
 
@@ -110,12 +110,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             @Override
             public void onSuccess(Bitmap data) {
                 holder.trailImg.setImageBitmap(data);
-                Log.v("thomas", "onsuccess");
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e("thomas", e.getMessage(), e);
+
             }
         });
         String name = trail.getName();
