@@ -1,5 +1,7 @@
 package com.ebookfrenzy.whatahike.utils;
 
+import com.ebookfrenzy.whatahike.MyApplication;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -23,4 +25,7 @@ public class StringUtil {
         return sb.toString();
     }
 
+    public static String get(int id, String...args) {
+        return MyApplication.getAppContext().getString(id, args);
+    }
 }

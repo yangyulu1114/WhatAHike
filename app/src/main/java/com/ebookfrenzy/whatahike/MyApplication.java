@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ebookfrenzy.whatahike.model.Preference;
+import com.ebookfrenzy.whatahike.notification.NotificationWorker;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.ebookfrenzy.whatahike.utils.SharedPrefUtil;
 import com.google.firebase.FirebaseApp;
@@ -30,6 +31,7 @@ public class MyApplication extends Application implements Application.ActivityLi
 
         MyApplication.context = getApplicationContext();
         registerActivityLifecycleCallbacks(this);
+        NotificationWorker.start();
     }
 
     public static Context getAppContext() {
