@@ -36,6 +36,7 @@ import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
+import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -243,14 +244,24 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     }
 
     private void setAdapter() {
-        trailList = RestAPI.getTrails(currentFilter, currentComparator);
+        RestAPI.getTrails(currentFilter, currentComparator, new Listener<List<Trail>>() {
+            @Override
+            public void onSuccess(List<Trail> data) {
+                trailList = data;
+                adapter = new RecyclerAdapter(trailList, listener);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setAdapter(adapter);
+            }
 
-        adapter = new RecyclerAdapter(trailList, listener);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
+
     }
 
     private void setOnClickListener() {
