@@ -5,13 +5,16 @@ import androidx.annotation.Nullable;
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Trail;
+import com.ebookfrenzy.whatahike.utils.Listener;
 import com.ebookfrenzy.whatahike.utils.LocationUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public abstract class NearbyTrailScenario implements NotificationScenario {
 
@@ -24,12 +27,30 @@ public abstract class NearbyTrailScenario implements NotificationScenario {
     @Nullable
     @Override
     public NotificationResult checkAvailableResult() {
+        final Trail[] trail = new Trail[1];
         double[] curLocation = LocationUtil.getCurrentLocation();
         if (curLocation != null) {
+            CountDownLatch latch = new CountDownLatch(1);
             TrailHandler trailHandler = new TrailHandler(curLocation);
-            List<Trail> trails = RestAPI.getTrails(trailHandler, trailHandler);
-            if (!trails.isEmpty()) {
-                return createNotificationResult(trails.get(0));
+            RestAPI.getTrails(trailHandler, trailHandler, new Listener<List<Trail>>() {
+                @Override
+                public void onSuccess(List<Trail> data) {
+                    trail[0] = data.size() > 0 ? data.get(0) : null;
+                    latch.countDown();
+                }
+
+                @Override
+                public void onFailed(Exception e) {
+                    latch.countDown();
+                }
+            });
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+            }
+            if (trail[0] != null) {
+                return createNotificationResult(trail[0]);
             }
         }
         return null;
