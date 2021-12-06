@@ -60,25 +60,31 @@ public class RestAPI {
         return trails.get(trailId);
     }
 
-    public static List<Trail> getTrails(Filter<Trail> filter, Comparator<Trail> comparator)
+    public static void getTrails(Filter<Trail> filter, Comparator<Trail> comparator, Listener<List<Trail>> listener)
         throws IllegalArgumentException {
 
         if (filter == null || comparator == null) {
             throw new IllegalArgumentException("Filter and Comparator can not be null.");
         }
 
-        if (trails == null) {
-            readCSVTrails();
-        }
+        Listener<List<Trail>> mainThreadListener = new MainThreadListener(listener);
+        sExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (trails == null) {
+                    readCSVTrails();
+                }
 
-        List<Trail> filterTrails = new ArrayList<>();
-        for (Trail trail : trails.values()) {
-            if (filter.pass(trail)) {
-                filterTrails.add(trail);
+                List<Trail> filterTrails = new ArrayList<>();
+                for (Trail trail : trails.values()) {
+                    if (filter.pass(trail)) {
+                        filterTrails.add(trail);
+                    }
+                }
+                Collections.sort(filterTrails, comparator);
+                mainThreadListener.onSuccess(filterTrails);
             }
-        }
-        Collections.sort(filterTrails, comparator);
-        return filterTrails;
+        });
     }
 
     private static void readCSVTrails() {

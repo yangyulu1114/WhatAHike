@@ -35,7 +35,8 @@ public class TestActivity extends BaseActivity {
 
 
         //get trails
-        List<Trail> trails = RestAPI.getTrails(new Filter<Trail>() {
+        final List<Trail>[] trails = null;
+        RestAPI.getTrails(new Filter<Trail>() {
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
@@ -47,7 +48,18 @@ public class TestActivity extends BaseActivity {
                 //implement comparator
                 return 0;
             }
+        }, new Listener<List<Trail>>() {
+            @Override
+            public void onSuccess(List<Trail> data) {
+                trails[0] = data;
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
         });
+
 
         //get comments
         RestAPI.getComments("1", new Listener<List<Comment>>() {
