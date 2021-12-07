@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -33,6 +34,7 @@ public class LocationUtil {
         String provider = sLocationManager.getBestProvider(criteria, false);
         CountDownLatch latch = new CountDownLatch(1);
         Location[] locations = new Location[1];
+        Looper.prepare();
         sLocationManager.requestLocationUpdates(provider, 0, 0, new LocationListener() {
 
             @Override
