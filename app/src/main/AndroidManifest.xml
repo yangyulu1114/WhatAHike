@@ -18,6 +18,9 @@
         android:theme="@style/Theme.WhatAHike"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activity.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activity.UserSetting"
             android:exported="true" />
         <activity

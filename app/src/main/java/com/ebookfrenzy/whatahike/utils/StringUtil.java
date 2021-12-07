@@ -25,7 +25,7 @@ public class StringUtil {
         return sb.toString();
     }
 
-    public static String get(int id, String...args) {
+    public static String get(int id, Object... args) {
         return MyApplication.getAppContext().getString(id, args);
     }
 }

@@ -18,10 +18,8 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import java.util.Arrays;
 import java.util.List;
 
-public class SplashActivity extends AppCompatActivity implements ActivityResultCallback<FirebaseAuthUIAuthenticationResult> {
+public class SplashActivity extends AppCompatActivity {
 
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(), this);
     private Handler mHandler = new Handler();
 
     @Override
@@ -39,21 +37,13 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
 
     private void signInIfNeeded() {
         if (User.getCurrentUser() == null) {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build()
-            );
-
-            Intent signInIntent = AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .build();
-
-            signInLauncher.launch(signInIntent);
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {
             onAuthCompleted(User.getCurrentUser());
         }
     }
+
 
     private void onAuthCompleted(User user) {
         //action after sign in
@@ -63,14 +53,4 @@ public class SplashActivity extends AppCompatActivity implements ActivityResultC
         finish();
     }
 
-    @Override
-    public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-        Log.v("bsuh", "result code " + result.getResultCode());
-
-        if (result.getResultCode() == RESULT_OK) {
-            onAuthCompleted(User.getCurrentUser());
-        } else {
-            // action if sign in failed;
-        }
-    }
 }
