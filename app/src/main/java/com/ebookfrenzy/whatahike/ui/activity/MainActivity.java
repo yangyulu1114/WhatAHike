@@ -21,6 +21,7 @@ import android.location.LocationManager;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -51,6 +53,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
     private RecyclerAdapter.RecyclerViewClickListener listener;
+    private View mMaskLayer;
+    private ProgressBar mProgressBar;
+    private Handler mHandler = new Handler();
 
     private static Location location;
     private LocationManager locationManager;
@@ -97,6 +102,10 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         myAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter2);
         mySpinner2.setOnItemSelectedListener(this);
+
+        mMaskLayer = findViewById(R.id.maskLayer);
+        mProgressBar = findViewById(R.id.progressBar);
+        setMask();
 
         //currentFilter = stateFilter;
         //setAdapter();
@@ -243,10 +252,26 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         setLocation();
     }
 
+    private void setMask() {
+        mMaskLayer.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void removeMask(long delay) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMaskLayer.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
+            }
+        }, delay);
+    }
     private void setAdapter() {
+        setMask();
         RestAPI.getTrails(currentFilter, currentComparator, new Listener<List<Trail>>() {
             @Override
             public void onSuccess(List<Trail> data) {
+                removeMask(400);
                 trailList = data;
                 adapter = new RecyclerAdapter(trailList, listener);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -258,7 +283,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 
             @Override
             public void onFailed(Exception e) {
-
+                removeMask(0);
             }
         });
 
