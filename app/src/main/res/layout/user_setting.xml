@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/dogsno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="dogs-no" />
+
+    <CheckBox
+        android:id="@+id/forest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="forest" />
+
+    <CheckBox
+        android:id="@+id/river"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="river" />
+
+    <CheckBox
+        android:id="@+id/views"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="views" />
+
+    <CheckBox
+        android:id="@+id/waterfall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="waterfall" />
+
+    <CheckBox
+        android:id="@+id/wildflowers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="wildflowers" />
+
+    <CheckBox
+        android:id="@+id/wildlife"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="wildlife" />
+
+    <Button
+        android:id="@+id/Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+    <Button
+        android:id="@+id/Reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset" />
+</LinearLayout>
