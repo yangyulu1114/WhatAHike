@@ -178,7 +178,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                         || (trail.getCity() != null && trail.getCity().toLowerCase().contains(keyword))
                         || trail.getCountry().toLowerCase().contains(keyword)
                         || trail.getName().toLowerCase().contains(keyword)
-                        || trail.getArea().toLowerCase().contains(keyword));
+                        || trail.getArea().toLowerCase().contains(keyword))
+                        || trail.getActivities().contains(keyword)
+                        || trail.getFeatures().contains(keyword);
             }
         };
 
@@ -273,6 +275,10 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             public void onSuccess(List<Trail> data) {
                 removeMask(400);
                 trailList = data;
+                if(trailList.isEmpty()){
+                    NoResultDialog dialog = new NoResultDialog();
+                    dialog.show(getSupportFragmentManager(), "can't find dialog");
+                }
                 adapter = new RecyclerAdapter(trailList, listener);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(layoutManager);
@@ -298,6 +304,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             @Override
             public void onClick(View view) {
                 currentFilter = keywordFilter;
+                currentComparator = defaultComparator;
                 setAdapter();
             }
 
@@ -355,6 +362,14 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String selection = adapterView.getItemAtPosition(i).toString();
+        if(selection.equals("Filter")){
+            currentFilter = keywordFilter;
+            setAdapter();
+        }
+        if(selection.equals("Sort")){
+            currentComparator = defaultComparator;
+            setAdapter();
+        }
         if(selection.equals("Difficulty - Easy")){
             difficulty = 1;
             setAdapter();
@@ -379,51 +394,10 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             currentComparator = popularityComparator;
             setAdapter();
         }
-
-        Toast.makeText(adapterView.getContext(), selection, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-
-    // @Override
-//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//        String selection = adapterView.getItemAtPosition(i).toString();
-//        startTrailList = getStartTrail2(selection);
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//    }
-
-//    private List<Trail> getStartTrail2(String selection){
-//        startTrailList = RestAPI.getTrails(new Filter<Trail>() {
-//            String state;
-//            @Override
-//            public boolean pass(Trail trail) {
-//                //implement pass function
-//
-//                try {
-//                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-//                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//                    state = addresses.get(0).getAdminArea().toLowerCase();
-//                    System.out.println(state);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                return trail.getState().toLowerCase().equals(state) || trail.getName().toLowerCase().contains(state);
-//            }
-//        }, new Comparator<Trail>() {
-//            @Override
-//            public int compare(Trail o1, Trail o2) {
-//                //implement comparator
-//                return o1.getNumReviews() - o2.getNumReviews();
-//            }
-//        });
-//        return startTrailList;
-//    }
 }

@@ -26,6 +26,8 @@
             android:adjustViewBounds="false"
             android:contentDescription="This image acts as an icon."
             android:padding="3dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_banner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +57,7 @@
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="136dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="40dp"
             android:text="Area"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -65,17 +67,17 @@
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="84dp"
             android:isIndicator="true"
             android:numStars="5"
             android:theme="@style/RatingBar"
             app:layout_constraintBottom_toTopOf="@+id/Distance"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.219"
+            app:layout_constraintHorizontal_bias="0.341"
             app:layout_constraintStart_toEndOf="@+id/Difficulty"
             app:layout_constraintTop_toBottomOf="@+id/Area"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.423" />
 
         <TextView
             android:id="@+id/Difficulty"

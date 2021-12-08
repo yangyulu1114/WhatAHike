@@ -15,6 +15,7 @@
     <string name="trailId">trailId</string>
 
     <string-array name="names">
+        <item>Filter</item>
         <item>Difficulty - Easy</item>
         <item>Difficulty - Medium</item>
         <item>Difficulty - Hard</item>
@@ -22,6 +23,7 @@
     </string-array>
 
     <string-array name="sort">
+        <item>Sort</item>
         <item>Closest Trails</item>
         <item>Most popular Trails</item>
     </string-array>
