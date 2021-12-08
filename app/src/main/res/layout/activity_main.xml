@@ -18,26 +18,26 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="101dp"
-        android:layout_height="47dp"
+        android:layout_width="165dp"
+        android:layout_height="35dp"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toStartOf="@+id/spinner2"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632" />
+        app:layout_constraintVertical_bias="0.534" />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="101dp"
-        android:layout_height="47dp"
+        android:layout_width="171dp"
+        android:layout_height="33dp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.425"
+        app:layout_constraintHorizontal_bias="0.778"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632" />
+        app:layout_constraintVertical_bias="0.542" />
 
     <View
         android:id="@+id/maskLayer"

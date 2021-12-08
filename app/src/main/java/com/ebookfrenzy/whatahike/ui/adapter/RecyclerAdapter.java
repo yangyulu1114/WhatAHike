@@ -118,6 +118,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             }
         });
         String name = trail.getName();
+
         String area = trail.getArea();
         float difficulty =  trail.getDifficulty();
         difficulty = (float) Math.ceil(difficulty/2);
@@ -132,7 +133,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         }
 
 
-
+        if(name.length() >= 30){
+            name = name.substring(0, 30);
+        }
+        if(area.length() >= 28){
+            area = area.substring(0, 28);
+        }
         holder.nameTxt.setText(name);
         holder.areaTxt.setText("Area: " + area);
         holder.difficultyTxt.setText("Difficulty: ");
