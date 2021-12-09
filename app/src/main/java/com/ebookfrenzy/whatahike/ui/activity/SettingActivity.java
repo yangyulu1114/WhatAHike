@@ -36,7 +36,7 @@ public class SettingActivity extends AppCompatActivity {
         cb6 = findViewById(R.id.wildflowers);
         cb7 = findViewById(R.id.wildlife);
         selected = new HashSet<>();
-        btnReset = findViewById(R.id.Reset);
+        btnReset = findViewById(R.id.reset);
         btnSubmit = findViewById(R.id.Submit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

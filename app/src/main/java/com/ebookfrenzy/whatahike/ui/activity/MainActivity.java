@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private View mMaskLayer;
     private ProgressBar mProgressBar;
     private Handler mHandler = new Handler();
+    private ImageButton button;
 
     private static Location location;
     private LocationManager locationManager;
@@ -89,6 +91,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         parent.setContentInsetsAbsolute(0,0);
 
 
+
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
                 R.layout.activity_list_item, getResources().getStringArray(R.array.names));
@@ -111,6 +114,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         //setAdapter();
         initFiltersAndComparators();
         initView();
+
+
 
     }
 
@@ -298,6 +303,15 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private void setOnClickListener() {
 
         ImageButton btn = findViewById(R.id.searchButton);
+        button = (ImageButton) findViewById(R.id.userButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserSetting.class);
+                startActivity(intent);
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -318,6 +332,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 startActivity(intent);
             }
         };
+
+
     }
 
 
