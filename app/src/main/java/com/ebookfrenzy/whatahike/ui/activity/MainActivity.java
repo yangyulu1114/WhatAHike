@@ -113,8 +113,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         mProgressBar = findViewById(R.id.progressBar);
         setMask();
 
-        //currentFilter = stateFilter;
-        //setAdapter();
         initFiltersAndComparators();
         initView();
     }
@@ -224,7 +222,18 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         info = findViewById(R.id.Search);
         recyclerView = findViewById(R.id.recyclerView);
         setOnClickListener();
-        setAdapter();
+        RestAPI.getUserPreference(new Listener<Preference>() {
+            @Override
+            public void onSuccess(Preference data) {
+                features = data.getKeys();
+                setAdapter();
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
 
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
@@ -274,7 +283,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         }, delay);
     }
     private void setAdapter() {
-        getPreference();
         setMask();
         RestAPI.getTrails(currentFilter, currentComparator, new Listener<List<Trail>>() {
             @Override
@@ -418,20 +426,5 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 
     }
 
-    private void getPreference(){
-        RestAPI.getUserPreference(new Listener<Preference>() {
-            @Override
-            public void onSuccess(Preference data) {
-                features = data.getKeys();
-                for(String feature : features) {
-                    Log.v("thomas", feature);
-                }
-            }
 
-            @Override
-            public void onFailed(Exception e) {
-
-            }
-        });
-    }
 }
