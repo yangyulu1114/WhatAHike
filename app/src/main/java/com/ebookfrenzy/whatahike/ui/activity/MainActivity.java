@@ -38,11 +38,13 @@ import android.widget.Toast;
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.model.Preference;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +76,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private Comparator<Trail> currentComparator;
 
     private int difficulty; // 1 -> e, 3 -> m, 5 -> h, 7 -> ex
-    private Set<String> features;
+    private List<String> features;
     private ActionBar mainActionBar;
 
 
@@ -111,9 +113,13 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         mProgressBar = findViewById(R.id.progressBar);
         setMask();
 
-        //currentFilter = stateFilter;
-        //setAdapter();
         initFiltersAndComparators();
+        initView();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
         initView();
     }
 
@@ -147,7 +153,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         defaultComparator = distanceComparator.thenComparing(popularityComparator);
 
         difficulty = -1;
-        features = new HashSet<String>();
+        features = new ArrayList<>();
 
         stateFilter = new Filter<Trail>() {
             String state;
@@ -222,7 +228,18 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         info = findViewById(R.id.Search);
         recyclerView = findViewById(R.id.recyclerView);
         setOnClickListener();
-        setAdapter();
+        RestAPI.getUserPreference(new Listener<Preference>() {
+            @Override
+            public void onSuccess(Preference data) {
+                features = data.getKeys();
+                setAdapter();
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
 
     //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
@@ -414,4 +431,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
 }

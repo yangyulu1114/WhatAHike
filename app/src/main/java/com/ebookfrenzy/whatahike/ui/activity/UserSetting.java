@@ -38,6 +38,7 @@ public class UserSetting extends AppCompatActivity {
 
         setupButtons();
         initPrefView();
+
     }
 
     private void initPrefView() {
