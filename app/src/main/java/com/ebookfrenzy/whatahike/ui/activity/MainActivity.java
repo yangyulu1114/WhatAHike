@@ -38,11 +38,13 @@ import android.widget.Toast;
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.model.Preference;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +76,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private Comparator<Trail> currentComparator;
 
     private int difficulty; // 1 -> e, 3 -> m, 5 -> h, 7 -> ex
-    private Set<String> features;
+    private List<String> features;
     private ActionBar mainActionBar;
 
 
@@ -147,7 +149,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         defaultComparator = distanceComparator.thenComparing(popularityComparator);
 
         difficulty = -1;
-        features = new HashSet<String>();
+        features = new ArrayList<>();
 
         stateFilter = new Filter<Trail>() {
             String state;
@@ -272,6 +274,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         }, delay);
     }
     private void setAdapter() {
+        getPreference();
         setMask();
         RestAPI.getTrails(currentFilter, currentComparator, new Listener<List<Trail>>() {
             @Override
@@ -413,5 +416,22 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void getPreference(){
+        RestAPI.getUserPreference(new Listener<Preference>() {
+            @Override
+            public void onSuccess(Preference data) {
+                features = data.getKeys();
+                for(String feature : features) {
+                    Log.v("thomas", feature);
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
 }
