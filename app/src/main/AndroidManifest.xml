@@ -19,24 +19,30 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.UserSetting"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.AddCommentActivity"
             android:exported="true"
-            android:parentActivityName=".ui.activity.DetailedTrailActivity" />
+            android:parentActivityName=".ui.activity.DetailedTrailActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.DetailedTrailActivity"
             android:exported="true"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.ImagePreviewActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,11 +53,13 @@
             android:name=".ui.activity.TestActivity"
             android:exported="true"
             android:label="@string/title_activity_test"
-            android:theme="@style/Theme.WhatAHike.NoActionBar" />
+            android:theme="@style/Theme.WhatAHike.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+            android:windowSoftInputMode="adjustPan|adjustResize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
