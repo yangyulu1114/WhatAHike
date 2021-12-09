@@ -19,6 +19,10 @@ public class Preference {
         }
     }
 
+    public List<String> getKeys() {
+        return mKeys;
+    }
+
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         StringBuilder sb = new StringBuilder();
