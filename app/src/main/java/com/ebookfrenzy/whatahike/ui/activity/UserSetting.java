@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.R;
@@ -17,102 +18,75 @@ import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class UserSetting extends AppCompatActivity {
-    CheckBox cb, cb2, cb3, cb4, cb5, cb6, cb7;
-    Button button;
-    List<String> keys = new ArrayList<>();
-    Button btnReset;
+    Map<String, CheckBox> checkBoxes;
+    List<String> keys;
 
     @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
-        button = findViewById(R.id.save);
-        cb = (CheckBox) findViewById(R.id.birding);
-        cb2 = (CheckBox) findViewById(R.id.hiking);
-        cb3 = (CheckBox) findViewById(R.id.naturetrips);
-        cb4 = (CheckBox) findViewById(R.id.trailrunning);
-        cb5 = (CheckBox) findViewById(R.id.fishing);
-        cb6 = (CheckBox) findViewById(R.id.walking);
-        cb7 = (CheckBox) findViewById(R.id.seakayaking);
 
+        checkBoxes = new HashMap<>();
+        keys = new ArrayList<>();
 
+        setupButtons();
+        initPrefView();
+    }
 
-        String a1 = "Birding";
-        String a2 = "Hiking";
-        String a3 = "Naturaltrips";
-        String a4 = "Trailrunning";
-        String a5 = "Fishing";
-        String a6 = "Walking";
-        String a7 = "Seakayaking";
+    private void initPrefView() {
 
-        //Reyclerview invisible before onsuccess adapter
-        //checkbox unclickable
+        Set<String> activities = RestAPI.getActivities();
+        LinearLayout activitiesBoxes = findViewById(R.id.activities);
+
+        for (String activity: activities) {
+            CheckBox cb = new CheckBox(this);
+            cb.setText(activity);
+            cb.setTag(activity);
+            checkBoxes.put(activity, cb);
+            activitiesBoxes.addView(cb);
+        }
 
         getPreference();
 
+    }
 
-        button.setOnClickListener(new View.OnClickListener() {
+    private void setupButtons() {
+        Button btnReset = findViewById(R.id.reset);;
+        Button btnSave = findViewById(R.id.save);
 
+        btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (cb.isChecked()){
-                    keys.add(a1);
-
-                }else{
-                    keys.remove(a1);
+            public void onClick(View view) {
+                for (CheckBox checkBox: checkBoxes.values()) {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    }
                 }
-                if (cb2.isChecked()){
-                    keys.add(a2);
-                }
-                else{
-                    keys.remove(a2);
-                }
-                if(!cb.isChecked() &&
-                        !cb2.isChecked() &&
-                        !cb3.isChecked() &&
-                        !cb4.isChecked() &&
-                        !cb5.isChecked() &&
-                        !cb6.isChecked() &&
-                        !cb7.isChecked()){
-                }
+                keys.clear();
                 setPreference();
             }
         });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
 
-        btnReset = findViewById(R.id.reset);
-        btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(cb.isChecked()){
-                    cb.setChecked(false);
+            public void onClick(View v) {
+                keys.clear();
+                for (CheckBox checkBox: checkBoxes.values()) {
+                    if (checkBox.isChecked()) {
+                        keys.add(checkBox.getText().toString());
+                    }
                 }
-                if(cb2.isChecked()){
-                    cb2.setChecked(false);
-                }
-                if(cb3.isChecked()){
-                    cb3.setChecked(false);
-                }
-                if(cb4.isChecked()){
-                    cb4.setChecked(false);
-                }
-                if(cb5.isChecked()){
-                    cb5.setChecked(false);
-                }
-                if(cb6.isChecked()){
-                    cb6.setChecked(false);
-                }
-                if(cb7.isChecked()){
-                    cb7.setChecked(false);
-                }
-                keys = new ArrayList<String>();
+                setPreference();
             }
         });
-        setPreference();
     }
 
     private void getPreference(){
@@ -120,6 +94,9 @@ public class UserSetting extends AppCompatActivity {
             @Override
             public void onSuccess(Preference data) {
                  keys = data.getKeys();
+                 for (String key : keys) {
+                     checkBoxes.get(key).setChecked(true);
+                 }
             }
 
             @Override
@@ -133,9 +110,6 @@ public class UserSetting extends AppCompatActivity {
         Preference preference;
         preference = new Preference(keys);
         RestAPI.setUserPreference(preference);
-        for (int i = 0; i<keys.size();i++) {
-            Log.v("Grace", keys.get(i));
-        }
     }
 
 
