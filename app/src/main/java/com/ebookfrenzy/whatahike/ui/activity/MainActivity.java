@@ -117,6 +117,12 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         initView();
     }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        initView();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initFiltersAndComparators() {
         distanceComparator = new Comparator<Trail>() {
