@@ -21,14 +21,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RestAPI {
     private static final String KEY_USER_PREFERENCE = "key_user_preference";
     private static Map<String, Trail> trails;
+    private static Set<String> activities;
 
     private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
 
@@ -58,6 +61,19 @@ public class RestAPI {
             readCSVTrails();
         }
         return trails.get(trailId);
+    }
+
+    public static Set<String> getActivities() {
+        if (trails == null) {
+            readCSVTrails();
+        }
+        if (activities == null) {
+            activities = new HashSet<>();
+            for (Trail trail : trails.values()) {
+                activities.addAll(trail.getActivities());
+            }
+        }
+        return activities;
     }
 
     public static void getTrails(Filter<Trail> filter, Comparator<Trail> comparator, Listener<List<Trail>> listener)
