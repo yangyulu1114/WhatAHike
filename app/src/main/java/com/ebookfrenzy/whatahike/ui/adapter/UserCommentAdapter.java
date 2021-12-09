@@ -154,6 +154,10 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             return;
 
         for (int i = 0; i < images.size() && i < 9; i++) {
+            holder.images[i].setVisibility(View.VISIBLE);
+        }
+
+        for (int i = 0; i < images.size() && i < 9; i++) {
             int index = i;
             ImageLoader.loadImage(images.get(i), new Listener<Bitmap>() {
                 @Override
@@ -169,7 +173,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
                         }
                     });
                     // set up the view
-                    data = Bitmap.createScaledBitmap(data, 80, 80,true);
+                    int length = data.getHeight() < data.getWidth() ? data.getHeight() : data.getWidth();
+                    data = Bitmap.createBitmap(data, 0, 0, length, length);
                     holder.images[index].setImageBitmap(data);
                     holder.images[index].setVisibility(View.VISIBLE);
                 }

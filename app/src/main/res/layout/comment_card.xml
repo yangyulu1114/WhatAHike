@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,7 +31,9 @@
                 android:id="@+id/comment_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FF576B95"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:paddingBottom="5dp"
                 android:text="user name"/>
 
             <TextView
@@ -40,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="16sp"
+                android:textColor="@color/black"
                 android:text="comment text content" />
 
             <TextView
@@ -75,6 +78,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -83,6 +87,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone"/>
 
                 <ImageView
@@ -91,6 +96,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -104,6 +110,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -112,6 +119,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -120,6 +128,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -133,6 +142,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -141,6 +151,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -149,6 +160,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:src="@mipmap/commentimage"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -160,13 +172,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/imagesGrid"
             android:layout_alignLeft="@id/linear1"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:text="post time" />
 
         <View
-            android:layout_below="@+id/post_time"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@+id/post_time"
             android:layout_marginTop="10dp"
             android:background="@android:color/darker_gray" />
     </RelativeLayout>
