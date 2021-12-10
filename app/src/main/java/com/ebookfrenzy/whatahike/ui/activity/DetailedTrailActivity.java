@@ -75,6 +75,9 @@ public class DetailedTrailActivity extends AppCompatActivity {
     }
 
     private void setupCommentView() {
+        ProgressBar prograssBar = findViewById(R.id.commentProgressBar);
+        TextView hint = findViewById(R.id.internet_hint);
+
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
             public void onSuccess(List<Comment> data) {
@@ -89,13 +92,17 @@ public class DetailedTrailActivity extends AppCompatActivity {
                         return 0;
                     }
                 });
+                hint.setVisibility(View.GONE);
+                prograssBar.setVisibility(View.GONE);
                 initComments();
             }
             @Override
             public void onFailed(Exception e) {
                 if (e instanceof FirebaseTimeoutException) {
-                    Log.v("comment activity: ", "timeout");
-                    //Toast no network
+                    if (prograssBar.getVisibility() == View.VISIBLE) {
+                        hint.setVisibility(View.VISIBLE);
+                        prograssBar.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -137,9 +144,6 @@ public class DetailedTrailActivity extends AppCompatActivity {
 
     
     private void initComments() {
-        ProgressBar prograssBar = findViewById(R.id.commentProgressBar);
-        prograssBar.setVisibility(View.GONE);
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);
