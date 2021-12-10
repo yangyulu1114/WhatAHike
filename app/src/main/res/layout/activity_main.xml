@@ -9,16 +9,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="403dp"
-        android:layout_height="572dp"
-        android:layout_marginTop="96dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="165dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
@@ -26,18 +26,22 @@
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.534" />
+        app:layout_constraintVertical_bias="0.534"
+        android:dropDownVerticalOffset="35dp"
+        android:gravity="center_vertical"/>
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="171dp"
-        android:layout_height="33dp"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.778"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.542" />
+        app:layout_constraintVertical_bias="0.542"
+        android:dropDownVerticalOffset="35dp" />
 
     <View
         android:id="@+id/maskLayer"

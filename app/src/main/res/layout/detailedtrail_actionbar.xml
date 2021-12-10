@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="ADD COMMENT"
+        android:text="Add Comment"
         android:layout_marginRight="16dp"
         android:textSize="20sp"
         android:onClick="addComment"
