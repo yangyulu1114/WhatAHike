@@ -63,6 +63,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
             images[7] = (ImageView) view.findViewById(R.id.image8);
             images[8] = (ImageView) view.findViewById(R.id.image9);
 
+            isExpansion = false;
         }
 
         public void initTextView(String content) {
@@ -136,6 +137,7 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
         holder.setIsRecyclable(false);
 
+//        holder.userIcon.setImageDrawable();
 
         holder.user.setText(comment.getUserId().split("@")[0]);
         holder.time.setText(new Date(comment.getTimeStamp()).toString());
@@ -151,8 +153,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         if (images == null)
             return;
 
-        for (int i = 0; i < images.size() && i < 9; i++) {
-            holder.images[i].setVisibility(View.VISIBLE);
+        for (int i = 0; i < 9; i++) {
+            holder.images[i].setVisibility(i < images.size() ? View.VISIBLE : View.GONE);
         }
 
         for (int i = 0; i < images.size() && i < 9; i++) {
