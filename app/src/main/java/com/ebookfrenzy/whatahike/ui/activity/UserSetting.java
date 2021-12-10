@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.R;
@@ -21,6 +22,8 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +36,8 @@ public class UserSetting extends AppCompatActivity {
     Map<String, CheckBox> checkBoxes;
     List<String> keys;
     private static final String TAG = "MainActivity";
+    private FirebaseAuth mFirebaseAuth;
+    private TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +45,34 @@ public class UserSetting extends AppCompatActivity {
         setContentView(R.layout.activity_user_setting);
 
         checkBoxes = new HashMap<>();
+        email = findViewById(R.id.email);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         keys = new ArrayList<>();
 
         setupButtons();
         initCheckBoxed();
+        setEmail();
         initPrefView();
-
-
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
-
         if (checkBoxes == null || checkBoxes.size() == 0) {
             initCheckBoxed();
         }
+        setEmail();
         initPrefView();
+    }
+
+    private void setEmail() {
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if(mFirebaseUser!=null){
+            email.setText("Your Email:" + mFirebaseUser.getEmail());
+        }else{
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            finish();
+        }
     }
 
     private void initCheckBoxed() {
