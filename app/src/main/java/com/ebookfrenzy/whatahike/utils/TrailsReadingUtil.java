@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -72,14 +73,17 @@ public class TrailsReadingUtil {
                 Double.parseDouble(location[1].split(":")[1]),
         });
 
-        trail.setFeatures(Arrays.asList(record[featuresIdx]
+        String features = record[featuresIdx].toLowerCase();
+        trail.setFeatures(Arrays.asList(features
                 .substring(1, record[featuresIdx].length() - 1)
                 .replace("'", "")
                 .replace(" ", "")
                 .replace("[", "")
                 .replace("]", "")
                 .split(",")));
-        trail.setActivities(Arrays.asList(record[activitiesIdx]
+
+        String activities = record[activitiesIdx].toLowerCase();
+        trail.setActivities(Arrays.asList(activities
                 .substring(1, record[activitiesIdx].length() - 1)
                 .replace("'", "")
                 .replace(" ", "")
