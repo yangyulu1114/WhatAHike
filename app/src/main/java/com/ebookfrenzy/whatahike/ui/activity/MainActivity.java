@@ -117,8 +117,26 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     @Override
     public void onRestart() {
         super.onRestart();
-        updateView();
+        RestAPI.getUserPreference(new Listener<Preference>() {
+            @Override
+            public void onSuccess(Preference data) {
+                if (mPrefActivities.size() != data.getKeys().size()) {
+                    mPrefActivities = data.getKeys();
+                    setAdapter();
+                }
+                else if (!mPrefActivities.containsAll(data.getKeys())) {
+                    mPrefActivities = data.getKeys();
+                    setAdapter();
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initFiltersAndComparators() {
@@ -157,23 +175,13 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
-                if (location == null) {
+
+                if (location == null || difficulty > 0 || mPrefActivities.size() > 0) {
                     return checkDifficulty(trail)
                             && checkActivities(trail);
                 }
-                try {
-                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    state = addresses.get(0).getAdminArea().toLowerCase();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return checkDifficulty(trail)
-                        && checkActivities(trail)
-                        && (trail.getState().toLowerCase().contains(state)
-                        || trail.getName().toLowerCase().contains(state)
-                        || trail.getArea().toLowerCase().contains(state));
+                return checkFields(true, trail.getName(), trail.getState(), trail.getCity(),
+                                     trail.getCountry(), trail.getArea());
             }
         };
 
@@ -184,18 +192,42 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 String keyword = info.getText().toString().trim().toLowerCase();
 
                 return checkDifficulty(trail)
-                        && (trail.getState().toLowerCase().contains(keyword)
-                        || (trail.getCity() != null && trail.getCity().toLowerCase().contains(keyword))
-                        || trail.getCountry().toLowerCase().contains(keyword)
-                        || trail.getName().toLowerCase().contains(keyword)
-                        || trail.getArea().toLowerCase().contains(keyword))
+                        && (checkFields(false, trail.getName(), trail.getState(), trail.getCity(),
+                                        trail.getCountry(), trail.getArea())
                         || trail.getActivities().contains(keyword)
-                        || trail.getFeatures().contains(keyword);
+                        || trail.getFeatures().contains(keyword));
             }
         };
 
         setCurFilter();
         currentComparator = defaultComparator;
+    }
+
+    private boolean checkFields(boolean isStateFilter, String... fields) {
+        String keyword = "";
+        if (isStateFilter) {
+            try {
+                Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                keyword = addresses.get(0).getAdminArea().toLowerCase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            keyword = info.getText().toString().trim().toLowerCase();
+        }
+
+        keyword = " " + keyword + " ";
+        for (String field: fields) {
+            if (field == null || field.length() == 0) {
+                continue;
+            }
+            field = " " + field + " ";
+            if (field.toLowerCase().contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean checkDifficulty(Trail trail) {
@@ -292,6 +324,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         }, delay);
     }
     private void setAdapter() {
+        Log.v("keywordfilter: ", currentFilter.equals(keywordFilter)+"");
+        Log.v("pref: ", mPrefActivities.toString());
+
         setMask();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RestAPI.getTrails(currentFilter, currentComparator, new Listener<List<Trail>>() {
