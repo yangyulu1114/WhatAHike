@@ -51,16 +51,21 @@ public class UserSetting extends AppCompatActivity {
 
         setupButtons();
         initCheckBoxed();
+        setEmail();
         initPrefView();
-
-
-
-
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
+        if (checkBoxes == null || checkBoxes.size() == 0) {
+            initCheckBoxed();
+        }
+        setEmail();
+        initPrefView();
+    }
+
+    private void setEmail() {
         FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if(mFirebaseUser!=null){
             email.setText("Your Email:" + mFirebaseUser.getEmail());
@@ -68,10 +73,6 @@ public class UserSetting extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             finish();
         }
-        if (checkBoxes == null || checkBoxes.size() == 0) {
-            initCheckBoxed();
-        }
-        initPrefView();
     }
 
     private void initCheckBoxed() {
