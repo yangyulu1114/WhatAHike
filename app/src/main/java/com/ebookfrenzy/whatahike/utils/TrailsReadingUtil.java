@@ -54,7 +54,13 @@ public class TrailsReadingUtil {
         Trail trail = new Trail();
 
         trail.setId(record[idIdx]);
-        trail.setName(record[nameIdx]);
+
+        String name = record[nameIdx];
+        if (name.charAt(0) == '"' || name.charAt(0) == '\'') {
+            name = name.substring(1, name.length() - 1);
+        }
+        trail.setName(name);
+
         trail.setArea(record[areaIdx]);
         trail.setState(record[stateIdx]);
         trail.setCountry(record[countryIdx]);

@@ -170,9 +170,9 @@ public class DetailedTrailActivity extends AppCompatActivity {
         TextView trailLoca = findViewById(R.id.trail_location);
         sb.append(trail.getArea() + "\n");
         if (trail.getCity() != null)
-            sb.append(trail.getCity() + " ");
+            sb.append(trail.getCity() + ", ");
         if (trail.getState() != null)
-            sb.append(trail.getState() + " ");
+            sb.append(trail.getState() + ", ");
         if (trail.getCountry() != null)
             sb.append(trail.getCountry());
         trailLoca.setText(sb.toString());
