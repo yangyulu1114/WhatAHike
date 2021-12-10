@@ -27,7 +27,7 @@
             android:contentDescription="This image acts as an icon."
             android:padding="3dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_banner"
+            android:src="@drawable/ic_banner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
