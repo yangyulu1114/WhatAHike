@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -20,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
@@ -35,11 +37,17 @@ import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class DetailedTrailActivity extends AppCompatActivity {
     private List<Comment> commentList;
     private UserCommentAdapter adapter;
+    private Map<String, Drawable> iconMap;
+
+    private Random rand;
 
     private String trailId;
 
@@ -47,6 +55,9 @@ public class DetailedTrailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_trail);
+
+        rand = new Random();
+        iconMap = new HashMap<>();
 
         trailId = getIntent().getStringExtra(String.valueOf(R.string.trailId));
         if (trailId == null)
@@ -104,6 +115,19 @@ public class DetailedTrailActivity extends AppCompatActivity {
 
                 internet_hint.setVisibility(View.GONE);
                 prograssBar.setVisibility(View.GONE);
+
+                if (iconMap.size() == 0 && commentList.size() > 0) {
+                    for (Comment comment : commentList) {
+                        putRandomIcon(comment.getUserId());
+                    }
+                } else if (commentList.size() > 0){
+                    int top = 0;
+                    while (top < commentList.size() && !iconMap.containsKey(commentList.get(top).getUserId())) {
+                        putRandomIcon(commentList.get(top++).getUserId());
+                    }
+                }
+
+
                 initComments();
             }
             @Override
@@ -116,6 +140,23 @@ public class DetailedTrailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void putRandomIcon(String userId) {
+        if (!iconMap.containsKey(userId)) {
+            int randint = rand.nextInt(6);
+            if (randint == 1) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon2));
+            } else if (randint == 2) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon3));
+            } else if (randint == 3) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon4));
+            } else if (randint == 4) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon5));
+            } else if (randint == 5) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon6));
+            }
+        }
     }
 
     private void setupToolBar() {
@@ -159,7 +200,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new UserCommentAdapter(commentList, trailId);
+        adapter = new UserCommentAdapter(commentList, iconMap, trailId);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 

@@ -3,17 +3,17 @@ package com.ebookfrenzy.whatahike.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.ui.activity.ImagePreviewActivity;
@@ -22,12 +22,16 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.ViewHolder> {
     private Context mContext;
     private List<Comment> mCommentList;
     private String mTrailId;
+    private Map<String, Drawable> iconMap;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         int MAXLINES = 3;
@@ -119,7 +123,8 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     }
 
 
-    public UserCommentAdapter(List<Comment> commentList, String trailId) {
+    public UserCommentAdapter(List<Comment> commentList, Map<String, Drawable> iconMap, String trailId) {
+        this.iconMap = iconMap;
         mCommentList = commentList;
         mTrailId = trailId;
     }
@@ -139,7 +144,9 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
         holder.setIsRecyclable(false);
 
-//        holder.userIcon.setImageDrawable();
+        if (iconMap.get(comment.getUserId()) != null) {
+            holder.userIcon.setImageDrawable(iconMap.get(comment.getUserId()));
+        }
 
         holder.user.setText(comment.getUserId().split("@")[0]);
         holder.time.setText(new Date(comment.getTimeStamp()).toString());
@@ -193,6 +200,5 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
     public int getItemCount() {
         return mCommentList.size();
     }
-
 
 }
