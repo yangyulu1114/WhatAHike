@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private View mMaskLayer;
     private ProgressBar mProgressBar;
     private Handler mHandler = new Handler();
-    private ImageButton button;
+    private ImageView button;
 
     private static Location location;
     private LocationManager locationManager;
@@ -356,8 +357,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 
     private void setOnClickListener() {
 
-        ImageButton btn = findViewById(R.id.searchButton);
-        button = (ImageButton) findViewById(R.id.userButton);
+        ImageView btn = findViewById(R.id.searchButton);
+        button = (ImageView) findViewById(R.id.userButton);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
