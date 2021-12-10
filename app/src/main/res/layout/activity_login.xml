@@ -24,6 +24,7 @@
         android:background="@drawable/edittext_border"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
+        android:paddingLeft="12dp"
         android:hint="Email"/>
 
     <EditText
@@ -33,10 +34,11 @@
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
         android:layout_marginTop="20dp"
-        android:hint="password"
+        android:hint="Password"
         android:background="@drawable/edittext_border"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
+        android:paddingLeft="12dp"
         android:inputType="textPassword"/>
 
     <LinearLayout
@@ -62,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:text="Create Account"
+            android:text="Register"
             android:layout_gravity="center"
             android:onClick="onClick"/>
 

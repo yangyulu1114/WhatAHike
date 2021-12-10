@@ -31,6 +31,8 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import org.w3c.dom.Text;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -76,7 +78,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
 
     private void setupCommentView() {
         ProgressBar prograssBar = findViewById(R.id.commentProgressBar);
-        TextView hint = findViewById(R.id.internet_hint);
+        TextView internet_hint = findViewById(R.id.internet_hint);
+        TextView nocomment_hint = findViewById(R.id.nocomment_hint);
 
         RestAPI.getComments(trailId, new Listener<List<Comment>>() {
             @Override
@@ -92,7 +95,14 @@ public class DetailedTrailActivity extends AppCompatActivity {
                         return 0;
                     }
                 });
-                hint.setVisibility(View.GONE);
+
+                if (commentList == null || commentList.size() == 0) {
+                    nocomment_hint.setVisibility(View.VISIBLE);
+                } else {
+                    nocomment_hint.setVisibility(View.GONE);
+                }
+
+                internet_hint.setVisibility(View.GONE);
                 prograssBar.setVisibility(View.GONE);
                 initComments();
             }
@@ -100,7 +110,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
             public void onFailed(Exception e) {
                 if (e instanceof FirebaseTimeoutException) {
                     if (prograssBar.getVisibility() == View.VISIBLE) {
-                        hint.setVisibility(View.VISIBLE);
+                        internet_hint.setVisibility(View.VISIBLE);
                         prograssBar.setVisibility(View.GONE);
                     }
                 }
@@ -118,6 +128,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
                 collapsingToolbar.setCollapsedTitleTextColor(color);
                 if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) { // fold
                     collapsingToolbar.setTitle("User Comments");
+                    collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
                 } else { // not fold
                     collapsingToolbar.setTitle("");
                 }
@@ -170,9 +181,9 @@ public class DetailedTrailActivity extends AppCompatActivity {
         TextView trailLoca = findViewById(R.id.trail_location);
         sb.append(trail.getArea() + "\n");
         if (trail.getCity() != null)
-            sb.append(trail.getCity() + " ");
+            sb.append(trail.getCity() + ", ");
         if (trail.getState() != null)
-            sb.append(trail.getState() + " ");
+            sb.append(trail.getState() + ", ");
         if (trail.getCountry() != null)
             sb.append(trail.getCountry());
         trailLoca.setText(sb.toString());
@@ -182,6 +193,12 @@ public class DetailedTrailActivity extends AppCompatActivity {
         sb.append("Rating: " + trail.getRating() + "   ");
         sb.append("Difficulty: " + trail.getDifficulty());
         ratingDifficulty.setText(sb.toString());
+        sb.setLength(0);
+
+        TextView lengthElevation = findViewById(R.id.length_elevation);
+        sb.append("Length: " + trail.getLength() + "   ");
+        sb.append("Elevation: " + trail.getElevation());
+        lengthElevation.setText(sb.toString());
         sb.setLength(0);
 
         TextView features = findViewById(R.id.features);

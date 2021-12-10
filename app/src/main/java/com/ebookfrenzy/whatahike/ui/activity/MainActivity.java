@@ -28,12 +28,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
@@ -46,21 +45,19 @@ import com.ebookfrenzy.whatahike.utils.Listener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class MainActivity extends BaseActivity implements LocationListener, AdapterView.OnItemSelectedListener{
     private EditText info;
     private List<Trail> trailList;
-    private RecyclerAdapter adapter;
-    private RecyclerView recyclerView;
+
     private RecyclerAdapter.RecyclerViewClickListener listener;
+
     private View mMaskLayer;
     private ProgressBar mProgressBar;
     private Handler mHandler = new Handler();
-    private ImageButton button;
+    private ImageView button;
 
     private static Location location;
     private LocationManager locationManager;
@@ -76,7 +73,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private Comparator<Trail> currentComparator;
 
     private int difficulty; // 1 -> e, 3 -> m, 5 -> h, 7 -> ex
-    private List<String> features;
+    private List<String> mPrefActivities;
     private ActionBar mainActionBar;
 
 
@@ -92,8 +89,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         Toolbar parent =(Toolbar)mainActionBar.getCustomView().getParent();
         parent.setPadding(0,0,0,0);
         parent.setContentInsetsAbsolute(0,0);
-
-
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
@@ -113,15 +108,36 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         mProgressBar = findViewById(R.id.progressBar);
         setMask();
 
+        info = findViewById(R.id.Search);
+
         initFiltersAndComparators();
-        initView();
+        setOnClickListener();
+        updateView();
     }
 
     @Override
     public void onRestart() {
         super.onRestart();
-        initView();
+        RestAPI.getUserPreference(new Listener<Preference>() {
+            @Override
+            public void onSuccess(Preference data) {
+                if (mPrefActivities.size() != data.getKeys().size()) {
+                    mPrefActivities = data.getKeys();
+                    setAdapter();
+                }
+                else if (!mPrefActivities.containsAll(data.getKeys())) {
+                    mPrefActivities = data.getKeys();
+                    setAdapter();
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initFiltersAndComparators() {
@@ -153,26 +169,20 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         defaultComparator = distanceComparator.thenComparing(popularityComparator);
 
         difficulty = -1;
-        features = new ArrayList<>();
+        mPrefActivities = new ArrayList<>();
 
         stateFilter = new Filter<Trail>() {
             String state;
             @Override
             public boolean pass(Trail trail) {
                 //implement pass function
-                if (location == null) {
-                    return true;
+
+                if (location == null || difficulty > 0 || mPrefActivities.size() > 0) {
+                    return checkDifficulty(trail)
+                            && checkActivities(trail);
                 }
-                try {
-                    Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    state = addresses.get(0).getAdminArea().toLowerCase();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return checkConditions(trail)
-                        && (trail.getState().toLowerCase().contains(state)
-                        || trail.getName().toLowerCase().contains(state));
+                return checkFields(true, trail.getName(), trail.getState(), trail.getCity(),
+                                     trail.getCountry(), trail.getArea());
             }
         };
 
@@ -182,22 +192,46 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 //implement pass function
                 String keyword = info.getText().toString().trim().toLowerCase();
 
-                return checkConditions(trail)
-                        && (trail.getState().toLowerCase().contains(keyword)
-                        || (trail.getCity() != null && trail.getCity().toLowerCase().contains(keyword))
-                        || trail.getCountry().toLowerCase().contains(keyword)
-                        || trail.getName().toLowerCase().contains(keyword)
-                        || trail.getArea().toLowerCase().contains(keyword))
+                return checkDifficulty(trail)
+                        && (checkFields(false, trail.getName(), trail.getState(), trail.getCity(),
+                                        trail.getCountry(), trail.getArea())
                         || trail.getActivities().contains(keyword)
-                        || trail.getFeatures().contains(keyword);
+                        || trail.getFeatures().contains(keyword));
             }
         };
 
-        currentFilter = stateFilter;
+        setCurFilter();
         currentComparator = defaultComparator;
     }
 
-    private boolean checkConditions(Trail trail) {
+    private boolean checkFields(boolean isStateFilter, String... fields) {
+        String keyword = "";
+        if (isStateFilter) {
+            try {
+                Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                keyword = addresses.get(0).getAdminArea().toLowerCase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            keyword = info.getText().toString().trim().toLowerCase();
+        }
+
+        keyword = " " + keyword + " ";
+        for (String field: fields) {
+            if (field == null || field.length() == 0) {
+                continue;
+            }
+            field = " " + field + " ";
+            if (field.toLowerCase().contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDifficulty(Trail trail) {
         int curDiff = trail.getDifficulty();
         if (difficulty == 1) {
             if (curDiff != 1 && curDiff != 2)
@@ -212,26 +246,28 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             if (curDiff != 7)
                 return false;
         }
-        if(features.size() == 0){
+        return true;
+    }
+
+    private boolean checkActivities(Trail trail) {
+        if(mPrefActivities.size() == 0){
             return true;
         }
-        List<String> curFeatures = trail.getFeatures();
 
-        for (String feature: curFeatures) {
-            if (features.contains(feature))
+        List<String> curActivities = trail.getActivities();
+
+        for (String activity: curActivities) {
+            if (mPrefActivities.contains(activity))
                 return true;
         }
         return false;
     }
 
-    private void initView() {
-        info = findViewById(R.id.Search);
-        recyclerView = findViewById(R.id.recyclerView);
-        setOnClickListener();
+    private void updateView() {
         RestAPI.getUserPreference(new Listener<Preference>() {
             @Override
             public void onSuccess(Preference data) {
-                features = data.getKeys();
+                mPrefActivities = data.getKeys();
                 setAdapter();
             }
 
@@ -289,7 +325,11 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         }, delay);
     }
     private void setAdapter() {
+        Log.v("keywordfilter: ", currentFilter.equals(keywordFilter)+"");
+        Log.v("pref: ", mPrefActivities.toString());
+
         setMask();
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RestAPI.getTrails(currentFilter, currentComparator, new Listener<List<Trail>>() {
             @Override
             public void onSuccess(List<Trail> data) {
@@ -299,7 +339,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                     NoResultDialog dialog = new NoResultDialog();
                     dialog.show(getSupportFragmentManager(), "can't find dialog");
                 }
-                adapter = new RecyclerAdapter(trailList, listener);
+                RecyclerAdapter adapter = new RecyclerAdapter(trailList, listener);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -317,8 +357,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
 
     private void setOnClickListener() {
 
-        ImageButton btn = findViewById(R.id.searchButton);
-        button = (ImageButton) findViewById(R.id.userButton);
+        ImageView btn = findViewById(R.id.searchButton);
+        button = (ImageView) findViewById(R.id.userButton);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,11 +369,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         });
 
         btn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                currentFilter = keywordFilter;
-                currentComparator = defaultComparator;
+                setCurFilter();
                 setAdapter();
             }
 
@@ -348,7 +386,15 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
             }
         };
 
+    }
 
+    private void setCurFilter() {
+        String input = info.getText().toString();
+        if (input == null || input.trim().length() == 0) {
+            currentFilter = stateFilter;
+        } else {
+            currentFilter = keywordFilter;
+        }
     }
 
 
@@ -394,36 +440,37 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String selection = adapterView.getItemAtPosition(i).toString();
         if(selection.equals("Filter")){
-            currentFilter = keywordFilter;
-            setAdapter();
+            difficulty = -1;
+            setCurFilter();
+            updateView();
         }
         if(selection.equals("Sort")){
             currentComparator = defaultComparator;
-            setAdapter();
+            updateView();
         }
         if(selection.equals("Difficulty - Easy")){
             difficulty = 1;
-            setAdapter();
+            updateView();
         }
         if(selection.equals("Difficulty - Medium")){
             difficulty = 3;
-            setAdapter();
+            updateView();
         }
         if(selection.equals("Difficulty - Hard")){
             difficulty = 5;
-            setAdapter();
+            updateView();
         }
         if(selection.equals("Difficulty - Extreme")){
             difficulty = 7;
-            setAdapter();
+            updateView();
         }
         if(selection.equals("Closest Trails")){
             currentComparator = distanceComparator;
-            setAdapter();
+            updateView();
         }
         if(selection.equals("Most popular Trails")){
             currentComparator = popularityComparator;
-            setAdapter();
+            updateView();
         }
     }
 
