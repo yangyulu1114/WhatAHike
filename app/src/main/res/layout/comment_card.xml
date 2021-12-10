@@ -78,7 +78,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -87,7 +87,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone"/>
 
                 <ImageView
@@ -96,7 +96,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -110,7 +110,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -119,7 +119,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -128,7 +128,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -142,7 +142,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -151,7 +151,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
 
                 <ImageView
@@ -160,7 +160,7 @@
                     android:layout_height="80dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/commentimage"
+                    android:src="@drawable/commentimage"
                     android:visibility="gone" />
             </LinearLayout>
 

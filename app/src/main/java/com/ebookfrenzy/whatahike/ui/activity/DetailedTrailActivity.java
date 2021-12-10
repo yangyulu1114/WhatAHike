@@ -16,6 +16,7 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -136,6 +137,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
 
     
     private void initComments() {
+        ProgressBar prograssBar = findViewById(R.id.commentProgressBar);
+        prograssBar.setVisibility(View.GONE);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
