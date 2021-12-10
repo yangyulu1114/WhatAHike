@@ -37,12 +37,21 @@ public class UserSetting extends AppCompatActivity {
         keys = new ArrayList<>();
 
         setupButtons();
+        initCheckBoxed();
         initPrefView();
-
     }
 
-    private void initPrefView() {
+    @Override
+    public void onRestart() {
+        super.onRestart();
 
+        if (checkBoxes == null || checkBoxes.size() == 0) {
+            initCheckBoxed();
+        }
+        initPrefView();
+    }
+
+    private void initCheckBoxed() {
         Set<String> activities = RestAPI.getActivities();
         LinearLayout activitiesBoxes = findViewById(R.id.activities);
 
@@ -53,9 +62,23 @@ public class UserSetting extends AppCompatActivity {
             checkBoxes.put(activity, cb);
             activitiesBoxes.addView(cb);
         }
+    }
 
-        getPreference();
+    private void initPrefView() {
+        RestAPI.getUserPreference(new Listener<Preference>() {
+            @Override
+            public void onSuccess(Preference data) {
+                keys = data.getKeys();
+                for (String key : keys) {
+                    checkBoxes.get(key).setChecked(true);
+                }
+            }
 
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
     }
 
     private void setupButtons() {
@@ -86,23 +109,6 @@ public class UserSetting extends AppCompatActivity {
                     }
                 }
                 setPreference();
-            }
-        });
-    }
-
-    private void getPreference(){
-        RestAPI.getUserPreference(new Listener<Preference>() {
-            @Override
-            public void onSuccess(Preference data) {
-                 keys = data.getKeys();
-                 for (String key : keys) {
-                     checkBoxes.get(key).setChecked(true);
-                 }
-            }
-
-            @Override
-            public void onFailed(Exception e) {
-
             }
         });
     }
