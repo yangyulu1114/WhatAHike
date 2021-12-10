@@ -106,6 +106,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Trail trail = trailList.get(position);
+        holder.trailImg.setImageResource(R.drawable.ic_banner);
         ImageLoader.loadImage(trail.getIconURL(), new Listener<Bitmap>() {
             @Override
             public void onSuccess(Bitmap data) {
