@@ -45,67 +45,67 @@
                         android:src="@mipmap/ic_banner_foreground"
                         app:layout_collapseMode="parallax" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:background="#99000000">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#99000000">
 
-                                <TextView
-                                    android:id="@+id/trail_detail"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="30dp"
-                                    android:layout_marginRight="30dp"
-                                    android:layout_marginTop="3dp"
-                                    android:textSize="30sp"
-                                    android:textColor="@color/white"
-                                    android:hint="Trail title" />
+                        <TextView
+                            android:id="@+id/trail_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="3dp"
+                            android:textSize="30sp"
+                            android:textColor="@color/white"
+                            android:hint="Trail title" />
 
-                                <TextView
-                                    android:id="@+id/trail_location"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="30dp"
-                                    android:layout_marginRight="30dp"
-                                    android:textSize="16sp"
-                                    android:hint="Location" />
+                        <TextView
+                            android:id="@+id/trail_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:textSize="16sp"
+                            android:hint="Location" />
 
-                                <TextView
-                                    android:id="@+id/rating_difficulty"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="30dp"
-                                    android:layout_marginRight="30dp"
-                                    android:layout_marginTop="5dp"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold"
-                                    android:layout_gravity="right"
-                                    android:gravity="right"
-                                    android:hint="Rating and difficulty" />
+                        <TextView
+                            android:id="@+id/rating_difficulty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:hint="Rating and difficulty" />
 
-                                <TextView
-                                    android:id="@+id/features"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="30dp"
-                                    android:layout_marginRight="30dp"
-                                    android:layout_marginTop="8dp"
-                                    android:textSize="16sp"
-                                    android:hint="features" />
+                        <TextView
+                            android:id="@+id/features"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:hint="features" />
 
-                                <TextView
-                                    android:id="@+id/activities"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="30dp"
-                                    android:layout_marginRight="30dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:textSize="16sp"
-                                    android:hint="activities" />
+                        <TextView
+                            android:id="@+id/activities"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="16sp"
+                            android:hint="activities" />
 
-                            </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -115,16 +115,34 @@
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="pin" />
 
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/comment_recycler_view"
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ProgressBar
+                android:id="@+id/commentProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comment_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        </LinearLayout>
+
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
