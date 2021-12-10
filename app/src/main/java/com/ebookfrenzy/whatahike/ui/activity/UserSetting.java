@@ -1,7 +1,9 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
 import com.ebookfrenzy.whatahike.model.Preference;
 import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.Listener;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +32,7 @@ import java.util.Set;
 public class UserSetting extends AppCompatActivity {
     Map<String, CheckBox> checkBoxes;
     List<String> keys;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,8 @@ public class UserSetting extends AppCompatActivity {
         setupButtons();
         initCheckBoxed();
         initPrefView();
+
+
     }
 
     @Override
@@ -84,6 +92,7 @@ public class UserSetting extends AppCompatActivity {
     private void setupButtons() {
         Button btnReset = findViewById(R.id.reset);;
         Button btnSave = findViewById(R.id.save);
+        Button btnlogout = findViewById(R.id.logout);
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +120,30 @@ public class UserSetting extends AppCompatActivity {
                 setPreference();
             }
         });
+
+        btnlogout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Log out", Toast.LENGTH_SHORT).show();
+                AuthUI.getInstance().signOut(getApplicationContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else{
+                                    Log.e(TAG, "onComplete: ", task.getException());
+                                }
+                            }
+                        });
+            }
+        });
+
+
     }
 
     private void setPreference(){
