@@ -29,7 +29,6 @@ public class NotificationUtil {
 
     @SuppressLint("NewApi")
     public static void sendNotification(String type, String message, JSONObject extras) {
-        Log.v("bush", String.format("send notification: type=%s, message=%s, extras=%s", type, message, extras.toString()));
         if (mContext == null) {
             mContext = MyApplication.getAppContext();
             notification_id = 0;
