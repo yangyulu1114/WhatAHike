@@ -38,8 +38,10 @@ import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Preference;
 import com.ebookfrenzy.whatahike.model.Trail;
+import com.ebookfrenzy.whatahike.notification.NotificationScenarioType;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
 import com.ebookfrenzy.whatahike.utils.Listener;
+import com.ebookfrenzy.whatahike.utils.NotificationUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +61,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private ImageView button;
 
     private static Location location;
-    private static String locationKeyword = "";
 
     private LocationManager locationManager;
 
@@ -114,6 +115,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         setOnClickListener();
         updateView();
     }
+
 
     @Override
     public void onRestart() {
@@ -180,8 +182,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                     return checkDifficulty(trail)
                             && checkActivities(trail);
                 }
-                return checkFields(false, trail.getName(), trail.getState(), trail.getCity(),
-                                     trail.getCountry(), trail.getArea());
+                return true;
             }
         };
 
@@ -192,7 +193,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 String keyword = info.getText().toString().trim().toLowerCase();
 
                 return checkDifficulty(trail)
-                        && (checkFields(false, trail.getName(), trail.getState(), trail.getCity(),
+                        && (checkFields(trail.getName(), trail.getState(), trail.getCity(),
                                         trail.getCountry(), trail.getArea())
                         || trail.getActivities().contains(keyword)
                         || trail.getFeatures().contains(keyword));
@@ -203,13 +204,9 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         currentComparator = defaultComparator;
     }
 
-    private boolean checkFields(boolean isStateFilter, String... fields) {
-        String keyword = "";
-        if (isStateFilter) {
-            keyword = locationKeyword;
-        } else {
-            keyword = info.getText().toString().trim().toLowerCase();
-        }
+    private boolean checkFields(String... fields) {
+        String keyword = keyword = info.getText().toString().trim().toLowerCase();
+
         keyword = " " + keyword + " ";
         for (String field: fields) {
             if (field == null || field.length() == 0) {
