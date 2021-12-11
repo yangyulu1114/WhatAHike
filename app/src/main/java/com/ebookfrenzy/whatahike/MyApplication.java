@@ -1,16 +1,10 @@
 package com.ebookfrenzy.whatahike;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.ebookfrenzy.whatahike.notification.NotificationWorker;
 import com.ebookfrenzy.whatahike.utils.SharedPrefUtil;

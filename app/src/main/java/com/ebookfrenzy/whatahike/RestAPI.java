@@ -1,7 +1,6 @@
 package com.ebookfrenzy.whatahike;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Preference;

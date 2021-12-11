@@ -2,7 +2,6 @@ package com.ebookfrenzy.whatahike.notification;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Constraints;
@@ -12,7 +11,6 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import androidx.work.impl.utils.PreferenceUtils;
 
 import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.model.User;
@@ -46,13 +44,11 @@ public class NotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.v("bush", "doWork");
         startRun("WorkManager");
         return Result.success();
     }
 
     private static void startRun(String from) {
-        Log.e("bush", String.format("Start run from %s", from));
 
         if (!FLAG.compareAndSet(false, true)) {
             return;
@@ -77,8 +73,6 @@ public class NotificationWorker extends Worker {
                     NotificationUtil.sendNotification(scenario.getScenarioType().name().toLowerCase(Locale.ROOT),
                             result.getMessage(), result.getExtras());
                     break;
-                } else {
-                    Log.v("bush", String.format("Notification exist: %s", scenario.getScenarioType().getName()));
                 }
             }
         }
@@ -110,11 +104,9 @@ public class NotificationWorker extends Worker {
             } catch (JSONException e) {
             }
         }
-        Log.v("bush", String.format("get notification history"));
         for (String key : map.keySet()) {
             Timestamp ts = new Timestamp(map.get(key));
             Date date = new Date(ts.getTime());
-            Log.v("bush", String.format("key=%s, time=%s", key, date.toString()));
         }
         return map;
     }
@@ -141,6 +133,6 @@ public class NotificationWorker extends Worker {
             public void run() {
                 startRun("MyApplication");
             }
-        }, 5000);
+        }, 300000);
     }
 }

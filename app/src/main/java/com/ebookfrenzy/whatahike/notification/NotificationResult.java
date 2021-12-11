@@ -2,8 +2,6 @@ package com.ebookfrenzy.whatahike.notification;
 
 import org.json.JSONObject;
 
-import javax.annotation.Nullable;
-
 public class NotificationResult {
     private final String message;
     private final

@@ -3,7 +3,6 @@ package com.ebookfrenzy.whatahike.notification;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +34,6 @@ public abstract class NearbyTrailScenario implements NotificationScenario, Locat
     @Nullable
     @Override
     public NotificationResult checkAvailableResult() {
-        Log.v("bush", String.format("%s checkAvailableResult", getClass().getSimpleName()));
 
         if (LocationUtil.getCurrentLocation(this)) {
             try {
@@ -104,20 +102,16 @@ public abstract class NearbyTrailScenario implements NotificationScenario, Locat
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        Log.v("bush", "onLocationChanged " + location.toString());
         TrailHandler trailHandler = new TrailHandler(location);
-        Log.v("bush", String.format("RestAPI.getTrails"));
         RestAPI.getTrails(trailHandler, trailHandler, new Listener<List<Trail>>() {
             @Override
             public void onSuccess(List<Trail> data) {
-                Log.v("bush", String.format("getTrails onSuccess trailsize %s", data.size()));
                 mTrail = data.size() > 0 ? data.get(0) : null;
                 mLatch.countDown();
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.v("bush", "getTrails onFailed", e);
                 mLatch.countDown();
             }
         });

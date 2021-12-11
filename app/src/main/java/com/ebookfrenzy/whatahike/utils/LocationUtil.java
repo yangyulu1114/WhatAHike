@@ -3,18 +3,12 @@ package com.ebookfrenzy.whatahike.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
-
-import androidx.annotation.NonNull;
 
 import com.ebookfrenzy.whatahike.MyApplication;
-
-import java.util.concurrent.CountDownLatch;
 
 public class LocationUtil {
 
