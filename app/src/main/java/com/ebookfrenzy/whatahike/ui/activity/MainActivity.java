@@ -38,8 +38,10 @@ import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Preference;
 import com.ebookfrenzy.whatahike.model.Trail;
+import com.ebookfrenzy.whatahike.notification.NotificationScenarioType;
 import com.ebookfrenzy.whatahike.ui.adapter.RecyclerAdapter;
 import com.ebookfrenzy.whatahike.utils.Listener;
+import com.ebookfrenzy.whatahike.utils.NotificationUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,6 +114,13 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         initFiltersAndComparators();
         setOnClickListener();
         updateView();
+
+        fakeNotificationTest();
+    }
+
+    private void fakeNotificationTest () {
+        NotificationUtil.sendNotification(NotificationScenarioType.SUGGEST_HIKING_TRAIL.name(),
+                "Suggest trail message.", null);
     }
 
     @Override
