@@ -1,6 +1,7 @@
 package com.ebookfrenzy.whatahike;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Preference;
@@ -30,12 +31,13 @@ public class RestAPI {
     private static Map<String, Trail> trails;
     private static Set<String> activities;
 
-    private static final ExecutorService sExecutor = Executors.newCachedThreadPool();
+    private static final ExecutorService sExecutor = Executors.newSingleThreadExecutor();
 
     /**
      * @return distance in miles
      */
     public static double getDistance(double lat1, double lon1, double lat2, double lon2) {
+
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2))
                 + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -76,25 +78,29 @@ public class RestAPI {
     public static void getTrails(Filter<Trail> filter, Comparator<Trail> comparator, Listener<List<Trail>> listener)
         throws IllegalArgumentException {
 
-        if (filter == null || comparator == null) {
-            throw new IllegalArgumentException("Filter and Comparator can not be null.");
-        }
+//        if (filter == null || comparator == null) {
+//            throw new IllegalArgumentException("Filter and Comparator can not be null.");
+//        }
 
         Listener<List<Trail>> mainThreadListener = new MainThreadListener(listener);
         sExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 if (trails == null) {
+                    Log.v("bush", "enter readCSVTrails");
                     readCSVTrails();
+                    Log.v("bush", "exit readCSVTrails");
                 }
 
                 List<Trail> filterTrails = new ArrayList<>();
                 for (Trail trail : trails.values()) {
-                    if (filter.pass(trail)) {
+                    if (filter == null || filter.pass(trail)) {
                         filterTrails.add(trail);
                     }
                 }
-                Collections.sort(filterTrails, comparator);
+                if (comparator != null) {
+                    Collections.sort(filterTrails, comparator);
+                }
                 mainThreadListener.onSuccess(filterTrails);
             }
         });

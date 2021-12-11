@@ -3,12 +3,16 @@ package com.ebookfrenzy.whatahike.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ebookfrenzy.whatahike.R;
+import com.ebookfrenzy.whatahike.RestAPI;
+import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.model.User;
+import com.ebookfrenzy.whatahike.utils.Listener;
+
+import java.util.List;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -20,12 +24,17 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        mHandler.postDelayed(new Runnable() {
+        RestAPI.getTrails(null, null, new Listener<List<Trail>>() {
             @Override
-            public void run() {
+            public void onSuccess(List<Trail> data) {
                 signInIfNeeded();
             }
-        }, 400);
+
+            @Override
+            public void onFailed(Exception e) {
+                signInIfNeeded();
+            }
+        });
     }
 
     private void signInIfNeeded() {

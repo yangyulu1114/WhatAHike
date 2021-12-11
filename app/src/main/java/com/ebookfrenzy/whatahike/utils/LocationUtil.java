@@ -3,25 +3,28 @@ package com.ebookfrenzy.whatahike.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Looper;
-
-import androidx.annotation.NonNull;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import com.ebookfrenzy.whatahike.MyApplication;
 
-import java.util.concurrent.CountDownLatch;
-
 public class LocationUtil {
+
     private static LocationManager sLocationManager;
+    private static Handler sHandler;
 
     @SuppressLint("MissingPermission")
-    public static synchronized double[] getCurrentLocation() {
+    public static synchronized boolean getCurrentLocation(LocationListener listener) {
         if (sLocationManager == null) {
             Context context = MyApplication.getAppContext();
             sLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        }
+        if (sHandler == null) {
+            HandlerThread h = new HandlerThread("location");
+            h.start();
+            sHandler = new Handler(h.getLooper());
         }
 
         Criteria criteria = new Criteria();
@@ -29,22 +32,15 @@ public class LocationUtil {
         criteria.setCostAllowed(false);
 
         String provider = sLocationManager.getBestProvider(criteria, false);
-        CountDownLatch latch = new CountDownLatch(1);
-        Location[] locations = new Location[1];
-        Looper.prepare();
-        sLocationManager.requestLocationUpdates(provider, 0, 0, new LocationListener() {
-
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                locations[0] = location;
-                latch.countDown();
-            }
-        });
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
+        if (provider != null) {
+            sHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    sLocationManager.requestSingleUpdate(provider, listener, sHandler.getLooper());
+                }
+            });
         }
-        return new double[]{locations[0].getLatitude(), locations[0].getLongitude()};
+        return provider != null;
     }
 
     // return distance in miles

@@ -1,7 +1,6 @@
 package com.ebookfrenzy.whatahike.utils;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.LruCache;
 
 import java.util.concurrent.ExecutorService;

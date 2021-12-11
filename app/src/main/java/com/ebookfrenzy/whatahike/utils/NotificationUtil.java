@@ -29,7 +29,6 @@ public class NotificationUtil {
 
     @SuppressLint("NewApi")
     public static void sendNotification(String type, String message, JSONObject extras) {
-
         if (mContext == null) {
             mContext = MyApplication.getAppContext();
             notification_id = 0;

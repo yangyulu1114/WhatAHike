@@ -28,7 +28,7 @@
         <item>Most popular Trails</item>
     </string-array>
 
-    <string name="comment_nearby_trail">please add comment for %1$s</string>
-    <string name="recommend_nearby_trail">please hike %1$s</string>
-    <string name="suggest_hiking_trail">please go out for a hike</string>
+    <string name="comment_nearby_trail">Hi, come and share your unique idea for %1$s</string>
+    <string name="recommend_nearby_trail">Hi, There is an interesting trail nearby, please hike %1$s</string>
+    <string name="suggest_hiking_trail">Weekend now, come and go out for a hike</string>
 </resources>

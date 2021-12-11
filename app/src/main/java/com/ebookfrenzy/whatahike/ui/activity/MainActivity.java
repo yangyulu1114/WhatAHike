@@ -61,6 +61,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private ImageView button;
 
     private static Location location;
+    private static String locationKeyword = "";
+
     private LocationManager locationManager;
 
     private Comparator<Trail> defaultComparator; // distance then popularity
@@ -76,7 +78,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private int difficulty; // 1 -> e, 3 -> m, 5 -> h, 7 -> ex
     private List<String> mPrefActivities;
     private ActionBar mainActionBar;
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -182,7 +183,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                     return checkDifficulty(trail)
                             && checkActivities(trail);
                 }
-                return checkFields(true, trail.getName(), trail.getState(), trail.getCity(),
+                return checkFields(false, trail.getName(), trail.getState(), trail.getCity(),
                                      trail.getCountry(), trail.getArea());
             }
         };
@@ -208,17 +209,10 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private boolean checkFields(boolean isStateFilter, String... fields) {
         String keyword = "";
         if (isStateFilter) {
-            try {
-                Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                keyword = addresses.get(0).getAdminArea().toLowerCase();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            keyword = locationKeyword;
         } else {
             keyword = info.getText().toString().trim().toLowerCase();
         }
-
         keyword = " " + keyword + " ";
         for (String field: fields) {
             if (field == null || field.length() == 0) {
@@ -415,6 +409,12 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         String provider = locationManager.getBestProvider(criteria, false);
 
         location = locationManager.getLastKnownLocation(provider);
+//        try {
+//            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//            locationKeyword = addresses.get(0).getAdminArea().toLowerCase();
+//        } catch (IOException e) {
+//        }
 
         locationManager.requestLocationUpdates(provider, 0, 0, this);
     }

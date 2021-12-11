@@ -3,7 +3,6 @@ package com.ebookfrenzy.whatahike.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import com.ebookfrenzy.whatahike.ui.activity.ImagePreviewActivity;
 import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

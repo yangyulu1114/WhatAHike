@@ -13,7 +13,7 @@ public class RecommendNearbyTrailScenario extends NearbyTrailScenario {
 
     @Override
     public double getDistanceThresholdKm() {
-        return 5;
+        return 20;
     }
 
     @Override
