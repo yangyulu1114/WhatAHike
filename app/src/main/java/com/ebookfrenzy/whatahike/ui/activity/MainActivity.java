@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
     private ImageView button;
 
     private static Location location;
-    private static String locationKeyword;
+    private static String locationKeyword = "";
 
     private LocationManager locationManager;
 
@@ -180,7 +180,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                     return checkDifficulty(trail)
                             && checkActivities(trail);
                 }
-                return checkFields(true, trail.getName(), trail.getState(), trail.getCity(),
+                return checkFields(false, trail.getName(), trail.getState(), trail.getCity(),
                                      trail.getCountry(), trail.getArea());
             }
         };
@@ -406,12 +406,12 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         String provider = locationManager.getBestProvider(criteria, false);
 
         location = locationManager.getLastKnownLocation(provider);
-        try {
-            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            locationKeyword = addresses.get(0).getAdminArea().toLowerCase();
-        } catch (IOException e) {
-        }
+//        try {
+//            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//            locationKeyword = addresses.get(0).getAdminArea().toLowerCase();
+//        } catch (IOException e) {
+//        }
 
         locationManager.requestLocationUpdates(provider, 0, 0, this);
     }
