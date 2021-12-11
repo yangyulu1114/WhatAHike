@@ -5,14 +5,10 @@ import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.Trail;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class TrailsReadingUtil {
 

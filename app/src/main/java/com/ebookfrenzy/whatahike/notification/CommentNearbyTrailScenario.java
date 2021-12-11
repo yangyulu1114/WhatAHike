@@ -1,20 +1,8 @@
 package com.ebookfrenzy.whatahike.notification;
 
-import android.content.Context;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
-import com.ebookfrenzy.whatahike.Filter;
-import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
-import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.model.Trail;
-import com.ebookfrenzy.whatahike.utils.LocationUtil;
 import com.ebookfrenzy.whatahike.utils.StringUtil;
-
-import java.util.Comparator;
-import java.util.List;
 
 public class CommentNearbyTrailScenario extends NearbyTrailScenario {
 

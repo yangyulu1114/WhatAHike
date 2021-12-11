@@ -1,20 +1,15 @@
 package com.ebookfrenzy.whatahike.utils;
 
-import static android.graphics.ImageDecoder.decodeBitmap;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 import com.ebookfrenzy.whatahike.MyApplication;
-import com.ebookfrenzy.whatahike.ui.activity.MainActivity;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -23,7 +18,7 @@ public class BitmapUtil {
     public static File saveBitmapToFile(String url) throws Exception {
         Bitmap bitmap = createBitmap(url);
         File outputDir = MyApplication.getAppContext().getCacheDir(); // context being the Activity pointer
-        File outputFile = File.createTempFile("FireBaseUpload", ".png", outputDir);
+        File outputFile = File.createTempFile("FireBaseUpload", ".jpg", outputDir);
         FileOutputStream outputStream = new FileOutputStream(outputFile);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         return outputFile;
@@ -34,12 +29,8 @@ public class BitmapUtil {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         int[] screenSize = DisplayUtil.getScreenSize();
-        Log.v("bush", "screen width " + screenSize[0] + "screen height " + screenSize[1]);
         Bitmap bitmap = decodeBitmap(url, screenSize[0] / 2, screenSize[1] / 2);
-        Log.v("bush", "bitmap size before rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        Log.v("bush", "bitmap size after rotate" + bitmap.getWidth() + " " + bitmap.getHeight());
-        Log.v("bush", "add new cache");
         return bitmap;
     }
 

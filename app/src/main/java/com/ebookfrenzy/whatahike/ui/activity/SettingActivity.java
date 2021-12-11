@@ -23,7 +23,6 @@ public class SettingActivity extends AppCompatActivity {
     private CheckBox cb7;
     private Button btnSubmit;
     private Button btnReset;
-    //private Set<String> selected;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

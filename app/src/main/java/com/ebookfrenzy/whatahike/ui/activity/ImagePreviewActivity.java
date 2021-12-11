@@ -1,23 +1,19 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.ui.adapter.ViewPagerAdapter;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +46,6 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
         mViewPager = findViewById(R.id.viewpager);
         mViewPagerAdapter = new ViewPagerAdapter();
         mActionBar = getSupportActionBar();
-//        View customView = getLayoutInflater().inflate(R.layout.imagepreview_actionbar, null);
         mActionBar.setCustomView(R.layout.imagepreview_actionbar);
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         mTitleTextView = findViewById(R.id.text);
@@ -63,22 +58,12 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
             mDeleteTextView.setVisibility(View.INVISIBLE);
         }
 
-
-//        for(int i = 0; i < 9; i++) {
-//            mImageList.add(String.format("http://gothomas.me/images/banners/%s.jpg", i));
-//            Log.v("bush", mImageList.get(i));
-//        }
-//        File file1 = new File("/sdcard/DCIM/Camera/20211117_150958.jpg");
-//        File file2 = new File("/sdcard/DCIM/Camera/20211128_232428.jpg");
-//        mImageList.add(Uri.fromFile(file1).toString());
-//        mImageList.add(Uri.fromFile(file2).toString());
         mViewPager.setOnPageChangeListener(this);
         mViewPager.setAdapter(mViewPagerAdapter);
         refreshViewPager();
     }
 
     public void refreshViewPager() {
-        Log.v("bush", "refreshViewPager mCurrentPosition " + mCurrentPosition);
         mTitleTextView.setText(String.format("%s/%s", mCurrentPosition + 1, mImageList.size()));
         mViewPagerAdapter.setImageList(mImageList);
         mViewPager.setCurrentItem(mCurrentPosition);
@@ -96,7 +81,6 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
                     back();
                     return;
                 }
-             //   mCurrentPosition += mCurrentPosition == 0 ? 1 : -1;
                 refreshViewPager();
                 break;
             default:
@@ -107,7 +91,6 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
     private void back() {
         Intent intent = new Intent();
         intent.putExtra("deletedImages", (Serializable) mDeletedImageList);
-   //     intent.putIntegerArrayListExtra("deletedImages", (ArrayList<Integer>) mDeletedImageList);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -119,7 +102,6 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
 
     @Override
     protected void onDestroy() {
-        Log.v("bush", "onDestroy");
         mViewPager.removeOnPageChangeListener(this);
         super.onDestroy();
     }
@@ -132,7 +114,6 @@ public class ImagePreviewActivity extends BaseActivity implements ViewPager.OnPa
     public void onPageSelected(int position) {
         mCurrentPosition = position;
         mTitleTextView.setText(String.format("%s/%s", mCurrentPosition + 1, mImageList.size()));
-        Log.v("bush", "onPageSelected : position " + position);
     }
 
     @Override

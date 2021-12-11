@@ -11,7 +11,6 @@ import com.ebookfrenzy.whatahike.utils.LocationUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -62,7 +61,6 @@ public abstract class NearbyTrailScenario implements NotificationScenario {
         try {
             extras.put("trailId", trail.getId());
         } catch (JSONException e) {
-            // ignore
         }
         return new NotificationResult(msg, extras);
     }

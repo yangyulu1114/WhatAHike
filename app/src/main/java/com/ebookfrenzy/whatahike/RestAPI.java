@@ -1,7 +1,6 @@
 package com.ebookfrenzy.whatahike;
 
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.ebookfrenzy.whatahike.model.Comment;
 import com.ebookfrenzy.whatahike.model.Preference;
@@ -13,10 +12,8 @@ import com.ebookfrenzy.whatahike.utils.MainThreadListener;
 import com.ebookfrenzy.whatahike.utils.SharedPrefUtil;
 import com.ebookfrenzy.whatahike.utils.TrailsReadingUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
