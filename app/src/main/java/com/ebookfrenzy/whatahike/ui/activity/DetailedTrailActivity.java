@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ebookfrenzy.whatahike.MyApplication;
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
 import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
@@ -30,11 +32,17 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class DetailedTrailActivity extends AppCompatActivity {
     private List<Comment> commentList;
     private UserCommentAdapter adapter;
+    private Map<String, Drawable> iconMap;
+
+    private Random rand;
 
     private String trailId;
 
@@ -42,6 +50,9 @@ public class DetailedTrailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_trail);
+
+        rand = new Random();
+        iconMap = new HashMap<>();
 
         trailId = getIntent().getStringExtra(String.valueOf(R.string.trailId));
         if (trailId == null)
@@ -99,6 +110,19 @@ public class DetailedTrailActivity extends AppCompatActivity {
 
                 internet_hint.setVisibility(View.GONE);
                 prograssBar.setVisibility(View.GONE);
+
+                if (iconMap.size() == 0 && commentList.size() > 0) {
+                    for (Comment comment : commentList) {
+                        putRandomIcon(comment.getUserId());
+                    }
+                } else if (commentList.size() > 0){
+                    int top = 0;
+                    while (top < commentList.size() && !iconMap.containsKey(commentList.get(top).getUserId())) {
+                        putRandomIcon(commentList.get(top++).getUserId());
+                    }
+                }
+
+
                 initComments();
             }
             @Override
@@ -111,6 +135,23 @@ public class DetailedTrailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void putRandomIcon(String userId) {
+        if (!iconMap.containsKey(userId)) {
+            int randint = rand.nextInt(6);
+            if (randint == 1) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon2));
+            } else if (randint == 2) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon3));
+            } else if (randint == 3) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon4));
+            } else if (randint == 4) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon5));
+            } else if (randint == 5) {
+                iconMap.put(userId, MyApplication.getAppContext().getDrawable(R.drawable.usericon6));
+            }
+        }
     }
 
     private void setupToolBar() {
@@ -154,7 +195,8 @@ public class DetailedTrailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new UserCommentAdapter(commentList, trailId);
+        adapter = new UserCommentAdapter(commentList, iconMap, trailId);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -184,16 +226,16 @@ public class DetailedTrailActivity extends AppCompatActivity {
         trailLoca.setText(sb.toString());
         sb.setLength(0);
 
-        TextView ratingDifficulty = findViewById(R.id.rating_difficulty);
-        sb.append("Rating: " + trail.getRating() + "   ");
-        sb.append("Difficulty: " + trail.getDifficulty());
-        ratingDifficulty.setText(sb.toString());
+        TextView length_elevation = findViewById(R.id.length_elevation);
+        sb.append("Length: " + (int)trail.getLength() + "   ");
+        sb.append("Elevation: " + (int)trail.getElevation());
+        length_elevation.setText(sb.toString());
         sb.setLength(0);
 
-        TextView lengthElevation = findViewById(R.id.length_elevation);
-        sb.append("Length: " + trail.getLength() + "   ");
-        sb.append("Elevation: " + trail.getElevation());
-        lengthElevation.setText(sb.toString());
+        TextView rating_difficulty = findViewById(R.id.rating_difficulty);
+        sb.append("Rating: " + trail.getRating() + "   ");
+        sb.append("Difficulty: " + trail.getDifficulty());
+        rating_difficulty.setText(sb.toString());
         sb.setLength(0);
 
         TextView features = findViewById(R.id.features);
@@ -201,7 +243,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
         for (String feature: trail.getFeatures()) {
             sb.append(feature + ", ");
         }
-        features.setText(sb.toString());
+        features.setText(sb.substring(0, sb.length() - 2));
         sb.setLength(0);
 
         TextView activities = findViewById(R.id.activities);
@@ -209,7 +251,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
         for (String activity: trail.getActivities()) {
             sb.append(activity + ", ");
         }
-        activities.setText(sb.toString());
+        activities.setText(sb.substring(0, sb.length() - 2));
         sb.setLength(0);
 
         ImageView image = findViewById(R.id.trail_image);
