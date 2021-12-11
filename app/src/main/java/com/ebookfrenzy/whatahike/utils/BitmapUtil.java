@@ -23,7 +23,7 @@ public class BitmapUtil {
     public static File saveBitmapToFile(String url) throws Exception {
         Bitmap bitmap = createBitmap(url);
         File outputDir = MyApplication.getAppContext().getCacheDir(); // context being the Activity pointer
-        File outputFile = File.createTempFile("FireBaseUpload", ".png", outputDir);
+        File outputFile = File.createTempFile("FireBaseUpload", ".jpg", outputDir);
         FileOutputStream outputStream = new FileOutputStream(outputFile);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         return outputFile;
@@ -95,6 +95,7 @@ public class BitmapUtil {
         InputStream inputStream = createInputStream(url);
         final BitmapFactory.Options options = new BitmapFactory.Options();
         int[] srcSize = getSrcSize(url);
+        Log.v("bush", "size before compress" + srcSize[1] + " "+ srcSize[0]);
 
         options.inSampleSize = calculateInSampleSize(url, srcSize[0], srcSize[1], reqWidth, reqHeight);
         options.inJustDecodeBounds = false;
