@@ -114,14 +114,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         initFiltersAndComparators();
         setOnClickListener();
         updateView();
-
-        fakeNotificationTest();
     }
 
-    private void fakeNotificationTest () {
-        NotificationUtil.sendNotification(NotificationScenarioType.SUGGEST_HIKING_TRAIL.name(),
-                "Suggest trail message.", null);
-    }
 
     @Override
     public void onRestart() {
