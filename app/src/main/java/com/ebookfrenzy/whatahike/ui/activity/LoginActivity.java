@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onAuthCompleted(User user) {
+        Log.e("bush", "Login completed");
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

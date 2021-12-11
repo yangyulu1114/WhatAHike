@@ -6,14 +6,14 @@ import javax.annotation.Nullable;
 
 public class NotificationResult {
     private final String message;
-    private final @Nullable
+    private final
     JSONObject extras;
 
     public NotificationResult(String message) {
-        this(message, null);
+        this(message, new JSONObject());
     }
 
-    public NotificationResult(String message, @Nullable JSONObject extras) {
+    public NotificationResult(String message, JSONObject extras) {
         this.message = message;
         this.extras = extras;
     }
@@ -22,7 +22,6 @@ public class NotificationResult {
         return message;
     }
 
-    @Nullable
     public JSONObject getExtras() {
         return extras;
     }

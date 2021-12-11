@@ -1,5 +1,11 @@
 package com.ebookfrenzy.whatahike.notification;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ebookfrenzy.whatahike.Filter;
@@ -15,7 +21,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public abstract class NearbyTrailScenario implements NotificationScenario {
+public abstract class NearbyTrailScenario implements NotificationScenario, LocationListener {
+
+    private final CountDownLatch mLatch = new CountDownLatch(1);
+    private Trail mTrail;
 
     public abstract NotificationScenarioType getScenarioType();
 
@@ -26,32 +35,19 @@ public abstract class NearbyTrailScenario implements NotificationScenario {
     @Nullable
     @Override
     public NotificationResult checkAvailableResult() {
-        final Trail[] trail = new Trail[1];
-        double[] curLocation = LocationUtil.getCurrentLocation();
-        if (curLocation != null) {
-            CountDownLatch latch = new CountDownLatch(1);
-            TrailHandler trailHandler = new TrailHandler(curLocation);
-            RestAPI.getTrails(trailHandler, trailHandler, new Listener<List<Trail>>() {
-                @Override
-                public void onSuccess(List<Trail> data) {
-                    trail[0] = data.size() > 0 ? data.get(0) : null;
-                    latch.countDown();
-                }
+        Log.v("bush", String.format("%s checkAvailableResult", getClass().getSimpleName()));
 
-                @Override
-                public void onFailed(Exception e) {
-                    latch.countDown();
-                }
-            });
-
+        if (LocationUtil.getCurrentLocation(this)) {
             try {
-                latch.await();
+                mLatch.await();
             } catch (InterruptedException e) {
             }
-            if (trail[0] != null) {
-                return createNotificationResult(trail[0]);
-            }
         }
+
+        if (mTrail != null) {
+            return createNotificationResult(mTrail);
+        }
+
         return null;
     }
 
@@ -69,8 +65,8 @@ public abstract class NearbyTrailScenario implements NotificationScenario {
 
         private final double[] mCurrentLocation;
 
-        public TrailHandler(double[] currentLocation) {
-            mCurrentLocation = currentLocation;
+        public TrailHandler(Location location) {
+            mCurrentLocation = new double[] {location.getLatitude(), location.getLongitude()};
         }
 
         @Override
@@ -84,5 +80,46 @@ public abstract class NearbyTrailScenario implements NotificationScenario {
             double dis2 = LocationUtil.getDistance(mCurrentLocation, o2.getLocation());
             return Double.compare(dis1, dis2);
         }
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Log.v("bush", "onLocationChanged " + location.toString());
+        TrailHandler trailHandler = new TrailHandler(location);
+        Log.v("bush", String.format("RestAPI.getTrails"));
+        RestAPI.getTrails(trailHandler, trailHandler, new Listener<List<Trail>>() {
+            @Override
+            public void onSuccess(List<Trail> data) {
+                Log.v("bush", String.format("getTrails onSuccess trailsize %s", data.size()));
+                mTrail = data.size() > 0 ? data.get(0) : null;
+                mLatch.countDown();
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.v("bush", "getTrails onFailed", e);
+                mLatch.countDown();
+            }
+        });
     }
 }
