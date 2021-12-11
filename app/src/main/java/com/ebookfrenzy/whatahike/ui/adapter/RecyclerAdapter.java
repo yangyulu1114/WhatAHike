@@ -5,8 +5,6 @@ import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -21,54 +19,17 @@ import com.ebookfrenzy.whatahike.ui.activity.MainActivity;
 import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
     private List<Trail> trailList;
     private RecyclerViewClickListener listener;
     private ImageView trailImg;
-    //private List<Trail> trailListFull;
 
     public RecyclerAdapter(List<Trail> trailList, RecyclerViewClickListener listener){
         this.trailList = trailList;
         this.listener = listener;
-        // trailListFull = new ArrayList<>(trailList); //create the copy oif trail list
     }
-
-  //  @Override
-//    public Filter getFilter() {
-//        return exampleFilter;
-//    }
-//
-//    private Filter exampleFilter = new Filter() {
-//        @Override
-//        protected FilterResults performFiltering(CharSequence constraint) {
-//            List<Trail> filteredList = new ArrayList<>();
-//            if (constraint == null || constraint.length() == 0) {
-//                filteredList.addAll(trailListFull);
-//            }
-//            else{
-//                String filterPattern = constraint.toString().toLowerCase().trim();
-//                for (Trail item : trailListFull) {
-//                    if(item.getName().toLowerCase().contains(filterPattern)) {
-//                        filteredList.add(item);
-//                    }
-//                }
-//            }
-//            FilterResults results = new FilterResults();
-//            results.values = filteredList;
-//            return results;
-//        }
-
-//        @Override
-//        protected void publishResults(CharSequence constraint, FilterResults results) {
-//            trailList.clear();
-//            trailList.addAll((List)results.values);
-//            notifyDataSetChanged();
-//        }
-//    };
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nameTxt;
@@ -123,7 +84,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         String area = trail.getArea();
         float difficulty =  trail.getDifficulty();
         difficulty = (float) Math.ceil(difficulty/2);
-        //System.out.println(difficulty);
         Location location = MainActivity.getLocation();
         if (location == null) {
             holder.distanceTxt.setText("Can't fetch your location");

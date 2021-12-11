@@ -22,7 +22,7 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.activity.UserSetting"
+            android:name=".ui.activity.UserSettingActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
@@ -49,12 +49,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.TestActivity"
-            android:exported="true"
-            android:label="@string/title_activity_test"
-            android:theme="@style/Theme.WhatAHike.NoActionBar"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"

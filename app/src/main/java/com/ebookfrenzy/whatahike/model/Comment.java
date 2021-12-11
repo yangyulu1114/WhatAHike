@@ -2,11 +2,7 @@ package com.ebookfrenzy.whatahike.model;
 
 import com.ebookfrenzy.whatahike.utils.StringUtil;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Comment extends FireBaseModel {
 

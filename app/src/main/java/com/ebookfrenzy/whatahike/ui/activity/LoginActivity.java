@@ -1,8 +1,5 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +9,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.User;
@@ -68,8 +68,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onAuthCompleted(User user) {
-        //action after sign in
-        Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

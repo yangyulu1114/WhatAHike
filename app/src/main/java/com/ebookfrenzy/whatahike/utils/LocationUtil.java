@@ -1,9 +1,7 @@
 package com.ebookfrenzy.whatahike.utils;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,7 +9,6 @@ import android.location.LocationManager;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 
 import com.ebookfrenzy.whatahike.MyApplication;
 

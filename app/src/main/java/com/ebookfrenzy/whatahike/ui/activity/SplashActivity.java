@@ -1,22 +1,15 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.model.User;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -46,8 +39,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void onAuthCompleted(User user) {
-        //action after sign in
-        Log.v("bush", String.format("onAuthCompleted: %s", user.toString()));
         startActivity(new Intent(this, MainActivity.class));
 
         finish();

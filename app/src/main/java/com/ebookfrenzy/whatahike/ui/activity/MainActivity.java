@@ -1,14 +1,6 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,8 +9,8 @@ import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,10 +21,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebookfrenzy.whatahike.Filter;
 import com.ebookfrenzy.whatahike.R;
@@ -147,7 +146,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 if (location == null) {
                     return 0;
                 }
-                //implement comparator
                 double o1dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
                         o1.getLocation()[0], o1.getLocation()[1]);
                 double o2dis = RestAPI.getDistance(location.getLatitude(), location.getLongitude(),
@@ -278,7 +276,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         });
     }
 
-    //if need to request permissions, extends BaseActivity and override function getRequestedPermissions()
     @Override
     public String[] getRequestedPermissions() {
         return new String[]{
@@ -363,7 +360,7 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserSetting.class);
+                Intent intent = new Intent(getApplicationContext(), UserSettingActivity.class);
                 startActivity(intent);
             }
         });
@@ -415,7 +412,6 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
         String provider = locationManager.getBestProvider(criteria, false);
 
         location = locationManager.getLastKnownLocation(provider);
-        // location could equal to null if there is no location history in user's phone.
 
         locationManager.requestLocationUpdates(provider, 0, 0, this);
     }

@@ -1,7 +1,5 @@
 package com.ebookfrenzy.whatahike.notification;
 
-import android.os.Bundle;
-
 import org.json.JSONObject;
 
 import javax.annotation.Nullable;

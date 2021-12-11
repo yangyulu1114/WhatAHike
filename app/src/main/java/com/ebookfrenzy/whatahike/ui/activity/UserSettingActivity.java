@@ -1,10 +1,5 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
-import com.ebookfrenzy.whatahike.exception.FirebaseTimeoutException;
 import com.ebookfrenzy.whatahike.model.Preference;
-import com.ebookfrenzy.whatahike.model.Trail;
 import com.ebookfrenzy.whatahike.utils.Listener;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,12 +27,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class UserSetting extends AppCompatActivity {
+public class UserSettingActivity extends AppCompatActivity {
     Map<String, CheckBox> checkBoxes;
     List<String> keys;
     private static final String TAG = "MainActivity";
@@ -128,7 +125,6 @@ public class UserSetting extends AppCompatActivity {
                     }
                 }
                 keys.clear();
-       //         setPreference();
             }
         });
 
@@ -143,7 +139,7 @@ public class UserSetting extends AppCompatActivity {
                     }
                 }
                 setPreference();
-                Toast.makeText(UserSetting.this, "Preference saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserSettingActivity.this, "Preference saved", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -167,7 +163,6 @@ public class UserSetting extends AppCompatActivity {
                             finish();
                         }
                         else{
-                            Log.e(TAG, "onComplete: ", task.getException());
                         }
                     }
                 });

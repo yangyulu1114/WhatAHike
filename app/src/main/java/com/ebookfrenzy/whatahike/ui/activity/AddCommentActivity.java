@@ -1,13 +1,5 @@
 package com.ebookfrenzy.whatahike.ui.activity;
 
-import static android.app.PendingIntent.getActivity;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,8 +13,12 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.ebookfrenzy.whatahike.R;
 import com.ebookfrenzy.whatahike.RestAPI;
@@ -34,7 +30,6 @@ import com.ebookfrenzy.whatahike.ui.adapter.GridViewAdapter;
 import com.ebookfrenzy.whatahike.utils.DisplayUtil;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +72,6 @@ public class AddCommentActivity extends AppCompatActivity {
         refreshGridView();
 
         trailId = getIntent().getStringExtra("trailId");
-//        trailId = "1";
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -107,7 +101,6 @@ public class AddCommentActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.v("bush","onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PICK_FROM_GALLERY:
@@ -115,13 +108,11 @@ public class AddCommentActivity extends AppCompatActivity {
                     Uri uri = data.getData();
                     mImageList.add(uri);
                     refreshGridView();
-                    Log.v("bush", "uri" + uri);
                 }
                 break;
             case IMAGE_PREVIEW:
                 List<Integer> deletedList = (List<Integer>) data.getSerializableExtra("deletedImages");
                 if (deletedList == null) {
-                    Log.v("bush", "deletedList is null");
                 }
                 if (deletedList != null && deletedList.size() > 0) {
                     for (int i : deletedList) {
@@ -163,21 +154,17 @@ public class AddCommentActivity extends AppCompatActivity {
         RestAPI.postComment(comment, mImageList, new Listener<Void>() {
             @Override
             public void onSuccess(Void data) {
-                // comment succeed
                 onPostComplete(600, true);
-                Log.v("bush", "postComment onSuccess " + Thread.currentThread().getName());
             }
 
             @Override
             public void onFailed(Exception e) {
                 onPostComplete(0, false);
                 if (e instanceof UploadException) {
-                    // image upload failed
                     Toast.makeText(AddCommentActivity.this, "Upload Failed, please retry", Toast.LENGTH_LONG).show();
                 } else if (e instanceof FirebaseTimeoutException) {
                     Toast.makeText(AddCommentActivity.this, "Request timeout, please check your network", Toast.LENGTH_LONG).show();
                 } else {
-                    // comment failed
                     Toast.makeText(AddCommentActivity.this, "Comment Failed, please retry", Toast.LENGTH_LONG).show();
                 }
             }
