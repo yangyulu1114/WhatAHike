@@ -85,17 +85,15 @@
                             android:gravity="right"
                             android:hint="Rating and difficulty" />
 
+
                         <TextView
                             android:id="@+id/length_elevation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
                             android:layout_marginRight="30dp"
-                            android:layout_marginTop="5dp"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:layout_gravity="right"
-                            android:gravity="right"
+                            android:layout_marginTop="14dp"
+                            android:textSize="16sp"
                             android:text="Length, Elevation"/>
 
                         <TextView
@@ -104,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
                             android:layout_marginRight="30dp"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="5dp"
                             android:textSize="16sp"
                             android:hint="features" />
 
