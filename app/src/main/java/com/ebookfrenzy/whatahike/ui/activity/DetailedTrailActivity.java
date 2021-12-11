@@ -226,16 +226,16 @@ public class DetailedTrailActivity extends AppCompatActivity {
         trailLoca.setText(sb.toString());
         sb.setLength(0);
 
-        TextView ratingDifficulty = findViewById(R.id.rating_difficulty);
-        sb.append("Rating: " + trail.getRating() + "   ");
-        sb.append("Difficulty: " + trail.getDifficulty());
-        ratingDifficulty.setText(sb.toString());
+        TextView length_elevation = findViewById(R.id.length_elevation);
+        sb.append("Length: " + (int)trail.getLength() + "   ");
+        sb.append("Elevation: " + (int)trail.getElevation());
+        length_elevation.setText(sb.toString());
         sb.setLength(0);
 
-        TextView lengthElevation = findViewById(R.id.length_elevation);
-        sb.append("Length: " + trail.getLength() + "   ");
-        sb.append("Elevation: " + trail.getElevation());
-        lengthElevation.setText(sb.toString());
+        TextView rating_difficulty = findViewById(R.id.rating_difficulty);
+        sb.append("Rating: " + trail.getRating() + "   ");
+        sb.append("Difficulty: " + trail.getDifficulty());
+        rating_difficulty.setText(sb.toString());
         sb.setLength(0);
 
         TextView features = findViewById(R.id.features);
@@ -243,7 +243,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
         for (String feature: trail.getFeatures()) {
             sb.append(feature + ", ");
         }
-        features.setText(sb.toString());
+        features.setText(sb.substring(0, sb.length() - 2));
         sb.setLength(0);
 
         TextView activities = findViewById(R.id.activities);
@@ -251,7 +251,7 @@ public class DetailedTrailActivity extends AppCompatActivity {
         for (String activity: trail.getActivities()) {
             sb.append(activity + ", ");
         }
-        activities.setText(sb.toString());
+        activities.setText(sb.substring(0, sb.length() - 2));
         sb.setLength(0);
 
         ImageView image = findViewById(R.id.trail_image);

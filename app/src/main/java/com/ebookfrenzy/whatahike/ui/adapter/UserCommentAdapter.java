@@ -20,7 +20,9 @@ import com.ebookfrenzy.whatahike.ui.activity.ImagePreviewActivity;
 import com.ebookfrenzy.whatahike.utils.ImageLoader;
 import com.ebookfrenzy.whatahike.utils.Listener;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -143,17 +145,16 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
 
         holder.setIsRecyclable(false);
 
+        // set up user icon
         if (iconMap.get(comment.getUserId()) != null) {
             holder.userIcon.setImageDrawable(iconMap.get(comment.getUserId()));
         }
 
         holder.user.setText(comment.getUserId().split("@")[0]);
-        holder.time.setText(new Date(comment.getTimeStamp()).toString());
+        holder.time.setText(calcTime(comment.getTimeStamp()));
 
         // set up folded text
         holder.initTextView(comment.getText());
-
-        // set up user icon
 
         // set up images
         List<String> images = comment.getImages();
@@ -200,4 +201,41 @@ public class UserCommentAdapter extends RecyclerView.Adapter<UserCommentAdapter.
         return mCommentList.size();
     }
 
+
+    private String calcTime(long timestamp) {
+        Date cur = new Date(System.currentTimeMillis());
+        Date date = new Date(timestamp);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int commentYear = calendar.get(Calendar.YEAR);
+        int commentMonth = calendar.get(Calendar.MONTH);
+        int commentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int commentHour = calendar.get(Calendar.HOUR);
+        int commentMin = calendar.get(Calendar.MINUTE);
+        calendar.setTime(cur);
+        int curYear = calendar.get(Calendar.YEAR);
+        int curMonth = calendar.get(Calendar.MONTH);
+        int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int curHour = calendar.get(Calendar.HOUR);
+        int curMin = calendar.get(Calendar.MINUTE);
+
+        String res;
+        if (commentYear != curYear || commentMonth != curMonth) {
+            res = new java.sql.Date(timestamp).toString();
+        } else if (commentDay != curDay) {
+            int day = curDay - commentDay;
+            res = day > 1 ? day + " Days Ago" : day + " Day Ago";
+        } else if (commentHour != curHour) {
+            int hour = curHour - commentHour;
+            res = hour > 1 ? hour + " Hours Ago" : hour + " Hour Ago";
+        } else if (commentMin != curMin) {
+            int min = curMin - commentMin;
+            res = min > 1 ? min + " Minutes Ago" : min + " Minute Ago";
+        } else {
+            res = "Just Now";
+        }
+
+        return res;
+    }
 }
