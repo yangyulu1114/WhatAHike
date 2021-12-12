@@ -195,8 +195,8 @@ public class MainActivity extends BaseActivity implements LocationListener, Adap
                 return checkDifficulty(trail)
                         && (checkFields(trail.getName(), trail.getState(), trail.getCity(),
                                         trail.getCountry(), trail.getArea())
-                        || trail.getActivities().contains(keyword)
-                        || trail.getFeatures().contains(keyword));
+                        || trail.getActivities().toString().contains(keyword)
+                        || trail.getFeatures().toString().contains(keyword));
             }
         };
 
