@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.concurrent.CountDownLatch;
 
 public class FireBaseUtil {
-    private static final long TIMEOUT_MS = 2000;
+    private static final long TIMEOUT_MS = 15000;
 
     private static Handler mHandler = new Handler(Looper.getMainLooper());
 

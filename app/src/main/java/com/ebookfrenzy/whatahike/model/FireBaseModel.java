@@ -2,6 +2,7 @@ package com.ebookfrenzy.whatahike.model;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FireBaseModel {
-    private static final long TIMEOUT_MS = 15000;
+    private static final long TIMEOUT_MS = 5000;
 
     private final DatabaseReference mDatabase;
     private Handler mHandler = new Handler(Looper.getMainLooper());
